@@ -1,11 +1,12 @@
 import React from 'react'
 import Layout from "../layout/layout.jsx";
+import FeaturedCompagny from "../components/home/featuredCompagny.jsx";
 
 function Home() {
   return (
     <Layout>
-      <div>
-        <p className="underline">hello</p>
+      <div className="px-16">
+        <FeaturedCompagny />
       </div>
     </Layout>
   )
