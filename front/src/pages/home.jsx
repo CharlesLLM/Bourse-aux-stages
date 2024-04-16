@@ -1,6 +1,6 @@
 import React from 'react'
 import Layout from "../layout/layout.jsx";
-import Searchbar from '../components/searchbar.jsx';
+import Searchbar from '../components/Searchbar.jsx';
 import FeaturedCompagny from "../components/home/featuredCompagny.jsx";
 
 function Home() {

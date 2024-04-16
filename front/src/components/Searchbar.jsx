@@ -1,12 +1,12 @@
 import { Combobox } from "react-widgets";
-import {useEffect, useMemo, useState} from "React";
+import {useEffect, useState} from "react";
 
 function Searchbar() {
     const [cities, setCities] = useState([]);
 
     useEffect(() => {
-        try{
-            fetch(`https://geo.api.gouv.fr/communes?fields=nom,code,codesPostaux`).then(res =>res.json().then(a =>setCities(a)))
+        try {
+            fetch(`https://geo.api.gouv.fr/communes?fields=nom,code,codesPostaux&limit=10`).then(res =>res.json().then(a =>setCities(a)))
         } catch(error) {
             console.log("Erreur: " + error);
         }
@@ -14,8 +14,8 @@ function Searchbar() {
 
     return (
         <div className="flex flex-row gap-5 bg-slate-50 px-8 py-2 max-w-3xl items-center">
-
             <div className="flex flex-row gap-2 items-start">
+                {/* TODO : Icon */}
                 <div> icon </div>
                 <input name="search" className="border-b-2 border-slate-700 text-grey h-8" placeholder="Saisissez un mot clé..."></input>
             </div>
