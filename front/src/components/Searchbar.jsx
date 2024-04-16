@@ -1,6 +1,4 @@
 import { Combobox } from "react-widgets";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationDot, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 function Searchbar() {
     const cities = [
@@ -14,12 +12,12 @@ function Searchbar() {
         <div className="flex flex-row gap-5 bg-slate-50 px-8 py-2 max-w-3xl items-center">
 
             <div className="flex flex-row gap-2 items-start">
-                <FontAwesomeIcon className="p-1 text-2xl" icon={faMagnifyingGlass} />
+                <div> icon </div>
                 <input name="search" className="border-b-2 border-slate-700 text-grey h-8" placeholder="Saisissez un mot clé..."></input>
             </div>
 
             <div className="flex flex-row gap-2">
-                <FontAwesomeIcon className="p-1 text-2xl" icon={faLocationDot} />
+                <div> icon </div>
                 <Combobox
                     data={cities}
                     dataKey="id"
