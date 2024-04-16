@@ -20,7 +20,7 @@
         "symfony/doctrine-messenger": "*",
         "symfony/dotenv": "*",
         "symfony/expression-language": "*",
-        "symfony/flex": "^2",
+        "symfony/flex": "^2.4",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
         "symfony/http-client": "*",
@@ -92,7 +92,8 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.0.*"
+            "require": "7.0.*",
+            "docker": true
         }
     }
 }

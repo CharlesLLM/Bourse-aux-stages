@@ -1,6 +1,7 @@
 import React from 'react'
 import Layout from "../layout/layout.jsx";
 import Searchbar from '../components/searchbar.jsx';
+import FeaturedCompagny from "../components/home/featuredCompagny.jsx";
 
 function Home() {
   return (
@@ -8,9 +9,8 @@ function Home() {
       <div>
         <p className="underline">hello</p>
         < Searchbar />
+        < FeaturedCompagny />
       </div>
     </Layout>
   )
 }
-
-export default Home;
