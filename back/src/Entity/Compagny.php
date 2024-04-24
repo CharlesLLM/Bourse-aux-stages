@@ -6,14 +6,17 @@ use App\Repository\CompagnyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CompagnyRepository::class)]
 class Compagny
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -27,8 +30,8 @@ class Compagny
     #[ORM\Column(length: 255)]
     private ?string $country = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $postal_code = null;
+    #[ORM\Column()]
+    private ?int $postal_code = null;
 
     #[ORM\Column(length: 255)]
     private ?string $city = null;
@@ -46,7 +49,7 @@ class Compagny
     private ?\DateTimeImmutable $updated_at = null;
 
     /**
-     * @var Collection<int, Admin>
+     * @var Collection<Uuid, Admin>
      */
     #[ORM\OneToMany(mappedBy: 'compagny', targetEntity: Admin::class)]
     private Collection $admins;
@@ -56,7 +59,7 @@ class Compagny
         $this->admins = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
