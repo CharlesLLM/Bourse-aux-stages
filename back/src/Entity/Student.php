@@ -3,11 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\StudentRepository;
+use DateTime;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Student
 {
     #[ORM\Id]
@@ -31,6 +36,15 @@ class Student
     #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+
+    #[ORM\Column]
+    private ?\DateTime $created_at = null;
+
+    #[ORM\Column]
+    private ?\DateTime $updated_at = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $deleted_at = null;
 
     public function getId(): ?Uuid
     {
@@ -93,6 +107,49 @@ class Student
     public function setUser(User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    #[PrePersist]
+    public function prePersist(PrePersistEventArgs $eventArgs)
+    {
+        $this->created_at = new DateTime();
+        $this->updated_at = new DateTime();
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTime $created_at): static
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTime
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(\DateTime $updated_at): static
+    {
+        $this->updated_at = $updated_at;
+
+        return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTime
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeletedAt(\DateTime $deleted_at): static
+    {
+        $this->deleted_at = $deleted_at;
 
         return $this;
     }

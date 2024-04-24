@@ -3,12 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\AdminRepository;
+use DateTime;
+use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
 #[ORM\Table(name: '`admin`')]
+#[ORM\HasLifecycleCallbacks]
 class Admin
 {
     #[ORM\Id]
@@ -24,13 +28,13 @@ class Admin
     private ?string $phone = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $created_at = null;
+    private ?\DateTime $created_at = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $updated_at = null;
+    private ?\DateTime $updated_at = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $deleted_at = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $deleted_at = null;
 
     #[ORM\OneToOne(inversedBy: 'adminCompagny', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -68,36 +72,36 @@ class Admin
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): ?\DateTime
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTime $created_at): static
     {
         $this->created_at = $created_at;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(\DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
 
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeImmutable
+    public function getDeletedAt(): ?\DateTime
     {
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(\DateTimeImmutable $deleted_at): static
+    public function setDeletedAt(\DateTime $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
 
@@ -126,5 +130,11 @@ class Admin
         $this->compagny = $compagny;
 
         return $this;
+    }
+    #[PrePersist]
+    public function prePersist(PrePersistEventArgs $eventArgs)
+    {
+        $this->created_at = new DateTime();
+        $this->updated_at = new DateTime();
     }
 }
