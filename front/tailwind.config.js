@@ -1,10 +1,12 @@
 /** @type {import('tailwindcss').Config} */
 import defaultTheme from 'tailwindcss/defaultTheme'
+const defaultColors = require('tailwindcss/colors')
 
 export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    require.resolve('react-widgets/styles.css'),
   ],
   theme: {
     colors: {
@@ -14,6 +16,7 @@ export default {
       dark: '#202430',
       grey: '#A3A8B6',
       darkBlue: '#2F3B53',
+      ...defaultColors
     },
     screens: {
       xs: '550px',
@@ -21,5 +24,5 @@ export default {
     },
     extend: {},
   },
-  plugins: [],
+  plugins: [require('react-widgets-tailwind')],
 }
