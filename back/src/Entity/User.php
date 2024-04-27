@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use DateTime;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,15 +20,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
@@ -51,15 +48,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Student $student = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Admin $adminCompagny = null;
+    private ?Admin $adminCompany = null;
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
+
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(?string $name): static
     {
         $this->name = $name;
+
+        return $this;
     }
 
     public function getFirstname(): ?string
@@ -67,9 +73,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->firstname;
     }
 
-    public function setFirstname(?string $firstname): void
+    public function setFirstname(?string $firstname): static
     {
         $this->firstname = $firstname;
+
+        return $this;
     }
 
     public function getCreatedAt(): ?\DateTime
@@ -77,9 +85,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->created_at;
     }
 
-    public function setCreatedAt(?\DateTime $created_at): void
+    public function setCreatedAt(?\DateTime $created_at): static
     {
         $this->created_at = $created_at;
+
+        return $this;
     }
 
     public function getUpdatedAt(): ?\DateTime
@@ -87,9 +97,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(?\DateTime $updated_at): void
+    public function setUpdatedAt(?\DateTime $updated_at): static
     {
         $this->updated_at = $updated_at;
+
+        return $this;
     }
 
     public function getDeletedAt(): ?\DateTime
@@ -97,16 +109,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->deleted_at;
     }
 
-    public function setDeletedAt(?\DateTime $deleted_at): void
+    public function setDeletedAt(?\DateTime $deleted_at): static
     {
         $this->deleted_at = $deleted_at;
-    }
 
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password = null;
+        return $this;
+    }
 
     public function getId(): ?Uuid
     {
@@ -195,19 +203,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdminCompagny(): ?Admin
+    public function getAdminCompany(): ?Admin
     {
-        return $this->adminCompagny;
+        return $this->adminCompany;
     }
 
-    public function setAdminCompagny(Admin $adminCompagny): static
+    public function setAdminCompany(Admin $adminCompany): static
     {
         // set the owning side of the relation if necessary
-        if ($adminCompagny->getUser() !== $this) {
-            $adminCompagny->setUser($this);
+        if ($adminCompany->getUser() !== $this) {
+            $adminCompany->setUser($this);
         }
 
-        $this->adminCompagny = $adminCompagny;
+        $this->adminCompany = $adminCompany;
 
         return $this;
     }
@@ -220,8 +228,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[PrePersist]
     public function prePersist(PrePersistEventArgs $eventArgs)
     {
-        $this->created_at = new DateTime();
-        $this->updated_at = new DateTime();
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
 }
-

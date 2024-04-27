@@ -3,11 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\StudentRepository;
-use DateTime;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
@@ -18,7 +17,7 @@ class Student
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
@@ -114,8 +113,8 @@ class Student
     #[PrePersist]
     public function prePersist(PrePersistEventArgs $eventArgs)
     {
-        $this->created_at = new DateTime();
-        $this->updated_at = new DateTime();
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
 
     public function getCreatedAt(): ?\DateTime

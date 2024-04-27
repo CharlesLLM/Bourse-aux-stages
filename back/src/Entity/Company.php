@@ -2,25 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\CompagnyRepository;
-use DateTime;
+use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity(repositoryClass: CompagnyRepository::class)]
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Compagny
+class Company
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
@@ -56,7 +54,7 @@ class Compagny
     /**
      * @var Collection<Uuid, Admin>
      */
-    #[ORM\OneToMany(mappedBy: 'compagny', targetEntity: Admin::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
 
     #[ORM\Column(nullable: true)]
@@ -204,7 +202,7 @@ class Compagny
     {
         if (!$this->admins->contains($admin)) {
             $this->admins->add($admin);
-            $admin->setCompagny($this);
+            $admin->setCompany($this);
         }
 
         return $this;
@@ -214,8 +212,8 @@ class Compagny
     {
         if ($this->admins->removeElement($admin)) {
             // set the owning side to null (unless already changed)
-            if ($admin->getCompagny() === $this) {
-                $admin->setCompagny(null);
+            if ($admin->getCompany() === $this) {
+                $admin->setCompany(null);
             }
         }
 
@@ -225,8 +223,8 @@ class Compagny
     #[PrePersist]
     public function prePersist(PrePersistEventArgs $eventArgs)
     {
-        $this->created_at = new DateTime();
-        $this->updated_at = new DateTime();
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
 
     public function getDeletedAt(): ?\DateTime

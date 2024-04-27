@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\AdminRepository;
-use DateTime;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
@@ -18,7 +18,7 @@ class Admin
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
@@ -36,12 +36,12 @@ class Admin
     #[ORM\Column(nullable: true)]
     private ?\DateTime $deleted_at = null;
 
-    #[ORM\OneToOne(inversedBy: 'adminCompagny', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'adminCompany', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'admins')]
-    private ?Compagny $compagny = null;
+    private ?Company $company = null;
 
     public function getId(): ?Uuid
     {
@@ -120,21 +120,22 @@ class Admin
         return $this;
     }
 
-    public function getCompagny(): ?Compagny
+    public function getCompany(): ?Company
     {
-        return $this->compagny;
+        return $this->company;
     }
 
-    public function setCompagny(?Compagny $compagny): static
+    public function setCompany(?Company $company): static
     {
-        $this->compagny = $compagny;
+        $this->company = $company;
 
         return $this;
     }
+
     #[PrePersist]
     public function prePersist(PrePersistEventArgs $eventArgs)
     {
-        $this->created_at = new DateTime();
-        $this->updated_at = new DateTime();
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
     }
 }

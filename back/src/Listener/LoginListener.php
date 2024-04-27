@@ -3,9 +3,8 @@
 namespace App\Listener;
 
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginListener
 {
@@ -23,4 +22,3 @@ class LoginListener
         }
     }
 }
-
