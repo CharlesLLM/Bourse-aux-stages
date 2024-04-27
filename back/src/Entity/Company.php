@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\TimestampableTrait;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\PrePersist;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
@@ -15,6 +15,8 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\HasLifecycleCallbacks]
 class Company
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -30,35 +32,23 @@ class Company
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $country = null;
-
     #[ORM\Column()]
-    private ?int $postal_code = null;
+    private ?int $postalCode = null;
 
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $x_link = null;
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $linkedin_link = null;
+    private ?string $xLink = null;
 
-    #[ORM\Column]
-    private ?\DateTime $created_at = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $linkedinLink = null;
 
-    #[ORM\Column]
-    private ?\DateTime $updated_at = null;
-
-    /**
-     * @var Collection<Uuid, Admin>
-     */
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $deleted_at = null;
 
     public function __construct()
     {
@@ -106,26 +96,14 @@ class Company
         return $this;
     }
 
-    public function getCountry(): ?string
-    {
-        return $this->country;
-    }
-
-    public function setCountry(string $country): static
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
     public function getPostalCode(): ?string
     {
-        return $this->postal_code;
+        return $this->postalCode;
     }
 
-    public function setPostalCode(string $postal_code): static
+    public function setPostalCode(string $postalCode): static
     {
-        $this->postal_code = $postal_code;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
@@ -142,50 +120,38 @@ class Company
         return $this;
     }
 
-    public function getXLink(): ?string
+    public function getCountry(): ?string
     {
-        return $this->x_link;
+        return $this->country;
     }
 
-    public function setXLink(?string $x_link): static
+    public function setCountry(string $country): static
     {
-        $this->x_link = $x_link;
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getXLink(): ?string
+    {
+        return $this->xLink;
+    }
+
+    public function setXLink(?string $xLink): static
+    {
+        $this->xLink = $xLink;
 
         return $this;
     }
 
     public function getLinkedinLink(): ?string
     {
-        return $this->linkedin_link;
+        return $this->linkedinLink;
     }
 
-    public function setLinkedinLink(?string $linkedin_link): static
+    public function setLinkedinLink(?string $linkedinLink): static
     {
-        $this->linkedin_link = $linkedin_link;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTime
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTime $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTime
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTime $updated_at): static
-    {
-        $this->updated_at = $updated_at;
+        $this->linkedinLink = $linkedinLink;
 
         return $this;
     }
@@ -216,25 +182,6 @@ class Company
                 $admin->setCompany(null);
             }
         }
-
-        return $this;
-    }
-
-    #[PrePersist]
-    public function prePersist(PrePersistEventArgs $eventArgs)
-    {
-        $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
-    }
-
-    public function getDeletedAt(): ?\DateTime
-    {
-        return $this->deleted_at;
-    }
-
-    public function setDeletedAt(\DateTime $deleted_at): static
-    {
-        $this->deleted_at = $deleted_at;
 
         return $this;
     }

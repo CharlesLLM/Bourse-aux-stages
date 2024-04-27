@@ -3,9 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\StudentRepository;
-use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\PrePersist;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
@@ -23,27 +21,18 @@ class Student
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $country = null;
+    #[ORM\Column()]
+    private ?int $postalCode = null;
 
     #[ORM\Column(length: 255)]
     private ?string $city = null;
 
-    #[ORM\Column()]
-    private ?int $postal_code = null;
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
 
     #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
-
-    #[ORM\Column]
-    private ?\DateTime $created_at = null;
-
-    #[ORM\Column]
-    private ?\DateTime $updated_at = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?\DateTime $deleted_at = null;
 
     public function getId(): ?Uuid
     {
@@ -62,14 +51,14 @@ class Student
         return $this;
     }
 
-    public function getCountry(): ?string
+    public function getPostalCode(): ?string
     {
-        return $this->country;
+        return $this->postalCode;
     }
 
-    public function setCountry(string $country): static
+    public function setPostalCode(string $postalCode): static
     {
-        $this->country = $country;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
@@ -86,14 +75,14 @@ class Student
         return $this;
     }
 
-    public function getPostalCode(): ?string
+    public function getCountry(): ?string
     {
-        return $this->postal_code;
+        return $this->country;
     }
 
-    public function setPostalCode(string $postal_code): static
+    public function setCountry(string $country): static
     {
-        $this->postal_code = $postal_code;
+        $this->country = $country;
 
         return $this;
     }
@@ -106,49 +95,6 @@ class Student
     public function setUser(User $user): static
     {
         $this->user = $user;
-
-        return $this;
-    }
-
-    #[PrePersist]
-    public function prePersist(PrePersistEventArgs $eventArgs)
-    {
-        $this->created_at = new \DateTime();
-        $this->updated_at = new \DateTime();
-    }
-
-    public function getCreatedAt(): ?\DateTime
-    {
-        return $this->created_at;
-    }
-
-    public function setCreatedAt(\DateTime $created_at): static
-    {
-        $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTime
-    {
-        return $this->updated_at;
-    }
-
-    public function setUpdatedAt(\DateTime $updated_at): static
-    {
-        $this->updated_at = $updated_at;
-
-        return $this;
-    }
-
-    public function getDeletedAt(): ?\DateTime
-    {
-        return $this->deleted_at;
-    }
-
-    public function setDeletedAt(\DateTime $deleted_at): static
-    {
-        $this->deleted_at = $deleted_at;
 
         return $this;
     }
