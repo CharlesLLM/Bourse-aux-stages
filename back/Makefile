@@ -25,8 +25,13 @@ bash:
 db:
 	$(CONSOLE) doctrine:database:drop --if-exists --force
 	$(CONSOLE) doctrine:database:create --if-not-exists
-	$(CONSOLE) doctrine:migrations:migrate -n
+	$(CONSOLE) doctrine:schema:update --force --complete
 	$(CONSOLE) doctrine:fixtures:load -n
+
+db-migrate:
+	$(CONSOLE) doctrine:database:drop --if-exists --force
+	$(CONSOLE) doctrine:database:create --if-not-exists
+	$(CONSOLE) doctrine:migrations:migrate -n
 
 perm:
 	sudo chown -R $(USER):$(USER) .
