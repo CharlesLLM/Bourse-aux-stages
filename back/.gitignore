@@ -7,6 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
+supervisord.log
+supervisord.pid
 ###< symfony/framework-bundle ###
 
 ###> symfony/asset-mapper ###
@@ -18,3 +20,7 @@
 /.php-cs-fixer.php
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
+
+###> docker-compose ###
+docker-compose-override.yml
+###< docker-compose ###
