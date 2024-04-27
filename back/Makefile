@@ -45,7 +45,6 @@ cc:
 
 php-linter:
 	sh -c "COMPOSE_INTERACTIVE_NO_CLI=1 $(BASH) vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php"
-	sh -c "COMPOSE_INTERACTIVE_NO_CLI=1 $(BASH) vendor/bin/php-cs-fixer fix -v --dry-run --config=.php-cs-fixer.php"
 
 preprod:
 	# Fetch updates

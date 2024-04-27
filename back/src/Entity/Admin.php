@@ -22,9 +22,6 @@ class Admin
     #[ORM\Column(length: 255)]
     private ?string $position = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $phone = null;
-
     #[ORM\OneToOne(inversedBy: 'companyAdmin', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
@@ -45,18 +42,6 @@ class Admin
     public function setPosition(string $position): static
     {
         $this->position = $position;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(string $phone): static
-    {
-        $this->phone = $phone;
 
         return $this;
     }
