@@ -22,7 +22,7 @@ class Student
     private ?string $address = null;
 
     #[ORM\Column()]
-    private ?int $postalCode = null;
+    private ?string $postalCode = null;
 
     #[ORM\Column(length: 255)]
     private ?string $city = null;
