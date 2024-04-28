@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class StudentFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const array DATA = [
+    public const DATA = [
         [
             'user' => 'user_1',
             'address' => '1 rue de la Paix',
@@ -41,7 +41,7 @@ class StudentFixtures extends Fixture implements DependentFixtureInterface
             ->setCity($data['city'])
             ->setCountry($data['country'])
         ;
-        $student->getUser()->addRole(['ROLE_STUDENT']);
+        $student->getUser()->addRole('ROLE_STUDENT');
 
         return $student;
     }
