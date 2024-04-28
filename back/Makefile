@@ -28,6 +28,11 @@ db:
 	$(CONSOLE) doctrine:schema:update --force --complete
 	$(CONSOLE) doctrine:fixtures:load -n
 
+db-migrate:
+	$(CONSOLE) doctrine:database:drop --if-exists --force
+	$(CONSOLE) doctrine:database:create --if-not-exists
+	$(CONSOLE) doctrine:migrations:migrate -n
+
 perm:
 	sudo chown -R $(USER):$(USER) .
 	mkdir -p ./var ./public/
@@ -40,7 +45,6 @@ cc:
 
 php-linter:
 	sh -c "COMPOSE_INTERACTIVE_NO_CLI=1 $(BASH) vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php"
-	sh -c "COMPOSE_INTERACTIVE_NO_CLI=1 $(BASH) vendor/bin/php-cs-fixer fix -v --dry-run --config=.php-cs-fixer.php"
 
 preprod:
 	# Fetch updates

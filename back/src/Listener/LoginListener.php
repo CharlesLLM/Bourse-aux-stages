@@ -3,9 +3,8 @@
 namespace App\Listener;
 
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LoginListener
 {
@@ -18,9 +17,8 @@ class LoginListener
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_SUPERADMIN')) {
             throw new AccessDeniedException('Vous n\'avez pas la permission de vous connecter.');
         }
     }
 }
-
