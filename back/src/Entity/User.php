@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EnabledTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\GenderEnum;
 use App\Repository\UserRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use EnabledTrait;
     use TimestampableTrait;
 
     #[ORM\Id]
@@ -165,6 +167,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function addRole(string $role): static
+    {
+        $this->roles[] = $role;
+
+        return $this;
+    }
+
+    public function removeRole(string $role): static
+    {
+        $key = array_search($role, $this->roles, true);
+
+        if (false !== $key) {
+            unset($this->roles[$key]);
+        }
 
         return $this;
     }
