@@ -9,28 +9,28 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
+    public const array DATA = [
+        [
+            'lastName' => 'Doe',
+            'firstName' => 'John',
+            'gender' => GenderEnum::MALE,
+            'phone' => '0601020304',
+            'email' => 'johndoe@gmail.com',
+            'password' => 'john123',
+        ],
+        [
+            'lastName' => 'Doe',
+            'firstName' => 'Jane',
+            'gender' => GenderEnum::FEMALE,
+            'phone' => '0601020305',
+            'email' => 'janedoe@gmail.com',
+            'password' => 'jane456',
+        ],
+    ];
+
     public function load(ObjectManager $manager)
     {
-        $data = [
-            [
-                'lastName' => 'Doe',
-                'firstName' => 'John',
-                'gender' => GenderEnum::MALE,
-                'phone' => '0601020304',
-                'email' => 'johndoe@gmail.com',
-                'password' => 'john123',
-            ],
-            [
-                'lastName' => 'Doe',
-                'firstName' => 'Jane',
-                'gender' => GenderEnum::FEMALE,
-                'phone' => '0601020305',
-                'email' => 'janedoe@gmail.com',
-                'password' => 'jane456',
-            ],
-        ];
-
-        foreach ($data as $key => $item) {
+        foreach (self::DATA as $key => $item) {
             $user = $this->processUser($item);
             $manager->persist($user);
 
