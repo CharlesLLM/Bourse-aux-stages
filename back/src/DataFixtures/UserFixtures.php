@@ -46,9 +46,10 @@ class UserFixtures extends Fixture
             ->setPhone('0600000000')
             ->setEmail($_ENV['SUPERADMIN_EMAIL'])
             ->setRoles(['ROLE_SUPERADMIN'])
-            ->setPassword(password_hash('admin', \PASSWORD_BCRYPT))
             ->setEnabled(true)
         ;
+        $password = $_ENV['SUPERADMIN_PASSWORD'] ?? 'superadmin';
+        $user->setPassword(password_hash($password, \PASSWORD_BCRYPT));
 
         $manager->persist($user);
 
