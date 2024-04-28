@@ -18,6 +18,7 @@ class CompanyFixtures extends Fixture
             'country' => 'France',
             'xLink' => 'https://www.x.com/entreprise-parisienne',
             'linkedinLink' => 'https://www.linkedin.com/entreprise-parisienne',
+            'enabled' => true,
         ],
         [
             'name' => 'Entreprise lyonnaise',
@@ -62,6 +63,7 @@ class CompanyFixtures extends Fixture
             ->setCountry($data['country'])
             ->setXLink($data['xLink'] ?? null)
             ->setLinkedinLink($data['linkedinLink'] ?? null)
+            ->setEnabled($data['enabled'] ?? false)
         ;
 
         return $company;

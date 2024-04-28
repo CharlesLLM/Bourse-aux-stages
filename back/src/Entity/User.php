@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EnabledTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\GenderEnum;
 use App\Repository\UserRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use EnabledTrait;
     use TimestampableTrait;
 
     #[ORM\Id]

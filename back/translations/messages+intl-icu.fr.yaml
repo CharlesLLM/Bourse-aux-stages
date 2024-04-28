@@ -11,6 +11,7 @@ common.address: Adresse
 common.city: Ville
 common.postal_code: Code postal
 common.country: Pays
+common.enabled: Actif
 
 # User
 user.password: Mot de passe

@@ -46,7 +46,9 @@ class UserFixtures extends Fixture
             ->setPhone('0600000000')
             ->setEmail($_ENV['SUPERADMIN_EMAIL'])
             ->setRoles(['ROLE_SUPERADMIN'])
-            ->setPassword(password_hash('admin', \PASSWORD_BCRYPT));
+            ->setPassword(password_hash('admin', \PASSWORD_BCRYPT))
+            ->setEnabled(true)
+        ;
 
         $manager->persist($user);
 
@@ -62,7 +64,9 @@ class UserFixtures extends Fixture
             ->setPhone($data['phone'])
             ->setEmail($data['email'])
             ->setRoles(['ROLE_USER'])
-            ->setPassword(password_hash($data['password'], \PASSWORD_BCRYPT));
+            ->setPassword(\password_hash($data['password'], \PASSWORD_BCRYPT))
+            ->setEnabled(true)
+        ;
 
         return $user;
     }

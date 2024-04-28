@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Company;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CompanyCrudController extends AbstractCrudController
@@ -21,6 +21,7 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('siret', 'company.siret'),
             TextField::new('xLink', 'company.x_link'),
             TextField::new('linkedinLink', 'company.linkedin_link'),
+            BooleanField::new('enabled', 'common.enabled'),
         ];
     }
 }

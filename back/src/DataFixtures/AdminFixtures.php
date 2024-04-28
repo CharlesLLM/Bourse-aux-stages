@@ -14,6 +14,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
             'user' => 'user_2',
             'company' => 'company_1',
             'position' => 'PDG',
+            'enabled' => true,
         ],
     ];
 
@@ -36,6 +37,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         $admin->setPosition($data['position'])
             ->setUser($this->getReference($data['user']))
             ->setCompany($this->getReference($data['company']))
+            ->setEnabled($data['enabled'])
         ;
 
         return $admin;
