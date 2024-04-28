@@ -10,13 +10,13 @@ use Doctrine\ORM\Mapping\PrePersist;
 trait TimestampableTrait
 {
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected \DateTimeInterface $createdAt;
+    protected \DateTime $createdAt;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected \DateTimeInterface $updatedAt;
+    protected \DateTime $updatedAt;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    protected \DateTimeInterface $deletedAt;
+    protected \DateTime $deletedAt;
 
     public function getCreatedAt(): ?\DateTimeInterface
     {

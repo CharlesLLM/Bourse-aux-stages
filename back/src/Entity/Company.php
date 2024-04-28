@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\BlameableTrait;
 use App\Entity\Traits\LocatableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\CompanyRepository;
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Company
 {
+    use BlameableTrait;
     use LocatableTrait;
     use TimestampableTrait;
 
