@@ -1,0 +1,24 @@
+services:
+  db:
+    image: mariadb:10.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bourse_aux_stages
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+
+  app:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+      network: host
+    volumes:
+      - "./:/app"
+    restart: always
+    depends_on:
+      - "db"
+    networks:
+      default:
+        aliases:
+          - bourseauxstages.local

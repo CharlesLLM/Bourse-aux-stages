@@ -1,0 +1,81 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request: ~
+  workflow_dispatch: ~
+
+env:
+  APP_ENV: test
+  COMPOSE: docker compose -f docker-compose.yml -f docker-compose-ci.yml
+  EXEC: docker compose -f docker-compose.yml -f docker-compose-ci.yml exec -T app
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v4
+      - 
+        name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+      - 
+        name: SET composer cache directory
+        run: echo "COMPOSER_CACHE_DIR=$(composer config cache-files-dir)" >> $GITHUB_ENV
+      - 
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      -
+        name: Install PHP dependencies
+        run: composer install --prefer-dist
+      -
+        name: Lint php
+        run: vendor/bin/php-cs-fixer fix -v --dry-run --config=.php-cs-fixer.dist.php
+      -
+        name: Pull docker images
+        run: ${COMPOSE} pull
+      -
+        name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.1.0
+      -
+        name: Execute Docker-compose
+        run: ${COMPOSE} up -d
+      -
+        name: Patch bad permissions
+        run: |
+          sudo chown -R www-data:$USER .
+          sudo chmod -R g+rwx .
+        name: Start services
+        run: docker compose up --wait --no-build
+      -
+        name: Check HTTP reachability
+        run: curl -v --fail-with-body http://localhost
+      -
+        name: Check HTTPS reachability
+        if: false # Remove this line when the homepage will be configured, or change the path to check
+        run: curl -vk --fail-with-body https://localhost
+      -
+        name: Create test database
+        if: false # Remove this line if Doctrine ORM is installed
+        run: docker compose exec -T php bin/console -e test doctrine:database:create
+      -
+        name: Run migrations
+        if: false # Remove this line if Doctrine Migrations is installed
+        run: docker compose exec -T php bin/console -e test doctrine:migrations:migrate --no-interaction
+      -
+        name: Doctrine Schema Validator
+        if: false # Remove this line if Doctrine ORM is installed
+        run: docker compose exec -T php bin/console -e test doctrine:schema:validate

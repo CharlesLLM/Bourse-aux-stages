@@ -1,6 +1,6 @@
 import React from "react";
 
-function FeaturedCompagny() {
+function FeaturedCompany() {
 
   const data = [
     '../../public/placeholder.webp',
@@ -14,12 +14,12 @@ function FeaturedCompagny() {
     <div>
       <p className="text-grey">Entreprises à la une</p>
       <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-5 gap-8">
-        {data.map((compagnyLogo) => (
-          <img src={compagnyLogo} alt="compagnyLogo" />
+        {data.map((companyLogo) => (
+          <img src={companyLogo} alt="companyLogo" />
         ))}
       </div>
     </div>
   )
 }
 
-export default FeaturedCompagny;
+export default FeaturedCompany;

@@ -1,0 +1,25 @@
+# Common
+common.name: Nom
+common.first_name: Prénom
+common.last_name: Nom
+common.email: Adresse mail
+common.password: Mot de passe
+common.user: Utilisateur
+common.company: Société
+common.phone: Téléphone
+common.address: Adresse
+common.city: Ville
+common.postal_code: Code postal
+common.country: Pays
+common.enabled: Actif
+
+# User
+user.password: Mot de passe
+
+# Admin
+admin.position: Poste
+
+# Company
+company.siret: Siret
+company.x_link: Lien X (Twitter)
+company.linkedin_link: Lien LikedIn
