@@ -41,7 +41,7 @@ class StudentFixtures extends Fixture implements DependentFixtureInterface
             ->setCity($data['city'])
             ->setCountry($data['country'])
         ;
-        $student->getUser()->addRole(['ROLE_STUDENT']);
+        $student->getUser()->addRole('ROLE_STUDENT');
 
         return $student;
     }
