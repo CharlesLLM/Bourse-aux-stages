@@ -39,6 +39,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
             ->setCompany($this->getReference($data['company']))
             ->setEnabled($data['enabled'])
         ;
+        $admin->getUser()->addRole(['ROLE_ADMIN']);
 
         return $admin;
     }
