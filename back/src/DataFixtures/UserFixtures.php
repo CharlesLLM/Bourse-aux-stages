@@ -35,7 +35,7 @@ class UserFixtures extends Fixture
             $manager->persist($user);
 
             ++$key;
-            $this->addReference('user_' . $key, $user);
+            $this->addReference('user_'.$key, $user);
         }
 
         // Superadmin
@@ -62,7 +62,7 @@ class UserFixtures extends Fixture
             ->setPhone($data['phone'])
             ->setEmail($data['email'])
             ->setRoles(['ROLE_USER'])
-            ->setPassword(\password_hash($data['password'], \PASSWORD_BCRYPT));
+            ->setPassword(password_hash($data['password'], \PASSWORD_BCRYPT));
 
         return $user;
     }

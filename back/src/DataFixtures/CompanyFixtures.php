@@ -45,7 +45,7 @@ class CompanyFixtures extends Fixture
             $manager->persist($company);
 
             ++$key;
-            $this->addReference('company_' . $key, $company);
+            $this->addReference('company_'.$key, $company);
         }
 
         $manager->flush();

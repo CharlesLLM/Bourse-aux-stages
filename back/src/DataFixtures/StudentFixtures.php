@@ -26,7 +26,7 @@ class StudentFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($student);
 
             ++$key;
-            $this->addReference('student_' . $key, $student);
+            $this->addReference('student_'.$key, $student);
         }
 
         $manager->flush();
