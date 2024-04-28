@@ -50,11 +50,11 @@ preprod:
 	# Fetch updates
 	git pull origin master
 	# Clear cache
-	php8.3 bin/console c:cl --no-warmup
-	php8.3 bin/console c:warmup
+	php8.2 bin/console c:cl --no-warmup
+	php8.2 bin/console c:warmup
 	# Install dependencies
-	php8.3 /usr/local/bin/composer install --classmap-authoritative --no-interaction --no-scripts --no-ansi --no-dev
-	php8.3 bin/console c:cl --no-warmup
-	php8.3 bin/console c:warmup
+	php8.2 /usr/local/bin/composer install --classmap-authoritative --no-interaction --no-scripts --no-ansi --no-dev
+	php8.2 bin/console c:cl --no-warmup
+	php8.2 bin/console c:warmup
 	# Update Database
-	php8.3 bin/console doctrine:schema:update --force
+	php8.2 bin/console doctrine:schema:update --force

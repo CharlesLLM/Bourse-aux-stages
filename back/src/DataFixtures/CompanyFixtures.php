@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class CompanyFixtures extends Fixture
 {
-    public const array DATA = [
+    public const DATA = [
         [
             'name' => 'Entreprise parisienne',
             'siret' => '12345678901234',

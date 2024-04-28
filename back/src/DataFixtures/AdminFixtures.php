@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class AdminFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const array DATA = [
+    public const DATA = [
         [
             'user' => 'user_2',
             'company' => 'company_1',

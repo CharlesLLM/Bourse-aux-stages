@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class UserFixtures extends Fixture
 {
-    public const array DATA = [
+    public const DATA = [
         [
             'lastName' => 'Doe',
             'firstName' => 'John',
