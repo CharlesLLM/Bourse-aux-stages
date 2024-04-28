@@ -182,7 +182,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $key = array_search($role, $this->roles, true);
 
-        if ($key !== false) {
+        if (false !== $key) {
             unset($this->roles[$key]);
         }
 
