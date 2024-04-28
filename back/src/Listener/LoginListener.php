@@ -17,7 +17,7 @@ class LoginListener
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
     {
-        if (!$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
+        if (!$this->authorizationChecker->isGranted('ROLE_SUPERADMIN')) {
             throw new AccessDeniedException('Vous n\'avez pas la permission de vous connecter.');
         }
     }
