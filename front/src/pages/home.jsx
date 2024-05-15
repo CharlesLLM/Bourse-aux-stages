@@ -8,11 +8,12 @@ import LastRequests from "../components/home/lastRequests.jsx";
 function Home() {
   return (
     <Layout>
-      <div>
-        <p className="underline">hello</p>
-        < Searchbar />
-        < FeaturedCompany />
-        <WorkSector />
+      <div className="space-y-16 flex flex-col items-center">
+        <Landing />
+        <TopCompanies />
+        <CompanyCTA />
+        <LastOffers />
+        <LastRequests />
       </div>
     </Layout>
   )
