@@ -1,4 +1,3 @@
-import React from 'react'
 import Landing from "../components/home/landing.jsx";
 import TopCompanies from "../components/home/topCompanies.jsx";
 import CompanyCTA from "../components/home/companyCTA.jsx";
