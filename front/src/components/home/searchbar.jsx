@@ -1,0 +1,43 @@
+import { Combobox } from "react-widgets";
+import {useEffect, useState} from "react";
+
+function Searchbar() {
+    const [cities, setCities] = useState([]);
+
+    useEffect(() => {
+        try {
+            fetch(`https://geo.api.gouv.fr/communes?fields=nom,code,codesPostaux&limit=10`).then(res =>res.json().then(a =>setCities(a)))
+        } catch(error) {
+            console.log("Erreur: " + error);
+        }
+    }, []);
+
+    return (
+        <div className="flex flex-col md:flex-row gap-5 bg-white px-4 py-2 w-full lg:w-max items-center flex-wrap lg:flex-nowrap">
+            <div className="flex flex-row gap-2 items-start w-full">
+                <div>icon</div>
+                <input name="search" className="border-b-2 border-slate-700 text-grey h-8 w-full md:min-w-48" placeholder="Saisissez un mot clé..." />
+            </div>
+
+            <div className="flex flex-row gap-2 items-start w-full">
+                <div>icon</div>
+                {cities.length === 0 ? (
+                    <Combobox busy placeholder="Chargement..." />
+                ) : (
+                    <Combobox
+                        data={cities}
+                        dataKey="code"
+                        textField="nom"
+                        placeholder="Sélectionner une ville"
+                        filter='contains'
+                        className='w-full'
+                    />
+                )}
+            </div> 
+            
+            <button className="bg-primary px-6 py-2 text-white w-full">Rechercher</button>
+        </div>
+    );
+}
+
+export default Searchbar;
