@@ -1,7 +1,8 @@
 import React from "react";
-import Searchbar from '../home/searchbar.jsx';
-import DataOffers from '../home/dataOffers.jsx';
-import '../utils/underline.css'
+import DataOffers from './dataOffers.jsx';
+import Searchbar from './searchbar.jsx';
+import '../utils/underline.css';
+import './landing.css';
 
 
 
@@ -14,8 +15,8 @@ function Landing() {
                     <h1 className="font-extrabold text-4xl md:text-5xl lg:text-7xl"> Trouver un stage n'aura jamais été <span className="text-secondary custom-underline">aussi facile!</span></h1>
                     <p className="text-[#25324B] mt-12"> Trouvez les offres de stage ou d'alternance près de chez vous qui correspondent à votre profil et à vos attentes.</p>
                 </div>
-                < Searchbar />
-                < DataOffers />
+                <Searchbar />
+                <DataOffers />
             </div>
             <img src="images/landingMan.png" className="absolute w-[500px] ml-[600px] z-20" />
             <img src="images/whiteRectangle.svg" className="absolute w-[250px] md:w-[360px] right-0 bottom-0 z-30" />
