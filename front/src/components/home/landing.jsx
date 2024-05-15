@@ -4,8 +4,6 @@ import Searchbar from './searchbar.jsx';
 import '../utils/underline.css';
 import './landing.css';
 
-
-
 function Landing() {
   return (
     <div className="bg-[#F8F8FD] relative overflow-hidden">
