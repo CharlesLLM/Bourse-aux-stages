@@ -1,4 +1,9 @@
 import React from "react";
+import { FaFacebookF } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa6";
+import { FaDribbble } from "react-icons/fa";
+import { FaLinkedinIn } from "react-icons/fa";
+import { FaTwitter } from "react-icons/fa";
 
 function Footer(){
   return (
@@ -41,13 +46,12 @@ function Footer(){
         <div className="text-white opacity-30">
           2024 @  Bourse aux Stages • Tous droits réservés
         </div>
-        <div className="flex flex-row flex-nowrap gap-2">
-          <span>icon</span>
-          <span>icon</span>
-          <span>icon</span>
-          <span>icon</span>
-          <span>icon</span>
-          <span>icon</span>
+        <div className="flex flex-row flex-nowrap gap-2 text-white hover:cursor-pointer">
+          <span className="bg-[#2d313d] rounded-full h-8 w-8 flex justify-center items-center"><FaFacebookF/></span>
+          <span className="bg-[#2d313d] rounded-full h-8 w-8 flex justify-center items-center"><FaInstagram/></span>
+          <span className="bg-[#2d313d] rounded-full h-8 w-8 flex justify-center items-center"><FaDribbble/></span>
+          <span className="bg-[#2d313d] rounded-full h-8 w-8 flex justify-center items-center"><FaTwitter/></span>
+          <span className="bg-[#2d313d] rounded-full h-8 w-8 flex justify-center items-center"><FaLinkedinIn/></span>
         </div>
       </div>
     </div>
