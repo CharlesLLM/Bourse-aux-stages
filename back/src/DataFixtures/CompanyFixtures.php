@@ -13,7 +13,7 @@ class CompanyFixtures extends Fixture
     public const DATA = [
         [
             'name' => 'Entreprise parisienne',
-            'siret' => '12345678901234',
+            'siret' => '123 456 789 01234',
             'address' => 'Place Charles de Gaulle',
             'postalCode' => '75008',
             'city' => 'Paris',
@@ -24,7 +24,7 @@ class CompanyFixtures extends Fixture
         ],
         [
             'name' => 'Entreprise lyonnaise',
-            'siret' => '00000000000000',
+            'siret' => '000 000 000 00000',
             'address' => '1 Place de la Comédie',
             'postalCode' => '69001',
             'city' => 'Lyon',
@@ -32,7 +32,7 @@ class CompanyFixtures extends Fixture
         ],
         [
             'name' => 'Entreprise marseillaise',
-            'siret' => '98765432109876',
+            'siret' => '987 654 321 09876',
             'address' => '3 Boulevard Michelet',
             'postalCode' => '13008',
             'city' => 'Marseille',
