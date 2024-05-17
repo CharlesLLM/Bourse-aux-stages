@@ -1,5 +1,7 @@
 import { Combobox } from "react-widgets";
 import {useEffect, useState} from "react";
+import { HiMagnifyingGlass } from "react-icons/hi2";
+import { LuMapPin } from "react-icons/lu";
 
 function Searchbar() {
     const [cities, setCities] = useState([]);
@@ -15,12 +17,12 @@ function Searchbar() {
     return (
         <div className="flex flex-col md:flex-row gap-5 bg-white px-4 py-2 w-full lg:w-max items-center flex-wrap lg:flex-nowrap">
             <div className="flex flex-row gap-2 items-start w-full">
-                <div>icon</div>
+                <div ><HiMagnifyingGlass className="w-6 h-6 mt-1" /></div>
                 <input name="search" className="border-b-2 border-slate-700 text-grey h-8 w-full md:min-w-48" placeholder="Saisissez un mot clé..." />
             </div>
 
             <div className="flex flex-row gap-2 items-start w-full">
-                <div>icon</div>
+                <div>< LuMapPin className="w-6 h-6 mt-2" /></div>
                 {cities.length === 0 ? (
                     <Combobox busy placeholder="Chargement..." />
                 ) : (
