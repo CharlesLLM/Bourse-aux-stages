@@ -4,6 +4,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Company;
 use App\Repository\CompanyRepository;
+use Faker\Factory;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -36,6 +37,8 @@ final class CompanyFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $faker = Factory::create('fr_FR');
+
         return [
             'address' => self::faker()->text(255),
             'city' => self::faker()->text(50),
@@ -43,7 +46,7 @@ final class CompanyFactory extends ModelFactory
             'enabled' => self::faker()->boolean(),
             'name' => self::faker()->text(255),
             'postalCode' => self::faker()->text(15),
-            'siret' => self::faker()->text(15),
+            'siret' => $faker->siret(),
         ];
     }
 
