@@ -60,4 +60,10 @@ trait TimestampableTrait
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
 }

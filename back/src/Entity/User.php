@@ -30,24 +30,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotNull]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotNull]
     private ?string $lastName = null;
 
     #[ORM\Column(enumType: GenderEnum::class, length: 10)]
-    #[Assert\NotBlank()]
+    #[Assert\NotNull]
     private ?GenderEnum $gender = null;
 
     #[ORM\Column(length: 180)]
-    #[Assert\NotBlank()]
-    #[Assert\Email()]
+    #[Assert\NotNull]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(length: 20)]
-    #[Assert\NotBlank()]
+    #[Assert\NotNull]
     private ?string $phone = null;
 
     #[ORM\Column]
