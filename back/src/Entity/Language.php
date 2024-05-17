@@ -30,7 +30,7 @@ class Language
     #[Assert\NotNull]
     private ?string $code = null;
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
