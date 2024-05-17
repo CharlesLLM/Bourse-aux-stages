@@ -9,6 +9,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class StudentFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const REFERENCE_IDENTIFIER = 'student_';
+    public const FIXTURE_RANGE = 1;
     public const DATA = [
         [
             'user' => 'user_1',
@@ -26,7 +28,7 @@ class StudentFixtures extends Fixture implements DependentFixtureInterface
             $manager->persist($student);
 
             ++$key;
-            $this->addReference('student_'.$key, $student);
+            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $student);
         }
 
         $manager->flush();
