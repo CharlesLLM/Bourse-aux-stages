@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\OfferTypeEnum;
+use App\Enum\PromoteStatusEnum;
 use App\Repository\OfferRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -38,8 +39,9 @@ class Offer
     #[Assert\NotNull]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private bool $promote;
+    #[ORM\Column(enumType: PromoteStatusEnum::class, length: 10)]
+    #[Assert\NotNull]
+    private ?PromoteStatusEnum $promoteStatus = null;
 
     #[ORM\Column]
     #[Assert\NotNull]
@@ -96,14 +98,14 @@ class Offer
         return $this;
     }
 
-    public function isPromote(): bool
+    public function isPromoteStatus(): PromoteStatusEnum
     {
-        return $this->promote;
+        return $this->promoteStatus;
     }
 
-    public function setPromote(bool $promote): static
+    public function setPromoteStatus(PromoteStatusEnum $promoteStatus): static
     {
-        $this->promote = $promote;
+        $this->promoteStatus = $promoteStatus;
 
         return $this;
     }
