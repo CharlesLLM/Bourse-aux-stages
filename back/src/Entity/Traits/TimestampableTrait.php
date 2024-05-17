@@ -3,7 +3,6 @@
 namespace App\Entity\Traits;
 
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\PrePersist;
 
@@ -55,7 +54,7 @@ trait TimestampableTrait
     }
 
     #[PrePersist]
-    public function prePersist(PrePersistEventArgs $eventArgs)
+    public function prePersist()
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();

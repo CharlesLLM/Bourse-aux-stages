@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Offer
 {
     use DateableTrait;
@@ -34,17 +35,17 @@ class Offer
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $promote = null;
+    private bool $promote;
 
     #[ORM\Column]
     #[Assert\NotNull]
     private ?float $revenue = null;
 
     #[ORM\Column]
-    private ?bool $remote = null;
+    private bool $remote;
 
     #[ORM\Column]
-    private ?bool $availablePlace = null;
+    private bool $availablePlace;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -91,7 +92,7 @@ class Offer
         return $this;
     }
 
-    public function isPromote(): ?bool
+    public function isPromote(): bool
     {
         return $this->promote;
     }
@@ -115,7 +116,7 @@ class Offer
         return $this;
     }
 
-    public function isRemote(): ?bool
+    public function isRemote(): bool
     {
         return $this->remote;
     }
@@ -127,7 +128,7 @@ class Offer
         return $this;
     }
 
-    public function isAvailablePlace(): ?bool
+    public function isAvailablePlace(): bool
     {
         return $this->availablePlace;
     }
