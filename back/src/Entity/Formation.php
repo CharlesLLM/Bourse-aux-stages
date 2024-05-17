@@ -6,7 +6,6 @@ use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\LevelEnum;
 use App\Repository\FormationRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,6 +29,7 @@ class Formation
     private ?string $schoolName = null;
 
     #[ORM\Column(enumType: LevelEnum::class, length: 20)]
+    #[Assert\NotNull]
     private ?LevelEnum $level = null;
 
     #[ORM\ManyToOne(inversedBy: 'formations')]
