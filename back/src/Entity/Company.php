@@ -34,7 +34,7 @@ class Company
     #[Assert\NotBlank()]
     private ?string $name = null;
 
-    #[ORM\Column(length: 15)]
+    #[ORM\Column(length: 20)]
     #[Assert\NotBlank()]
     private ?string $siret = null;
 
