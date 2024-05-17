@@ -30,7 +30,7 @@ class Offer
     #[Assert\NotNull]
     private ?string $name = null;
 
-    #[ORM\Column(enumType: OfferTypeEnum::class, length: 10)]
+    #[ORM\Column(enumType: OfferTypeEnum::class, length: 20)]
     #[Assert\NotNull]
     private ?OfferTypeEnum $type = null;
 
