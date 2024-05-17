@@ -8,6 +8,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class CompanyFixtures extends Fixture
 {
+    public const REFERENCE_IDENTIFIER = 'company_';
+    public const FIXTURE_RANGE = 3;
     public const DATA = [
         [
             'name' => 'Entreprise parisienne',
@@ -46,7 +48,7 @@ class CompanyFixtures extends Fixture
             $manager->persist($company);
 
             ++$key;
-            $this->addReference('company_'.$key, $company);
+            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $company);
         }
 
         $manager->flush();

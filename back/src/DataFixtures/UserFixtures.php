@@ -5,10 +5,13 @@ namespace App\DataFixtures;
 use App\Entity\User;
 use App\Enum\GenderEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
+    public const REFERENCE_IDENTIFIER = 'user_';
+    public const FIXTURE_RANGE = 2;
     public const DATA = [
         [
             'lastName' => 'Doe',
@@ -35,7 +38,7 @@ class UserFixtures extends Fixture
             $manager->persist($user);
 
             ++$key;
-            $this->addReference('user_'.$key, $user);
+            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $user);
         }
 
         // Superadmin
@@ -46,6 +49,7 @@ class UserFixtures extends Fixture
             ->setPhone('0600000000')
             ->setEmail($_ENV['SUPERADMIN_EMAIL'])
             ->setRoles(['ROLE_SUPERADMIN'])
+            ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
             ->setEnabled(true)
         ;
         $password = $_ENV['SUPERADMIN_PASSWORD'] ?? 'superadmin';
@@ -66,9 +70,17 @@ class UserFixtures extends Fixture
             ->setEmail($data['email'])
             ->setRoles(['ROLE_USER'])
             ->setPassword(password_hash($data['password'], \PASSWORD_BCRYPT))
+            ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
             ->setEnabled(true)
         ;
 
         return $user;
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            LanguageFixtures::class,
+        ];
     }
 }
