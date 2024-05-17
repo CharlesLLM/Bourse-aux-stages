@@ -47,9 +47,21 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
 
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
+    private Collection $offers;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class)]
+    private Collection $applications;
+
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: SpontaneousApplication::class)]
+    private Collection $spontaneousApplications;
+
     public function __construct()
     {
         $this->admins = new ArrayCollection();
+        $this->offers = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+        $this->spontaneousApplications = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -105,9 +117,6 @@ class Company
         return $this;
     }
 
-    /**
-     * @return Collection<int, Admin>
-     */
     public function getAdmins(): Collection
     {
         return $this->admins;
@@ -126,9 +135,86 @@ class Company
     public function removeAdmin(Admin $admin): static
     {
         if ($this->admins->removeElement($admin)) {
-            // set the owning side to null (unless already changed)
             if ($admin->getCompany() === $this) {
                 $admin->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): static
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers->add($offer);
+            $offer->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): static
+    {
+        if ($this->offers->removeElement($offer)) {
+            if ($offer->getCompany() === $this) {
+                $offer->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(Application $application): static
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications->add($application);
+            $application->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(Application $application): static
+    {
+        if ($this->applications->removeElement($application)) {
+            if ($application->getCompany() === $this) {
+                $application->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSpontaneousApplications(): Collection
+    {
+        return $this->spontaneousApplications;
+    }
+
+    public function addSpontaneousApplication(SpontaneousApplication $spontaneousApplication): static
+    {
+        if (!$this->spontaneousApplications->contains($spontaneousApplication)) {
+            $this->spontaneousApplications->add($spontaneousApplication);
+            $spontaneousApplication->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpontaneousApplication(SpontaneousApplication $spontaneousApplication): static
+    {
+        if ($this->spontaneousApplications->removeElement($spontaneousApplication)) {
+            if ($spontaneousApplication->getCompany() === $this) {
+                $spontaneousApplication->setCompany(null);
             }
         }
 

@@ -39,12 +39,20 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Formation::class, orphanRemoval: true)]
     private Collection $formations;
 
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Application::class)]
+    private Collection $applications;
+
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: SpontaneousApplication::class)]
+    private Collection $spontaneousApplications;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
         $this->skills = new ArrayCollection();
         $this->hobbies = new ArrayCollection();
         $this->formations = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+        $this->spontaneousApplications = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -162,6 +170,58 @@ class Student
         if ($this->formations->removeElement($formation)) {
             if ($formation->getStudent() === $this) {
                 $formation->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(Application $application): static
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications->add($application);
+            $application->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(Application $application): static
+    {
+        if ($this->applications->removeElement($application)) {
+            if ($application->getStudent() === $this) {
+                $application->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSpontaneousApplications(): Collection
+    {
+        return $this->spontaneousApplications;
+    }
+
+    public function addSpontaneousApplication(SpontaneousApplication $spontaneousApplication): static
+    {
+        if (!$this->spontaneousApplications->contains($spontaneousApplication)) {
+            $this->spontaneousApplications->add($spontaneousApplication);
+            $spontaneousApplication->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSpontaneousApplication(SpontaneousApplication $spontaneousApplication): static
+    {
+        if ($this->spontaneousApplications->removeElement($spontaneousApplication)) {
+            if ($spontaneousApplication->getStudent() === $this) {
+                $spontaneousApplication->setStudent(null);
             }
         }
 
