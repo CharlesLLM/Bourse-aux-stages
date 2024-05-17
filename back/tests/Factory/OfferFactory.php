@@ -4,6 +4,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Offer;
 use App\Enum\OfferTypeEnum;
+use App\Enum\PromoteStatusEnum;
 use App\Repository\OfferRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -42,7 +43,7 @@ final class OfferFactory extends ModelFactory
             'company' => CompanyFactory::new(),
             'description' => self::faker()->text(),
             'name' => self::faker()->text(255),
-            'promote' => self::faker()->boolean(),
+            'promoteStatus' => self::faker()->randomElement(PromoteStatusEnum::cases()),
             'remote' => self::faker()->boolean(),
             'revenue' => self::faker()->randomFloat(),
             'type' => self::faker()->randomElement(OfferTypeEnum::cases()),
