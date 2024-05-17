@@ -41,21 +41,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference(self::REFERENCE_IDENTIFIER.$key, $user);
         }
 
-        // Superadmin
-        $user = new User();
-        $user->setLastName('superadmin')
-            ->setFirstName('superadmin')
-            ->setGender(GenderEnum::OTHER)
-            ->setPhone('0600000000')
-            ->setEmail($_ENV['SUPERADMIN_EMAIL'])
-            ->setRoles(['ROLE_SUPERADMIN'])
-            ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
-            ->setEnabled(true)
-        ;
-        $password = $_ENV['SUPERADMIN_PASSWORD'] ?? 'superadmin';
-        $user->setPassword(password_hash($password, \PASSWORD_BCRYPT));
-
-        $manager->persist($user);
+        $superadmin = $this->processSuperadmin();
+        $manager->persist($superadmin);
 
         $manager->flush();
     }
@@ -73,6 +60,24 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
             ->setEnabled(true)
         ;
+
+        return $user;
+    }
+
+    public function processSuperadmin(): User
+    {
+        $user = new User();
+        $user->setLastName('superadmin')
+            ->setFirstName('superadmin')
+            ->setGender(GenderEnum::OTHER)
+            ->setPhone('0600000000')
+            ->setEmail($_ENV['SUPERADMIN_EMAIL'])
+            ->setRoles(['ROLE_SUPERADMIN'])
+            ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
+            ->setEnabled(true)
+        ;
+        $password = $_ENV['SUPERADMIN_PASSWORD'] ?? 'superadmin';
+        $user->setPassword(password_hash($password, \PASSWORD_BCRYPT));
 
         return $user;
     }
