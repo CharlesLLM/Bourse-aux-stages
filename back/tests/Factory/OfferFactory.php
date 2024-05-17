@@ -38,7 +38,7 @@ final class OfferFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'availablePlace' => self::faker()->boolean(),
+            'availablePlaces' => self::faker()->numberBetween(0, 100),
             'company' => CompanyFactory::new(),
             'description' => self::faker()->text(),
             'name' => self::faker()->text(255),

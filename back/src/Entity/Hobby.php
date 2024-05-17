@@ -32,7 +32,7 @@ class Hobby
     #[ORM\JoinColumn(nullable: false)]
     private ?Student $student = null;
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

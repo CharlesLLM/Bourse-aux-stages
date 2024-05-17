@@ -49,13 +49,13 @@ class Offer
     private bool $remote;
 
     #[ORM\Column]
-    private bool $availablePlace;
+    private ?int $availablePlaces = null;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -132,14 +132,14 @@ class Offer
         return $this;
     }
 
-    public function isAvailablePlace(): bool
+    public function getAvailablePlaces(): ?int
     {
-        return $this->availablePlace;
+        return $this->availablePlaces;
     }
 
-    public function setAvailablePlace(bool $availablePlace): static
+    public function setAvailablePlaces(int $availablePlaces): static
     {
-        $this->availablePlace = $availablePlace;
+        $this->availablePlaces = $availablePlaces;
 
         return $this;
     }

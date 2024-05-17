@@ -39,7 +39,7 @@ class Application
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
