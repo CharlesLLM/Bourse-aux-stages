@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\OfferTypeEnum;
@@ -16,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class Offer
 {
     use DateableTrait;

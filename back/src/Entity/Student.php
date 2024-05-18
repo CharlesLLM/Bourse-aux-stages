@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\LocatableTrait;
 use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,6 +14,7 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class Student
 {
     use LocatableTrait;

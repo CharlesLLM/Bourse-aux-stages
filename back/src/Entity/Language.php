@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\LanguageRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class Language
 {
     use TimestampableTrait;

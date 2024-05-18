@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\BlameableTrait;
 use App\Entity\Traits\EnabledTrait;
 use App\Entity\Traits\LocatableTrait;
@@ -17,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class Company
 {
     use BlameableTrait;
