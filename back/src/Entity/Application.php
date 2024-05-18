@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\ApplicationStatusEnum;
 use App\Repository\ApplicationRepository;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class Application
 {
     use TimestampableTrait;

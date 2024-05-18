@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\HobbyRepository;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: HobbyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class Hobby
 {
     use DateableTrait;

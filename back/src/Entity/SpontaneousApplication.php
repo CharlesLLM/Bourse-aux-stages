@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\ApplicationStatusEnum;
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SpontaneousApplicationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource]
 class SpontaneousApplication
 {
     use DateableTrait;
