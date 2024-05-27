@@ -14,7 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SkillRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Skill
 {
     use DateableTrait;

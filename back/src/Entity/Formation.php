@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Formation
 {
     use DateableTrait;

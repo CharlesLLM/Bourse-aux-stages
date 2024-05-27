@@ -14,7 +14,6 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Student
 {
     use LocatableTrait;

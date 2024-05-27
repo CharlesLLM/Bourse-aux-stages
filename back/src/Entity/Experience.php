@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ExperienceRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Experience
 {
     use DateableTrait;

@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Company
 {
     use BlameableTrait;

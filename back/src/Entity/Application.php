@@ -15,7 +15,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Application
 {
     use TimestampableTrait;
