@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LanguageRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class Language
 {
     use TimestampableTrait;

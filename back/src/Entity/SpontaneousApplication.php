@@ -16,7 +16,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SpontaneousApplicationRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[ApiResource]
 class SpontaneousApplication
 {
     use DateableTrait;
