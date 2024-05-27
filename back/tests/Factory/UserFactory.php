@@ -5,6 +5,7 @@ namespace App\Tests\Factory;
 use App\Entity\User;
 use App\Enum\GenderEnum;
 use App\Repository\UserRepository;
+use Faker\Factory;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -37,15 +38,17 @@ final class UserFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $faker = Factory::create('fr_FR');
         return [
-            'email' => self::faker()->text(180),
-            'enabled' => self::faker()->boolean(),
-            'firstName' => self::faker()->text(50),
-            'gender' => self::faker()->randomElement(GenderEnum::cases()),
+            'email' => $faker->unique()->safeEmail(),
+            'firstName' => $faker->firstName(),
+            'lastName' => $faker->lastName(),
+            'phone' => $faker->phoneNumber(),
+            'enabled' => $faker->boolean(),
+            'gender' => $faker->randomElement(GenderEnum::cases()),
             'language' => LanguageFactory::new(),
-            'lastName' => self::faker()->text(255),
-            'password' => self::faker()->text(255),
-            'phone' => self::faker()->text(20),
+            'password' => $faker->text(255),
+            'birthDate' => $faker->dateTimeBetween('-50 years', '-18 years'),
             'roles' => [],
         ];
     }

@@ -36,7 +36,7 @@ class Offer
     #[Groups(['offer'])]
     private ?string $name = null;
 
-    #[ORM\Column(enumType: OfferTypeEnum::class, length: 20)]
+    #[ORM\Column(length: 20, enumType: OfferTypeEnum::class)]
     #[Assert\NotNull]
     #[Groups(['offer'])]
     private ?OfferTypeEnum $type = null;

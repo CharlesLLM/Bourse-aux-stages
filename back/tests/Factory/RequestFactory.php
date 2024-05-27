@@ -3,9 +3,9 @@
 namespace App\Tests\Factory;
 
 use App\Entity\Offer;
+use App\Entity\Request;
 use App\Enum\OffersNameEnum;
 use App\Enum\OfferTypeEnum;
-use App\Enum\PromoteStatusEnum;
 use App\Repository\OfferRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
@@ -30,7 +30,8 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Offer[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Offer[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class OfferFactory extends ModelFactory
+
+final class RequestFactory  extends ModelFactory
 {
     public function __construct()
     {
@@ -41,14 +42,12 @@ final class OfferFactory extends ModelFactory
     {
 
         return [
-            'availablePlaces' => self::faker()->numberBetween(0, 100),
-            'company' => CompanyFactory::new(),
-            'description' => self::faker()->text(),
+            'student' => StudentFactory::new(),
+            'description' => self::faker()->text(255),
             'name' => self::faker()->randomElement(OffersNameEnum::cases())->value,
-            'promoteStatus' => self::faker()->randomElement(PromoteStatusEnum::cases()),
-            'remote' => self::faker()->boolean(),
-            'revenue' => self::faker()->randomFloat(),
             'type' => self::faker()->randomElement(OfferTypeEnum::cases()),
+            'startDate' => self::faker()->dateTimeBetween('+30 days', '+60 days'),
+            'endDate' => self::faker()->dateTimeBetween('+90 days', '+120 days'),
         ];
     }
 
@@ -59,6 +58,7 @@ final class OfferFactory extends ModelFactory
 
     protected static function getClass(): string
     {
-        return Offer::class;
+        return Request::class;
     }
+
 }

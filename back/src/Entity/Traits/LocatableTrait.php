@@ -3,22 +3,27 @@
 namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait LocatableTrait
 {
     #[ORM\Column(length: 255)]
+    #[Groups(['offer', 'student'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $additionalAddress = null;
 
     #[ORM\Column(length: 15)]
+    #[Groups(['offer', 'student', 'request'])]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['offer', 'student', 'request'])]
     private ?string $city = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 100)]
+    #[Groups(['offer', 'student', 'request'])]
     private ?string $country = null;
 
     public function getAddress(): ?string

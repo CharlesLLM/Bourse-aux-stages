@@ -40,12 +40,12 @@ final class CompanyFactory extends ModelFactory
         $faker = Factory::create('fr_FR');
 
         return [
-            'address' => self::faker()->text(255),
-            'city' => self::faker()->text(50),
-            'country' => self::faker()->text(30),
-            'enabled' => self::faker()->boolean(),
-            'name' => self::faker()->text(255),
-            'postalCode' => self::faker()->text(15),
+            'address' => $faker->address(),
+            'city' => $faker->city(),
+            'country' => 'France',
+            'enabled' => $faker->boolean(),
+            'name' => $faker->company(),
+            'postalCode' => $faker->postcode(),
             'siret' => $faker->siret(),
         ];
     }

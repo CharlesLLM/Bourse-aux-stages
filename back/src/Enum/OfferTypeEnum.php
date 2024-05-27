@@ -4,6 +4,6 @@ namespace App\Enum;
 
 enum OfferTypeEnum: string
 {
-    case INTERNSHIP = 'internship';
-    case APPRENTICESHIP = 'apprenticeship';
+    case INTERNSHIP = 'stage';
+    case APPRENTICESHIP = 'alternance';
 }
