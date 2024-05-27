@@ -9,6 +9,9 @@ trait LocatableTrait
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $additionalAddress = null;
+
     #[ORM\Column(length: 15)]
     private ?string $postalCode = null;
 
@@ -26,6 +29,18 @@ trait LocatableTrait
     public function setAddress(string $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAdditionalAddress(): ?string
+    {
+        return $this->additionalAddress;
+    }
+
+    public function setAdditionalAddress(?string $additionalAddress): static
+    {
+        $this->additionalAddress = $additionalAddress;
 
         return $this;
     }

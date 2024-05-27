@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\BlameableTrait;
 use App\Entity\Traits\EnabledTrait;
 use App\Entity\Traits\LocatableTrait;
@@ -10,6 +9,7 @@ use App\Entity\Traits\TimestampableTrait;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -32,18 +32,30 @@ class Company
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?string $name = null;
 
     #[ORM\Column(length: 20)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     private ?string $siret = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $summary = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $xLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $linkedinLink = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $latitude = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $longitude = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
@@ -57,12 +69,16 @@ class Company
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: SpontaneousApplication::class)]
     private Collection $spontaneousApplications;
 
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'companies')]
+    private Collection $tags;
+
     public function __construct()
     {
         $this->admins = new ArrayCollection();
         $this->offers = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->spontaneousApplications = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -94,6 +110,30 @@ class Company
         return $this;
     }
 
+    public function getSummary(): ?string
+    {
+        return $this->summary;
+    }
+
+    public function setSummary(string $summary): static
+    {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
     public function getXLink(): ?string
     {
         return $this->xLink;
@@ -114,6 +154,30 @@ class Company
     public function setLinkedinLink(?string $linkedinLink): static
     {
         $this->linkedinLink = $linkedinLink;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?float
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?float $latitude): static
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?float
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?float $longitude): static
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }
@@ -218,6 +282,34 @@ class Company
                 $spontaneousApplication->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    public function setTags(Collection $tags): static
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    public function addTag(Tag $tag): static
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): static
+    {
+        $this->tags->removeElement($tag);
 
         return $this;
     }

@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\EnabledTrait;
 use App\Repository\AdminRepository;
 use Doctrine\ORM\Mapping as ORM;

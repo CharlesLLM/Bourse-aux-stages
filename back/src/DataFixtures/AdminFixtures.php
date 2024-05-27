@@ -20,7 +20,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::DATA as $key => $item) {
             $admin = $this->processAdmin($item);
@@ -46,7 +46,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         return $admin;
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             UserFixtures::class,

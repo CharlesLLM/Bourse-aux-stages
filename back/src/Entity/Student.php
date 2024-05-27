@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\LocatableTrait;
 use App\Repository\StudentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
