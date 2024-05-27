@@ -31,7 +31,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         ],
     ];
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::DATA as $key => $item) {
             $user = $this->processUser($item);
