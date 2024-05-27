@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -29,14 +30,17 @@ class Company
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[Groups(['offer'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['offer'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
+    #[Groups(['offer'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -46,9 +50,11 @@ class Company
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['offer'])]
     private ?string $xLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['offer'])]
     private ?string $linkedinLink = null;
 
     #[ORM\Column(nullable: true)]
