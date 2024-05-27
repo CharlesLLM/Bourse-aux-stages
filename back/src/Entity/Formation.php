@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\LevelEnum;
