@@ -4,13 +4,16 @@ namespace App\Entity\Traits;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 trait DateableTrait
 {
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['request'])]
     protected \DateTime $startDate;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups(['request'])]
     protected \DateTime $endDate;
 
     public function getStartDate(): ?\DateTimeInterface
@@ -18,7 +21,7 @@ trait DateableTrait
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): static
+    public function setStartDate(\DateTime $startDate): static
     {
         $this->startDate = $startDate;
 
@@ -30,7 +33,7 @@ trait DateableTrait
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): static
+    public function setEndDate(\DateTime $endDate): static
     {
         $this->endDate = $endDate;
 

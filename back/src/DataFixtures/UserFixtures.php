@@ -20,6 +20,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             'phone' => '0601020304',
             'email' => 'johndoe@gmail.com',
             'password' => 'john123',
+            'birthDate' => '1990-01-01',
         ],
         [
             'lastName' => 'Doe',
@@ -28,6 +29,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             'phone' => '0601020305',
             'email' => 'janedoe@gmail.com',
             'password' => 'jane456',
+            'birthDate' => '1990-01-01',
         ],
     ];
 
@@ -56,6 +58,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setPhone($data['phone'])
             ->setEmail($data['email'])
             ->setRoles(['ROLE_USER'])
+            ->setBirthDate(new \DateTime($data['birthDate']))
             ->setPassword(password_hash($data['password'], \PASSWORD_BCRYPT))
             ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
             ->setEnabled(true)
@@ -73,6 +76,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setPhone('0600000000')
             ->setEmail($_ENV['SUPERADMIN_EMAIL'])
             ->setRoles(['ROLE_SUPERADMIN'])
+            ->setBirthDate(new \DateTime('1990-01-01'))
             ->setLanguage($this->getReference(LanguageFixtures::REFERENCE_IDENTIFIER.'fr'))
             ->setEnabled(true)
         ;

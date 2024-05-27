@@ -16,7 +16,6 @@ function LastOffers() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data)
         setOffers(data);
       } catch (err) {
         setError(err);
@@ -32,7 +31,6 @@ function LastOffers() {
             <LinkTo text={'Toutes les offres'} color={'secondary'} page={''} />
           </div>
           <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            {console.log(offers.length)}
             {offers?.map(offer => (
               <div key={offer.id} onClick={() => navigate("/")} className="group flex flex-col items-center xs:items-start px-4 xs:w-[33vw] md:w-[25vw] lg:w-[20vw] py-5 border border-grey space-y-4 transition-all cursor-pointer">
                 {/*<i className={`${category.icon}`}></i>*/}
@@ -40,11 +38,11 @@ function LastOffers() {
                   <div className="w-12 h-12 rounded-full bg-third "></div>
                   <p className={`text-sm text-primary bg-primary/[0.15] h-fit py-1 px-2`}>{offer.type}</p>
                 </div>
-                <p className="">{offer.name.length > 25 ? `${offer.name.substring(0, 25)}...` : offer.name}</p>
+                <p className="text-sm">{offer.name.length > 25 ? `${offer.name.substring(0, 20)}...` : offer.name}</p>
                 <div className={`text-grey flex flex-row items-center space-x-2`}>
-                  <p className={`text-sm font-light`}>{offer.company}</p>
+                  <p className={`text-xs font-light`}>{offer.company.name > 20 ? `${offer.company.name.substring(0, 20)}...` : offer.company.name}</p>
                   <span className={`h-2 w-2 bg-grey rounded-full`}></span>
-                  <p className={`text-sm font-light`}>{offer.location}</p>
+                  <p className={`text-xs font-light`}>{offer.company.city > 25 ? `${offer.company.city.substring(0, 25)}...` : offer.company.city}</p>
                 </div>
                 <p className={`text-sm text-grey font-light`}>{offer.description.length > 40 ? `${offer.description.substring(0, 40)}...` : offer.description}</p>
                 <div className={`flex flex-row justify-center space-x-4`}>
