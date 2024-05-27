@@ -10,7 +10,7 @@ class OfferFixtures extends Fixture
 {
     public const FIXTURE_RANGE = 50;
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         OfferFactory::createMany(self::FIXTURE_RANGE);
 
