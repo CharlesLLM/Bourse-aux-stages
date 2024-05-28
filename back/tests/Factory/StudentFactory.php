@@ -38,6 +38,7 @@ final class StudentFactory extends ModelFactory
     protected function getDefaults(): array
     {
         $faker = Factory::create('fr_FR');
+
         return [
             'address' => $faker->address(),
             'city' => $faker->city(),

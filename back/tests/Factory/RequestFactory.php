@@ -11,26 +11,6 @@ use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
-/**
- * @extends ModelFactory<Offer>
- *
- * @method        Offer|Proxy                     create(array|callable $attributes = [])
- * @method static Offer|Proxy                     createOne(array $attributes = [])
- * @method static Offer|Proxy                     find(object|array|mixed $criteria)
- * @method static Offer|Proxy                     findOrCreate(array $attributes)
- * @method static Offer|Proxy                     first(string $sortedField = 'id')
- * @method static Offer|Proxy                     last(string $sortedField = 'id')
- * @method static Offer|Proxy                     random(array $attributes = [])
- * @method static Offer|Proxy                     randomOrCreate(array $attributes = [])
- * @method static OfferRepository|RepositoryProxy repository()
- * @method static Offer[]|Proxy[]                 all()
- * @method static Offer[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Offer[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Offer[]|Proxy[]                 findBy(array $attributes)
- * @method static Offer[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Offer[]|Proxy[]                 randomSet(int $number, array $attributes = [])
- */
-
 final class RequestFactory  extends ModelFactory
 {
     public function __construct()
@@ -40,7 +20,6 @@ final class RequestFactory  extends ModelFactory
 
     protected function getDefaults(): array
     {
-
         return [
             'student' => StudentFactory::new(),
             'description' => self::faker()->text(255),
@@ -60,5 +39,4 @@ final class RequestFactory  extends ModelFactory
     {
         return Request::class;
     }
-
 }
