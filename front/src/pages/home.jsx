@@ -3,7 +3,7 @@ import Layout from "../layout/layout.jsx";
 import Searchbar from '../components/Searchbar.jsx';
 import FeaturedCompany from "../components/home/featuredCompany.jsx";
 import WorkSector from "../components/home/workSector.jsx";
-import CompagnyCTA from "../components/home/compagnyCTA.jsx";
+import CompanyCTA from "../components/home/companyCTA.jsx";
 import LastOffers from "../components/home/lastOffers.jsx";
 import LastRequests from "../components/home/lastRequests.jsx";
 
@@ -14,7 +14,7 @@ function Home() {
         < Searchbar />
         < FeaturedCompany />
         <WorkSector />
-        <CompagnyCTA />
+        <CompanyCTA />
         <LastOffers />
         <LastRequests />
         <div></div>
@@ -24,4 +24,3 @@ function Home() {
 }
 
 export default Home;
-

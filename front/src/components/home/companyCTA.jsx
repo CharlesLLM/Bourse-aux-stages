@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../utils/button.jsx";
 
-function CompagnyCTA(){
+function CompanyCTA(){
 
 
   return (
@@ -13,10 +13,10 @@ function CompagnyCTA(){
         <Button text={"Créez votre compte"} path={"*"} />
       </div>
       <div className="pt-28" >
-        <img src="/home/dashboardCompagny.svg" className={`w-[45vw]`} alt="dashboard Compagny" />
+        <img src="/home/dashboardCompany.svg" className={`w-[45vw]`} alt="dashboard Company" />
       </div>
     </div>
   )
 }
 
-export default CompagnyCTA;
+export default CompanyCTA;

@@ -2,7 +2,6 @@
 
 namespace App\Enum;
 
-
 enum OffersNameEnum: string
 {
     case MARKETING_INTERNSHIP = 'Stage de marketing';
@@ -15,5 +14,4 @@ enum OffersNameEnum: string
     case PROJECT_MANAGER = 'Chef de projet';
     case CUSTOMER_SUPPORT = 'Support client';
     case CONTENT_WRITER = 'Rédacteur de contenu';
-
 }
