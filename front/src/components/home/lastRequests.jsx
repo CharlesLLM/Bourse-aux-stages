@@ -40,9 +40,6 @@ function LastRequests() {
 
   const calculateAge = (birthDateString) => {
     const birthDate = parseISO(birthDateString);
-
-    console.log(birthDate);
-
     return differenceInYears(new Date(), birthDate);
 
   }

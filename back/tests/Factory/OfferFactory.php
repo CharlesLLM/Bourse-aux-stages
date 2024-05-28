@@ -3,10 +3,12 @@
 namespace App\Tests\Factory;
 
 use App\Entity\Offer;
+use App\Entity\Tag;
 use App\Enum\OffersNameEnum;
 use App\Enum\OfferTypeEnum;
 use App\Enum\PromoteStatusEnum;
 use App\Repository\OfferRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
