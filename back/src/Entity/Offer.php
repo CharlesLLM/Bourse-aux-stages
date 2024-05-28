@@ -70,6 +70,7 @@ class Offer
     private ?Company $company = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'offers')]
+    #[Groups(['offer'])]
     private Collection $tags;
 
     public function __construct()

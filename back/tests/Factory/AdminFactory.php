@@ -40,6 +40,7 @@ final class AdminFactory extends ModelFactory
             'enabled' => self::faker()->boolean(),
             'position' => self::faker()->text(100),
             'user' => UserFactory::new(),
+            'company' => CompanyFactory::new(),
         ];
     }
 

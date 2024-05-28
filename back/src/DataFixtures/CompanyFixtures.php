@@ -3,6 +3,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Company;
+use App\Tests\Factory\CompanyFactory;
+use App\Tests\Factory\TagFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -10,7 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 class CompanyFixtures extends Fixture implements DependentFixtureInterface
 {
     public const REFERENCE_IDENTIFIER = 'company_';
-    public const FIXTURE_RANGE = 3;
+    public const FIXTURE_RANGE = 20;
     public const DATA = [
         [
             'name' => 'MentalWorks',
@@ -60,14 +62,15 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::DATA as $key => $item) {
-            $company = $this->processCompany($item);
-            $manager->persist($company);
 
-            ++$key;
-            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $company);
-        }
-
+        $tags = TagFactory::new()->many(self::FIXTURE_RANGE)->create();
+        shuffle($tags);
+        CompanyFactory::new()->many(10)->create(function() use ($tags) {
+            $selectedTags = array_slice($tags, 0, mt_rand(2, 3));
+            return [
+                'tags' => $selectedTags
+            ];
+        });
         $manager->flush();
     }
 
