@@ -20,6 +20,7 @@ export default {
       darkBlue: '#2F3B53',
       textGrey: '#515B6F',
       borderGrey: '#D6DDEB',
+      fourth: '#EAEAFF',
       ...defaultColors
     },
     screens: {
