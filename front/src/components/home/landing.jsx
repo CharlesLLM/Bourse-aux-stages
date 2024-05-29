@@ -1,7 +1,7 @@
 import React from "react";
-import Searchbar from './searchbar.jsx';
-import DataOffers from '../../components/home/dataOffers.jsx';
-import './landing.css'
+import Searchbar from '../home/searchbar.jsx';
+import DataOffers from '../home/dataOffers.jsx';
+import '../utils/underline.css'
 
 
 
