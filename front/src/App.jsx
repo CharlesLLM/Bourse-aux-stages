@@ -5,6 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+import CompanyList from "./pages/companyList";
 import Home from "../../front/src/pages/home";
 import Layout from "./layout/layout.jsx";
 
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
+  },
+  {
+    path: "/entreprises",
+    element: <CompanyList />,
   },
 ]);
 
