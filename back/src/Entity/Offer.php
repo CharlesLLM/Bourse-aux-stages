@@ -38,7 +38,7 @@ class Offer
 
     #[ORM\Column(length: 20, enumType: OfferTypeEnum::class)]
     #[Assert\NotNull]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?OfferTypeEnum $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -46,8 +46,7 @@ class Offer
     #[Groups(['offer'])]
     private ?string $description = null;
 
-    #[ORM\Column(enumType: PromoteStatusEnum::class, length: 10)]
-    #[Assert\NotNull]
+    #[ORM\Column(enumType: PromoteStatusEnum::class, length: 10, nullable: true)]
     #[Groups(['offer'])]
     private ?PromoteStatusEnum $promoteStatus = null;
 
@@ -58,7 +57,7 @@ class Offer
 
     #[ORM\Column]
     #[Groups(['offer'])]
-    private bool $remote;
+    private bool $remote = false;
 
     #[ORM\Column]
     #[Groups(['offer'])]

@@ -14,14 +14,15 @@ class Tag
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['company', 'offer'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 10)]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $color = null;
 
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'tags')]

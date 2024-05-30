@@ -16,8 +16,10 @@ export default {
       dark: '#202430',
       grey: '#A3A8B6',
       lightGrey: '#F8F8FD',
+      darkGrey: '#25324B',
       darkBlue: '#2F3B53',
       textGrey: '#515B6F',
+      borderGrey: '#D6DDEB',
       ...defaultColors
     },
     screens: {

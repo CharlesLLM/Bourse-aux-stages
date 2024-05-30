@@ -62,13 +62,13 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-
         $tags = TagFactory::new()->many(self::FIXTURE_RANGE)->create();
         shuffle($tags);
-        CompanyFactory::new()->many(10)->create(function() use ($tags) {
-            $selectedTags = array_slice($tags, 0, mt_rand(2, 3));
+        CompanyFactory::new()->many(10)->create(function () use ($tags) {
+            $selectedTags = \array_slice($tags, 0, mt_rand(2, 3));
+
             return [
-                'tags' => $selectedTags
+                'tags' => $selectedTags,
             ];
         });
         $manager->flush();
