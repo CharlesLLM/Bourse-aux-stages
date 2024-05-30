@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Company;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class CompanyCrudController extends AbstractCrudController
@@ -22,6 +23,11 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('xLink', 'company.x_link'),
             TextField::new('linkedinLink', 'company.linkedin_link'),
             BooleanField::new('enabled', 'common.enabled'),
+            ImageField::new('logo', 'company.logo')
+                ->setBasePath('/uploads/company/')
+                ->setUploadDir('public/uploads/company/')
+                ->setUploadedFileNamePattern('[slug]-[uuid].[extension]')
+                ->setRequired(false),
         ];
     }
 }

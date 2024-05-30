@@ -5,7 +5,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import CompanyList from "./pages/companyList";
+import CompanyIndex from "./pages/companyIndex";
 import Home from "../../front/src/pages/home";
 import Layout from "./layout/layout.jsx";
 
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/entreprises",
-    element: <CompanyList />,
+    element: <CompanyIndex />,
   },
 ]);
 

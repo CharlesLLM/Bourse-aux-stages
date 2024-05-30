@@ -23,7 +23,6 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-
         AdminFactory::createMany(10);
 
         $manager->flush();

@@ -30,43 +30,52 @@ class Company
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company'])]
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['company'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $xLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $linkedinLink = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['company'])]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['company'])]
     private ?float $longitude = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['company'])]
+    private ?string $logo = null;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
+    #[Groups(['company'])]
     private Collection $offers;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class)]
@@ -76,6 +85,7 @@ class Company
     private Collection $spontaneousApplications;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'companies')]
+    #[Groups(['company'])]
     private Collection $tags;
 
     public function __construct()
@@ -85,6 +95,11 @@ class Company
         $this->applications = new ArrayCollection();
         $this->spontaneousApplications = new ArrayCollection();
         $this->tags = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?Uuid
@@ -184,6 +199,18 @@ class Company
     public function setLongitude(?float $longitude): static
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): static
+    {
+        $this->logo = $logo;
 
         return $this;
     }

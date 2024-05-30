@@ -16,12 +16,13 @@ class OfferFixtures extends Fixture
         $tags = TagFactory::createMany(10);
         shuffle($tags);
 
-        OfferFactory::new()->many(10)->create(function() use ($tags) {
-            $selectedTags = array_slice($tags, 0, mt_rand(2, 3));
+        OfferFactory::new()->many(10)->create(function () use ($tags) {
+            $selectedTags = \array_slice($tags, 0, mt_rand(2, 3));
+
             return [
                 'tags' => $selectedTags,
             ];
-        });;
+        });
 
         $manager->flush();
     }

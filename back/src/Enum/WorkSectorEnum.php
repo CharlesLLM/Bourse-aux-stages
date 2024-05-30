@@ -17,7 +17,7 @@ enum WorkSectorEnum: string
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::DESIGN => 'Design',
             self::INFORMATIQUE => 'Informatique',
             self::FINANCE => 'Finance',
@@ -31,4 +31,3 @@ enum WorkSectorEnum: string
         };
     }
 }
-
