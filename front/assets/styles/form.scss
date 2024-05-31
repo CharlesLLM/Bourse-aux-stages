@@ -1,0 +1,57 @@
+.checkbox {
+  display: flex;
+
+  & > label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+
+    & input {
+      position: absolute;
+      opacity: 0;
+
+      &:checked ~ .checkbox-span {
+        @apply bg-primary border-none;
+      }
+
+      &:checked ~ .checkbox-span::after {
+        display: block;
+        animation: checkAnim 0.2s forwards;
+      }
+    }
+  }
+
+  &-span {
+    @apply border-2 border-borderGrey;
+    position: relative;
+    height: 24px;
+    width: 24px;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &::after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 9px;
+      top: 4px;
+      width: 6px;
+      border: solid white;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg);
+    }
+  }
+}
+
+@keyframes checkAnim {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 12px;
+  }
+}

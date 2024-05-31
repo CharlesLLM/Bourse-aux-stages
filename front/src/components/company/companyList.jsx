@@ -1,30 +1,7 @@
 import React from "react";
-import { useEffect, useState } from "react";
 import CompanyCard from "./companyCard";
-import { useNavigate } from "react-router-dom";
 
-function CompanyList() {
-  const navigate = useNavigate();
-  const [companies, setCompanies] = useState([]);
-  const [error, setError] = useState(null);
-
-  useEffect( () => {
-    const getCompanies = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}companies`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setCompanies(data);
-      } catch (err) {
-        setError(err);
-      }
-    };
-
-    getCompanies();
-  }, []);
-
+function CompanyList({ companies }) {
   return (
     <>
       <div className="flex items-center mb-6">
