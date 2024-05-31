@@ -14,7 +14,7 @@ function CompanyIndex() {
         <div className="w-52">
           <Filters />
         </div>
-        <div className="w-3/4">
+        <div className="w-auto">
           <CompanyList />
         </div>
       </div>

@@ -69,7 +69,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             $this->addReference(self::REFERENCE_IDENTIFIER . $key, $company);
         }
 
-        $tags = TagFactory::new()->many(self::FIXTURE_RANGE)->create();
+        $tags = TagFactory::new()->many(10)->create();
         shuffle($tags);
         CompanyFactory::new()->many(10)->create(function () use ($tags) {
             $selectedTags = \array_slice($tags, 0, mt_rand(2, 3));

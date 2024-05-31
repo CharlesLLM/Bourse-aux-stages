@@ -13,11 +13,13 @@ function CompanyCard({ company }) {
           alt={company.name}
           className="w-20 h-20 object-cover"
         />
-        <span className="bg-lightGrey text-primary font-normal px-3 py-1 h-fit">
-          {stagesNumber > 0 && `${stagesNumber} stage${stagesNumber > 1 ? "s" : ""}`}
-          {stagesNumber > 0 && apprenticeshipsNumber > 0 && ", "}
-          {apprenticeshipsNumber > 0 && `${apprenticeshipsNumber} alternance${apprenticeshipsNumber > 1 ? "s" : ""}`}
-        </span>
+        {(stagesNumber > 0 || apprenticeshipsNumber > 0) && (
+          <span className="bg-lightGrey text-primary font-normal px-3 py-1 h-fit">
+            {stagesNumber > 0 && `${stagesNumber} stage${stagesNumber > 1 ? "s" : ""}`}
+            {stagesNumber > 0 && apprenticeshipsNumber > 0 && ", "}
+            {apprenticeshipsNumber > 0 && `${apprenticeshipsNumber} alternance${apprenticeshipsNumber > 1 ? "s" : ""}`}
+          </span>
+        )}
       </div>
       <h2 className="text-2xl font-semibold mb-3">{company.name}</h2>
       <p className="text-lg text-gray-600 font-normal mb-4 line-clamp-4">{company.summary}</p>

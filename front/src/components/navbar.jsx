@@ -2,11 +2,11 @@ import React from "react";
 
 function Navbar() {
   return (
-    <div className="h-20 flex items-center justify-between">
-      <div className="flex items-center gap-2.5">
+    <div className="h-20 flex items-center justify-between px-8 md:px-16 lg:px-24 xl:px-32">
+      <a href="/" className="flex items-center gap-2.5">
         <img src="logo.svg" alt="Logo" />
         <p className="title md:text-xl lg:text-2xl">Bourse aux stages</p>
-      </div>
+      </a>
       <ul className="flex gap-5 h-full">
         <li className="flex items-center">
           <a href="/">Accueil</a>
