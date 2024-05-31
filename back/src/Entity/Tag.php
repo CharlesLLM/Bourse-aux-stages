@@ -17,7 +17,7 @@ class Tag
     #[Groups(['company', 'offer'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[Groups(['company', 'offer'])]
     private ?string $name = null;
 

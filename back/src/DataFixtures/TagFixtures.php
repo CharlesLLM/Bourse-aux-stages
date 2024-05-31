@@ -48,8 +48,6 @@ class TagFixtures extends Fixture
             $this->addReference(self::REFERENCE_IDENTIFIER . $key, $tag);
         }
 
-        TagFactory::createMany(self::FIXTURE_RANGE);
-
         $manager->flush();
     }
 }

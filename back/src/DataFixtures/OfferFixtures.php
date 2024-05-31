@@ -13,11 +13,13 @@ class OfferFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $tags = TagFactory::createMany(10);
-        shuffle($tags);
+        $tags = [];
+        for ($i = 1; $i <= TagFixtures::FIXTURE_RANGE; ++$i) {
+            $tags[] = $this->getReference(TagFixtures::REFERENCE_IDENTIFIER.$i);
+        }
 
         OfferFactory::new()->many(10)->create(function () use ($tags) {
-            $selectedTags = \array_slice($tags, 0, mt_rand(2, 3));
+            $selectedTags = \array_slice($tags, 0, mt_rand(1, 3));
 
             return [
                 'tags' => $selectedTags,
