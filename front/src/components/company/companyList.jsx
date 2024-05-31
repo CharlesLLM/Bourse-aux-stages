@@ -1,5 +1,5 @@
-import React from "react";
 import CompanyCard from "./companyCard";
+import PropTypes from 'prop-types';
 
 function CompanyList({ companies }) {
   return (
@@ -18,5 +18,11 @@ function CompanyList({ companies }) {
     </>
   );
 }
+
+CompanyList.propTypes = {
+  companies: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+  })).isRequired,
+};
 
 export default CompanyList;

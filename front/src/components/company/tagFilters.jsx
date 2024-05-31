@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import PropTypes from 'prop-types';
 
 function TagFilters({ tags, handleTags }) {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -10,7 +11,7 @@ function TagFilters({ tags, handleTags }) {
 
   return (
     <div className="space-y-5">
-      <h3 className="font-bold">Secteurs d'activité</h3>
+      <h3 className="font-bold">Secteurs d&apos;activité</h3>
       <div className="flex flex-col gap-5">
         {tags.map((tag) => (
           <div key={tag.id} className="checkbox">
@@ -31,5 +32,13 @@ function TagFilters({ tags, handleTags }) {
     </div>
   );
 }
+
+TagFilters.propTypes = {
+  tags: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+  })).isRequired,
+  handleTags: PropTypes.func.isRequired,
+};
 
 export default TagFilters;

@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
 function Badge({ variant, tag }) {
   switch (variant) {
@@ -22,5 +22,13 @@ function Badge({ variant, tag }) {
       );
   }
 }
+
+Badge.propTypes = {
+  variant: PropTypes.string,
+  tag: PropTypes.shape({
+    color: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default Badge;

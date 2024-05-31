@@ -1,14 +1,12 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import CompanyList from '../components/company/companyList.jsx';
-import Filters from '../components/tagFilters.jsx';
+import Filters from '../components/company/tagFilters.jsx';
 import ListHero from '../components/listHero.jsx';
 import '../../assets/styles/form.scss';
 
 function CompanyIndex() {
   const [companies, setCompanies] = useState([]);
   const [tags, setTags] = useState([]);
-  const [error, setError] = useState(null);
 
   const handleTags = (selectedTags) => {
     getCompaniesWithFilters(selectedTags);
@@ -27,7 +25,6 @@ function CompanyIndex() {
       const data = await response.json();
       setCompanies(data);
     } catch (err) {
-      setError(err);
       console.error('Error fetching data: ', err);
     }
   }
@@ -47,7 +44,6 @@ function CompanyIndex() {
 
         setTags(uniqueTags);
       } catch (err) {
-        setError(err);
         console.error('Error fetching data: ', err);
       }
     };

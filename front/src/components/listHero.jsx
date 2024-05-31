@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
 function ListHero({ titleWord, subtitle }) {
   return (
@@ -13,5 +13,10 @@ function ListHero({ titleWord, subtitle }) {
     </div>
   )
 }
+
+ListHero.propTypes = {
+  titleWord: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+};
 
 export default ListHero;

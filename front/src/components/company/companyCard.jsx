@@ -1,5 +1,5 @@
-import React from "react";
 import Badge from "../badge";
+import PropTypes from 'prop-types';
 
 function CompanyCard({ company }) {
   const stagesNumber = company.offers.filter(offer => offer.type === "stage").length;
@@ -31,5 +31,22 @@ function CompanyCard({ company }) {
     </div>
   );
 }
+
+CompanyCard.propTypes = {
+  company: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    logo: PropTypes.string,
+    name: PropTypes.string.isRequired,
+    summary: PropTypes.string,
+    tags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    })).isRequired,
+    offers: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.string.isRequired,
+    })).isRequired,
+  }).isRequired,
+};
 
 export default CompanyCard;

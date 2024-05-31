@@ -1,5 +1,3 @@
-import React from "react";
-
 function Navbar() {
   return (
     <div className="h-20 flex items-center justify-between px-8 md:px-16 lg:px-24 xl:px-32">
