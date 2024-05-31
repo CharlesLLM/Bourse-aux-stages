@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Company;
 use App\Tests\Factory\CompanyFactory;
-use App\Tests\Factory\TagFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -66,7 +65,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             $company = $this->processCompany($data);
             $manager->persist($company);
             ++$key;
-            $this->addReference(self::REFERENCE_IDENTIFIER . $key, $company);
+            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $company);
         }
 
         $tags = [];

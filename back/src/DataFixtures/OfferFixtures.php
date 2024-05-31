@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Tests\Factory\OfferFactory;
-use App\Tests\Factory\TagFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

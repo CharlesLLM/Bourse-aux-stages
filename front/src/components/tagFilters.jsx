@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 
-function TagFilters({ tags }) {
+function TagFilters({ tags, handleTags }) {
+  const [selectedTags, setSelectedTags] = useState([]);
+
+  const updateTags = (tags) => {
+    setSelectedTags(tags);
+    handleTags(tags);
+  }
+
   return (
     <div className="space-y-5">
       <h3 className="font-bold">Secteurs d'activité</h3>
@@ -8,7 +15,13 @@ function TagFilters({ tags }) {
         {tags.map((tag) => (
           <div key={tag.id} className="checkbox">
             <label htmlFor={tag.id}>
-              <input type="checkbox" id={tag.id} name={tag.name} value={tag.id} />
+              <input type="checkbox" id={tag.id} name={tag.name} value={tag.id} onChange={(e) => {
+                if (e.target.checked) {
+                  updateTags([...selectedTags, tag]);
+                } else {
+                  updateTags(selectedTags.filter((selectedTag) => selectedTag.id !== tag.id));
+                }
+              }} />
               <span className="checkbox-span"></span>
               <h3 className="font-normal">{tag.name}</h3>
             </label>

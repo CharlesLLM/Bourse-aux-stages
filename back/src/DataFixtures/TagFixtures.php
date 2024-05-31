@@ -3,7 +3,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\Tag;
-use App\Tests\Factory\TagFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -45,7 +44,7 @@ class TagFixtures extends Fixture
             $manager->persist($tag);
 
             ++$key;
-            $this->addReference(self::REFERENCE_IDENTIFIER . $key, $tag);
+            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $tag);
         }
 
         $manager->flush();

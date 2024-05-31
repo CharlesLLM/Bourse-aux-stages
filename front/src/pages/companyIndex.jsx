@@ -10,6 +10,24 @@ function CompanyIndex() {
   const [tags, setTags] = useState([]);
   const [error, setError] = useState(null);
 
+  const handleTags = (selectedTags) => {
+    getCompaniesWithFilters(selectedTags);
+  };
+
+  const getCompaniesWithFilters = async (selectedTags) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}companies?tags=${selectedTags.map((tag) => tag.id).join(',')}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setCompanies(data);
+    } catch (err) {
+      setError(err);
+      console.error('Error fetching data: ', err);
+    }
+  }
+
   useEffect(() => {
     const getCompanies = async () => {
       try {
@@ -41,7 +59,7 @@ function CompanyIndex() {
       />
       <div className="flex md:px-32 md:py-[72px] gap-16 w-full">
         <div className="w-52">
-          <Filters tags={tags} />
+          <Filters tags={tags} handleTags={handleTags} />
         </div>
         <div className="w-auto">
           <CompanyList companies={companies} />

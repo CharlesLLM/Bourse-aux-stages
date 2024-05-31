@@ -12,4 +12,20 @@ class CompanyRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Company::class);
     }
+
+    public function findByFilters(array $tagIds = []): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.tags', 't')
+        ;
+
+        if (!empty($tagIds)) {
+            $qb
+                ->andWhere('t.id IN (:tagIds)')
+                ->setParameter('tagIds', $tagIds)
+            ;
+        }
+
+        return $qb->getQuery()->execute();
+    }
 }
