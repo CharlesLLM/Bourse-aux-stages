@@ -15,8 +15,12 @@ function CompanyIndex() {
   };
 
   const getCompaniesWithFilters = async (selectedTags) => {
+    let url = `${import.meta.env.VITE_BACK_ENDPOINT}companies`;
+    if (selectedTags.length > 0) {
+      url += `?tags=${selectedTags.map((tag) => tag.id).join(',')}`;
+    }
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}companies?tags=${selectedTags.map((tag) => tag.id).join(',')}`);
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
