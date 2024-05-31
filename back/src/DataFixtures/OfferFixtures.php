@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class OfferFixtures extends Fixture
 {
-    public const FIXTURE_RANGE = 50;
+    public const FIXTURE_RANGE = 20;
 
     public function load(ObjectManager $manager): void
     {
