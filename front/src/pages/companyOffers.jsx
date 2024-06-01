@@ -1,11 +1,11 @@
 import React from 'react'
 import Layout from "../layout/layout.jsx";
-import OffersList from '../components/stageOffers/offersList.jsx';
+import StageOffers from '../components/stageOffers/stageOffers.jsx';
 
 function CompanyOffers() {
   return (
     <div>
-      <OffersList />
+      <StageOffers />
     </div>
   )
 }

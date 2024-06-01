@@ -37,7 +37,7 @@ const Pagination = props => {
 
   return (
     <ul
-      className="flex flex-row justify-center items-center gap-10 my-10"
+      className="flex flex-row flex-wrap justify-center items-center gap-10 my-10"
     >
       {/* Flèche de navigation gauche */}
       <li
@@ -49,16 +49,17 @@ const Pagination = props => {
         <MdArrowBackIos />
       </li>
 
-      {paginationRange.map(pageNumber => {
+      {paginationRange.map((pageNumber, index) => {
          
         // cas ou l'élément est un dots 
         if (pageNumber === "dots") {
-          return <li className="text-xl cursor-default	">...</li>;
+          return <li key={`dots-${index}`} className="text-xl cursor-default	">...</li>;
         }
 		
         // Affichage des éléments de pagination (page 1, 2, 3...)
         return (
           <li
+            key={pageNumber}
             className={classnames('text-xl cursor-pointer', {
               "w-16 h-16 rounded-lg bg-[#4640DE] flex items-center justify-center text-white": pageNumber === currentPage
             })}
