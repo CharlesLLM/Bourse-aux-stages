@@ -15,35 +15,35 @@ function CompanyIndex() {
   const [selectedSizes, setSelectedSizes] = useState([]);
 
   useEffect(() => {
+    const getCompanies = async () => {
+      let url = `${import.meta.env.VITE_BACK_ENDPOINT}companies`;
+      url += `?tags=${selectedTags.map((tag) => tag.id).join(',')}`;
+      url += `&categories=${selectedCategories.map((category) => category.id).join(',')}`;
+      url += `&sizes=${JSON.stringify(selectedSizes.map((size) => size.value))}`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCompanies(data);
+
+        if (selectedTags.length === 0 && selectedCategories.length === 0 && selectedSizes.length === 0) {
+          const tags = data.map((company) => company.tags).flat();
+          const uniqueTags = tags.filter((tag, index, self) => self.findIndex(t => t.id === tag.id) === index);
+          setTags(uniqueTags);
+
+          const categories = data.map((company) => company.category).flat();
+          const uniqueCategories = categories.filter((category, index, self) => self.findIndex(c => c.id === category.id) === index);
+          setCategories(uniqueCategories);
+        }
+      } catch (err) {
+        console.error('Error fetching data: ', err);
+      }
+    };
+
     getCompanies();
   }, [selectedTags, selectedCategories, selectedSizes]);
-
-  const getCompanies = async () => {
-    let url = `${import.meta.env.VITE_BACK_ENDPOINT}companies`;
-    url += `?tags=${selectedTags.map((tag) => tag.id).join(',')}`;
-    url += `&categories=${selectedCategories.map((category) => category.id).join(',')}`;
-    url += `&sizes=${JSON.stringify(selectedSizes.map((size) => size.value))}`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setCompanies(data);
-
-      if (selectedTags.length === 0 && selectedCategories.length === 0 && selectedSizes.length === 0) {
-        const tags = data.map((company) => company.tags).flat();
-        const uniqueTags = tags.filter((tag, index, self) => self.findIndex(t => t.id === tag.id) === index);
-        setTags(uniqueTags);
-
-        const categories = data.map((company) => company.category).flat();
-        const uniqueCategories = categories.filter((category, index, self) => self.findIndex(c => c.id === category.id) === index);
-        setCategories(uniqueCategories);
-      }
-    } catch (err) {
-      console.error('Error fetching data: ', err);
-    }
-  }
 
   const handleTags = (selectedTags) => {
     setSelectedTags(selectedTags);
