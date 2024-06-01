@@ -2,23 +2,21 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Tag;
+use App\Entity\CompanyCategory;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ColorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class TagCrudController extends AbstractCrudController
+class CompanyCategoryCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Tag::class;
+        return CompanyCategory::class;
     }
 
     public function configureFields(string $pageName): iterable
     {
         return [
             TextField::new('name', 'common.name'),
-            ColorField::new('color', 'tag.color'),
         ];
     }
 }

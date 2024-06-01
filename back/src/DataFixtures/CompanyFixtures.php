@@ -11,7 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 class CompanyFixtures extends Fixture implements DependentFixtureInterface
 {
     public const REFERENCE_IDENTIFIER = 'company_';
-    public const FIXTURE_RANGE = 20;
+    public const FIXTURE_RANGE = 3;
     public const DATA = [
         [
             'name' => 'MentalWorks',
@@ -74,9 +74,11 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         }
 
         CompanyFactory::new()->many(10)->create(function () use ($tags) {
+            $selectedCategory = $this->getReference(CompanyCategoryFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyCategoryFixtures::FIXTURE_RANGE));
             $selectedTags = \array_slice($tags, 0, mt_rand(1, 3));
 
             return [
+                'category' => $selectedCategory,
                 'tags' => $selectedTags,
             ];
         });
@@ -99,6 +101,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             ->setXLink($data['xLink'] ?? null)
             ->setLinkedinLink($data['linkedinLink'] ?? null)
             ->setEnabled($data['enabled'] ?? false)
+            ->setCategory($this->getReference(CompanyCategoryFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyCategoryFixtures::FIXTURE_RANGE)))
         ;
 
         foreach ($data['tags'] as $tag) {
@@ -111,6 +114,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            CompanyCategoryFixtures::class,
             TagFixtures::class,
         ];
     }

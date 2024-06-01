@@ -23,7 +23,18 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        AdminFactory::createMany(10);
+        foreach (self::DATA as $data) {
+            $admin = $this->processAdmin($data);
+            $manager->persist($admin);
+        }
+
+        AdminFactory::new()->many(10)->create(function () {
+            $selectedCompany = $this->getReference(CompanyFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyFixtures::FIXTURE_RANGE));
+
+            return [
+                'company' => $selectedCompany,
+            ];
+        });
 
         $manager->flush();
     }

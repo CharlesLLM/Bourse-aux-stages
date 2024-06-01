@@ -71,6 +71,11 @@ class Company
     #[Groups(['company'])]
     private ?string $logo = null;
 
+    #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['company'])]
+    private CompanyCategory $category;
+
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
 
@@ -211,6 +216,18 @@ class Company
     public function setLogo(?string $logo): static
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getCategory(): ?CompanyCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?CompanyCategory $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

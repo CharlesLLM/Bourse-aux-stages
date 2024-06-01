@@ -2,11 +2,10 @@
 
 namespace App\Tests\Factory;
 
-use App\Entity\Application;
-use App\Enum\ApplicationStatusEnum;
+use App\Entity\CompanyCategory;
 use Zenstruck\Foundry\ModelFactory;
 
-final class ApplicationFactory extends ModelFactory
+final class CompanyCategoryFactory extends ModelFactory
 {
     public function __construct()
     {
@@ -16,9 +15,7 @@ final class ApplicationFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'company' => CompanyFactory::new(),
-            'status' => self::faker()->randomElement(ApplicationStatusEnum::cases()),
-            'student' => StudentFactory::new(),
+            'name' => self::faker()->text(50),
         ];
     }
 
@@ -29,6 +26,6 @@ final class ApplicationFactory extends ModelFactory
 
     protected static function getClass(): string
     {
-        return Application::class;
+        return CompanyCategory::class;
     }
 }

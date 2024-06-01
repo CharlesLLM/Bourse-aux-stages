@@ -32,6 +32,7 @@ class Admin
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'admins')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
     public function getId(): ?Uuid
