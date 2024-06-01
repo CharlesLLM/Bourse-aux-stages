@@ -35,9 +35,9 @@ function TagFilters({ tags, handleTags }) {
     <div className="space-y-5">
       <h3 className="font-bold">Secteurs d&apos;activité</h3>
       <div className="flex flex-col gap-5">
-        <div key="all" className="checkbox">
-          <label htmlFor="all">
-            <input type="checkbox" id="all" name="all" value="all" checked={selectedTags.includes("all")} onChange={(e) => handleChange(e, "all")} />
+        <div key="tag-all" className="checkbox">
+          <label htmlFor="tag-all">
+            <input type="checkbox" id="tag-all" name="tag-all" checked={selectedTags.includes("all")} onChange={(e) => handleChange(e, "all")} />
             <span className="checkbox-span"></span>
             <h3 className="font-normal">Tous</h3>
           </label>

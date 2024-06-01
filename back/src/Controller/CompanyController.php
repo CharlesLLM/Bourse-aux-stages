@@ -16,10 +16,10 @@ class CompanyController extends AbstractController
     #[Route('/', name: 'app_companies_index', methods: ['GET'])]
     public function getLatestCompanies(Request $request, CompanyRepository $companyRepository, SerializerInterface $serializer): JsonResponse
     {
-        $tagsString = $request->query->get('tags');
-        $tags = $tagsString ? explode(',', $tagsString) : [];
+        $tags = $request->query->get('tags') ? explode(',', $request->query->get('tags')) : [];
+        $categories = $request->query->get('categories') ? explode(',', $request->query->get('categories')) : [];
 
-        $companies = $companyRepository->findByFilters($tags);
+        $companies = $companyRepository->findByFilters($tags, $categories);
         $jsonContent = $serializer->serialize($companies, 'json', ['groups' => ['company']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
