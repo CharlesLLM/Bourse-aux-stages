@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import CompanyList from '../components/company/companyList.jsx';
+import CompanyCard from '../components/company/companyCard.jsx';
 import Filters from '../components/company/tagFilters.jsx';
 import ListHero from '../components/listHero.jsx';
 import '../../assets/styles/form.scss';
@@ -62,7 +62,17 @@ function CompanyIndex() {
           <Filters tags={tags} handleTags={handleTags} />
         </div>
         <div className="w-auto">
-          <CompanyList companies={companies} />
+          <div className="flex items-center mb-6">
+            <div className="space-y-1">
+              <h2 className="text-[32px] leading-none font-semibold">Résultats</h2>
+              <p className="text-darkGray font-normal">{companies.length} entreprises trouvées</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+            {companies.map((company) => (
+              <CompanyCard key={company.id} company={company} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
