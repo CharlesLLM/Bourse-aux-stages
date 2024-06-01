@@ -14,10 +14,23 @@ class CompanyRepository extends ServiceEntityRepository
         parent::__construct($registry, Company::class);
     }
 
-    public function findByFilters(array $tagIds = [], array $categoryIds = []): array
+    public function findByFilters(array $tagIds = [], array $categoryIds = [], array $sizes = []): array
     {
         $tagIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $tagIds);
         $categoryIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $categoryIds);
+
+        $sizesFilter = array_map(function ($filter) {
+            if (!empty($filter) && 2 === \count($filter)) {
+                $filter = array_map(fn ($size) => (int) $size, $filter);
+
+                return [
+                    'min' => min($filter),
+                    'max' => max($filter),
+                ];
+            }
+
+            return null;
+        }, $sizes);
 
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.tags', 't')
@@ -36,6 +49,31 @@ class CompanyRepository extends ServiceEntityRepository
                 ->andWhere('cc.id IN (:categoryIds)')
                 ->setParameter('categoryIds', $categoryIds)
             ;
+        }
+
+        if (!empty($sizesFilter)) {
+            $qb->andWhere('c.size IS NOT NULL');
+            $orCondition = $qb->expr()->orX();
+
+            foreach ($sizesFilter as $filter) {
+                if (!empty($filter)) {
+                    $conditionSuffix = $filter['min'].'_'.$filter['max'];
+
+                    $orCondition->add(
+                        $qb->expr()->andX(
+                            $qb->expr()->gte('c.size', ':min_'.$conditionSuffix),
+                            $qb->expr()->lte('c.size', ':max_'.$conditionSuffix)
+                        )
+                    );
+
+                    $qb->setParameter(':min_'.$conditionSuffix, $filter['min']);
+                    $qb->setParameter(':max_'.$conditionSuffix, $filter['max']);
+                }
+            }
+
+            if ($orCondition->count() > 0) {
+                $qb->andWhere($orCondition);
+            }
         }
 
         return $qb->getQuery()->execute();

@@ -37,7 +37,12 @@ function TagFilters({ tags, handleTags }) {
       <div className="flex flex-col gap-5">
         <div key="tag-all" className="checkbox">
           <label htmlFor="tag-all">
-            <input type="checkbox" id="tag-all" name="tag-all" checked={selectedTags.includes("all")} onChange={(e) => handleChange(e, "all")} />
+            <input type="checkbox"
+              id="tag-all"
+              name="tag-all"
+              checked={selectedTags.includes("all")}
+              onChange={(e) => handleChange(e, "all")}
+            />
             <span className="checkbox-span"></span>
             <h3 className="font-normal">Tous</h3>
           </label>
@@ -45,7 +50,13 @@ function TagFilters({ tags, handleTags }) {
         {tags.map((tag) => (
           <div key={tag.id} className="checkbox">
             <label htmlFor={tag.id}>
-              <input type="checkbox" id={tag.id} name={tag.name} value={tag.id} checked={selectedTags.includes(tag)} onChange={(e) => handleChange(e, tag)} />
+              <input type="checkbox"
+                id={tag.id}
+                name={tag.name}
+                value={tag.id}
+                checked={selectedTags.includes(tag)}
+                onChange={(e) => handleChange(e, tag)}
+              />
               <span className="checkbox-span"></span>
               <h3 className="font-normal">{tag.name}</h3>
             </label>

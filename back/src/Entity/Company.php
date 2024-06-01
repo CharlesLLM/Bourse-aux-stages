@@ -51,6 +51,10 @@ class Company
     #[Groups(['company'])]
     private ?string $description = null;
 
+    #[ORM\Column]
+    #[Groups(['company'])]
+    private ?int $size = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['company', 'offer'])]
     private ?string $xLink = null;
@@ -156,6 +160,18 @@ class Company
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }

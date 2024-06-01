@@ -37,7 +37,12 @@ function CategoryFilters({ categories, handleCategories }) {
       <div className="flex flex-col gap-5">
         <div key="category-all" className="checkbox">
           <label htmlFor="category-all">
-            <input type="checkbox" id="category-all" name="category-all" checked={selectedCategories.includes("all")} onChange={(e) => handleChange(e, "all")} />
+            <input type="checkbox"
+              id="category-all"
+              name="category-all"
+              checked={selectedCategories.includes("all")} 
+              onChange={(e) => handleChange(e, "all")}
+            />
             <span className="checkbox-span"></span>
             <h3 className="font-normal">Tous</h3>
           </label>
@@ -45,7 +50,13 @@ function CategoryFilters({ categories, handleCategories }) {
         {categories.map((category) => (
           <div key={category.id} className="checkbox">
             <label htmlFor={category.id}>
-              <input type="checkbox" id={category.id} name={category.name} value={category.id} checked={selectedCategories.includes(category)} onChange={(e) => handleChange(e, category)} />
+              <input type="checkbox"
+                id={category.id}
+                name={category.name}
+                value={category.id}
+                checked={selectedCategories.includes(category)}
+                onChange={(e) => handleChange(e, category)}
+              />
               <span className="checkbox-span"></span>
               <h3 className="font-normal">{category.name}</h3>
             </label>

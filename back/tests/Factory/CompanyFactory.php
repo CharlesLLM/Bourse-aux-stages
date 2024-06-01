@@ -26,6 +26,7 @@ final class CompanyFactory extends ModelFactory
             'name' => $faker->company(),
             'postalCode' => $faker->postcode(),
             'siret' => $faker->siret(),
+            'size' => $faker->numberBetween(1, 1200),
         ];
     }
 
