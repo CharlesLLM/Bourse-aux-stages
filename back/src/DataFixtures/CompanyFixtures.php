@@ -18,12 +18,14 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'siret' => '123 456 789 01234',
             'summary' => 'Mentalworks est à la fois une agence web et webmarketing mais aussi une SSII/ESN spécialisée dans le développement et la maintenance d’applications sur-mesure.',
             'description' => 'Mentalworks représente une nouvelle génération : celle des agences digitales technologiques. Notre particularité est d\'intégrer à la fois une agence web et e-marketing (conseil stratégique, SEO/SEA/CM) mais aussi une SSII/ESN composée de développeurs spécialisés pour couvrir toutes les technologies et répondre à tous les besoins: créer ou développer des applications métiers ou applis mobiles/tablettes, relier ou synchroniser un site e-commerce avec un ERP/CRM existant ou avec tout autre système d\'information, etc.',
-            'size' => 20,
+            'size' => 22,
             'address' => '41 Rue Irene Joliot Curie',
             'additionalAddress' => 'Bâtiment Millenium',
             'postalCode' => '60610',
             'city' => 'Lacroix Saint-Ouen',
             'country' => 'FR',
+            'websiteLink' => 'https://www.mentalworks.fr',
+            'websiteLinkLabel' => 'mentalworks.fr',
             'xLink' => 'https://www.x.com/entreprise-parisienne',
             'linkedinLink' => 'https://www.linkedin.com/entreprise-parisienne',
             'enabled' => true,
@@ -102,6 +104,8 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             ->setPostalCode($data['postalCode'])
             ->setCity($data['city'])
             ->setCountry($data['country'])
+            ->setWebsiteLink($data['websiteLink'] ?? null)
+            ->setWebsiteLinkLabel($data['websiteLinkLabel'] ?? null)
             ->setXLink($data['xLink'] ?? null)
             ->setLinkedinLink($data['linkedinLink'] ?? null)
             ->setEnabled($data['enabled'] ?? false)

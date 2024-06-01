@@ -18,15 +18,15 @@ class Tag
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 10)]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $color = null;
 
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'tags')]

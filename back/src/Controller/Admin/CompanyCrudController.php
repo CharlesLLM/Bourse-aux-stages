@@ -34,6 +34,8 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('postalCode', 'common.postal_code'),
             TextField::new('city', 'common.city'),
             CountryField::new('country', 'common.country')->hideOnIndex(),
+            TextField::new('websiteLink', 'company.website')->hideOnIndex(),
+            TextField::new('websiteLinkLabel', 'company.website_label')->hideOnIndex(),
             TextField::new('xLink', 'company.x_link')->hideOnIndex(),
             TextField::new('linkedinLink', 'company.linkedin_link')->hideOnIndex(),
             AssociationField::new('category', 'common.category'),

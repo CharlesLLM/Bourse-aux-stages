@@ -25,6 +25,8 @@ admin.position: Poste
 
 # Company
 company.siret: 'Siret (format: 123 456 789 12345)'
+company.website: Site web
+company.website_label: Libellé du lien vers le site web
 company.x_link: Lien X (Twitter)
 company.linkedin_link: Lien LinkedIn
 company.logo: Logo

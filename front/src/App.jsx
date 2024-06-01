@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import CompanyIndex from "./pages/companyIndex";
+import CompanyView from "./pages/companyView";
 import Home from "../../front/src/pages/home";
 import Layout from "./layout/layout.jsx";
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: "/entreprises",
     element: <CompanyIndex />,
+  },
+  {
+    path: "/entreprises/:slug",
+    element: <CompanyView />,
   },
 ]);
 

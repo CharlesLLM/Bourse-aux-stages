@@ -38,7 +38,7 @@ class Offer
 
     #[ORM\Column(length: 20, enumType: OfferTypeEnum::class)]
     #[Assert\NotNull]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?OfferTypeEnum $type = null;
 
     #[ORM\Column(type: Types::TEXT)]

@@ -16,11 +16,11 @@ class CompanyCategory
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?string $name = null;
 
     public function getId(): ?Uuid

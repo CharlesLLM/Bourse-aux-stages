@@ -30,26 +30,26 @@ class Company
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^\d{3}\s\d{3}\s\d{3}\s\d{5}$/')]
-    #[Groups(['company', 'offer'])]
+    #[Groups(['offer'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -57,8 +57,16 @@ class Company
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?int $size = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company'])]
+    private ?string $websiteLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company'])]
+    private ?string $websiteLinkLabel = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['company', 'offer'])]
@@ -69,27 +77,27 @@ class Company
     private ?string $linkedinLink = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?float $longitude = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private ?string $logo = null;
 
     #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private CompanyCategory $category;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
     private Collection $admins;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private Collection $offers;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class)]
@@ -99,7 +107,7 @@ class Company
     private Collection $spontaneousApplications;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'companies')]
-    #[Groups(['company'])]
+    #[Groups(['companies', 'company'])]
     private Collection $tags;
 
     public function __construct()
@@ -189,6 +197,30 @@ class Company
     public function setSize(int $size): static
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getWebsiteLink(): ?string
+    {
+        return $this->websiteLink;
+    }
+
+    public function setWebsiteLink(?string $websiteLink): static
+    {
+        $this->websiteLink = $websiteLink;
+
+        return $this;
+    }
+
+    public function getWebsiteLinkLabel(): ?string
+    {
+        return $this->websiteLinkLabel;
+    }
+
+    public function setWebsiteLinkLabel(?string $websiteLinkLabel): static
+    {
+        $this->websiteLinkLabel = $websiteLinkLabel;
 
         return $this;
     }
