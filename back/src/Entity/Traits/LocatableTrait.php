@@ -4,6 +4,7 @@ namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait LocatableTrait
 {
@@ -15,6 +16,7 @@ trait LocatableTrait
     private ?string $additionalAddress = null;
 
     #[ORM\Column(length: 15)]
+    #[Assert\Regex(pattern: '/^\d{5}$/')]
     #[Groups(['offer', 'student', 'request'])]
     private ?string $postalCode = null;
 
@@ -23,6 +25,7 @@ trait LocatableTrait
     private ?string $city = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\Country]
     #[Groups(['offer', 'student', 'request'])]
     private ?string $country = null;
 

@@ -39,7 +39,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Étudiants', 'fa-solid fa-graduation-cap', Student::class);
         yield MenuItem::linkToCrud('Entreprises', 'fa-solid fa-building', Company::class);
         yield MenuItem::linkToCrud('Offres', 'fa-solid fa-briefcase', Offer::class);
-        yield MenuItem::linkToCrud('Secteurs d\'activité', 'fa-solid fa-tag', Tag::class);
-        yield MenuItem::linkToCrud('Catégories d\'entreprise', 'fa-solid fa-tags', CompanyCategory::class);
+        yield MenuItem::linkToCrud('Secteurs d\'activité', 'fa-solid fa-tags', Tag::class);
+        yield MenuItem::linkToCrud('Catégories d\'entreprise', 'fa-solid fa-tag', CompanyCategory::class);
     }
 }

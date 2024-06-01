@@ -13,6 +13,8 @@ common.postal_code: Code postal
 common.country: Pays
 common.enabled: Actif
 common.description: Description
+common.slug: Slug
+common.category: Catégorie
 
 # User
 user.password: Mot de passe
@@ -21,10 +23,14 @@ user.password: Mot de passe
 admin.position: Poste
 
 # Company
-company.siret: Siret
+company.siret: 'Siret (format: 123 456 789 12345)'
 company.x_link: Lien X (Twitter)
 company.linkedin_link: Lien LinkedIn
 company.logo: Logo
+company.size: Effectif
+company.summary: Résumé
+company.additional_address: Adresse complémentaire
+company.tags: Secteurs d'activité
 
 # Offer
 offer.type: Type

@@ -1,12 +1,14 @@
 import Badge from "../badge";
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
 
 function CompanyCard({ company }) {
+  const navigate = useNavigate();
   const stagesNumber = company.offers.filter(offer => offer.type === "stage").length;
   const apprenticeshipsNumber = company.offers.length - stagesNumber;
 
   return (
-    <div className="bg-white shadow-md p-6 w-full max-w-[440px]">
+    <div className="bg-white shadow-md p-6 w-full max-w-[440px] cursor-pointer" onClick={() => navigate(`/entreprises/${company.slug}`)}>
       <div className="flex justify-between mb-6">
         <img
           src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.logo}`}
@@ -37,6 +39,7 @@ CompanyCard.propTypes = {
     id: PropTypes.string.isRequired,
     logo: PropTypes.string,
     name: PropTypes.string.isRequired,
+    slug: PropTypes.string.isRequired,
     summary: PropTypes.string,
     tags: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,

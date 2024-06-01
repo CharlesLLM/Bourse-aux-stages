@@ -38,8 +38,13 @@ class Company
     #[Groups(['company', 'offer'])]
     private ?string $name = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(['company'])]
+    private ?string $slug = null;
+
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^\d{3}\s\d{3}\s\d{3}\s\d{5}$/')]
     #[Groups(['company', 'offer'])]
     private ?string $siret = null;
 
@@ -124,6 +129,18 @@ class Company
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -378,5 +395,19 @@ class Company
         $this->tags->removeElement($tag);
 
         return $this;
+    }
+
+    public function slugify(string $text): string
+    {
+        return preg_replace('/\s+/', '-', mb_strtolower(trim(strip_tags($text)), 'UTF-8'));
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateSlug(): void
+    {
+        if (null === $this->slug) {
+            $this->slug = $this->slugify($this->name);
+        }
     }
 }

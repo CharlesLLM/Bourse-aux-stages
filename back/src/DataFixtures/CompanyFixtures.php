@@ -23,7 +23,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'additionalAddress' => 'Bâtiment Millenium',
             'postalCode' => '60610',
             'city' => 'Lacroix Saint-Ouen',
-            'country' => 'France',
+            'country' => 'FR',
             'xLink' => 'https://www.x.com/entreprise-parisienne',
             'linkedinLink' => 'https://www.linkedin.com/entreprise-parisienne',
             'enabled' => true,
@@ -41,7 +41,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'address' => '1 Place de la Comédie',
             'postalCode' => '69001',
             'city' => 'Lyon',
-            'country' => 'France',
+            'country' => 'FR',
             'tags' => [
                 TagFixtures::TAG_IT,
             ],
@@ -54,7 +54,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'address' => '3 Boulevard Michelet',
             'postalCode' => '13008',
             'city' => 'Marseille',
-            'country' => 'France',
+            'country' => 'FR',
             'tags' => [
                 TagFixtures::TAG_IT,
                 TagFixtures::TAG_FINANCES,
