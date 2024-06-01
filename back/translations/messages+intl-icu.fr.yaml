@@ -33,3 +33,6 @@ offer.type.apprenticeship: Alternance
 offer.revenue: Rémunération
 offer.available_places: Places disponibles
 offer.remote: Télétravail
+
+# Tag
+tag.color: Couleur
