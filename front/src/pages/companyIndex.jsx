@@ -24,32 +24,17 @@ function CompanyIndex() {
       }
       const data = await response.json();
       setCompanies(data);
-    } catch (err) {
-      console.error('Error fetching data: ', err);
-    }
-  }
 
-  useEffect(() => {
-    const getCompanies = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}companies`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setCompanies(data);
-
+      if (selectedTags.length === 0) {
         const tags = data.map((company) => company.tags).flat();
         const uniqueTags = tags.filter((tag, index, self) => self.findIndex(t => t.id === tag.id) === index);
 
         setTags(uniqueTags);
-      } catch (err) {
-        console.error('Error fetching data: ', err);
       }
-    };
-
-    getCompanies();
-  }, []);
+    } catch (err) {
+      console.error('Error fetching data: ', err);
+    }
+  }
 
   return (
     <div className="flex flex-col items-center">
