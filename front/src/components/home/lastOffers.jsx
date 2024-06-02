@@ -25,7 +25,7 @@ function LastOffers() {
 
   if (offers && offers.length > 0) {
     return (
-      <div className="space-y-5 md:space-y-10 w-full px-14">
+      <div className="space-y-5 md:space-y-10 w-full">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-between items-start md:items-end">
           <h2 className="xl:text-5xl lg:text-4xl text-3xl">Dernières <span className="text-secondary">offres</span></h2>
           <LinkTo text={'Toutes les offres'} color={'secondary'} page={''} />
@@ -47,7 +47,7 @@ function LastOffers() {
               <p className={`text-sm text-grey font-light`}>{offer.description.length > 30 ? `${offer.description.substring(0, 40)}...` : offer.description}</p>
               <div className={`flex flex-row justify-center space-x-4`}>
                 {offer.tags.slice(0, 2).map((tag) => (
-                  <div className={`rounded-xl`} style={{backgroundColor: `${tag.color}1A`}}>
+                  <div key={`${offer.id}-${tag.id}`} className={`rounded-xl`} style={{backgroundColor: `${tag.color}1A`}}>
                     <p className={`text-center text-xs py-1 px-2  font-light`} style={{color: tag.color}}>{tag.name}</p>
                   </div>
                 ))}

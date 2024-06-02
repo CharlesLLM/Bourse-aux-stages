@@ -54,7 +54,7 @@ function LastRequests() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-10">
           {requests.map((request) => (
-            <div onClick={() => navigate("/")} className="group flex flex-col xs:flex-row justify-center items-center xs:items-start  w-[70vw] md:w-[40vw] py-5 border border-grey space-y-4 xs:space-y-0 xs:space-x-16 px-4 transition-all cursor-pointer">
+            <div key={request.id} onClick={() => navigate("/")} className="group flex flex-col xs:flex-row justify-center items-center xs:items-start  w-[70vw] md:w-[40vw] py-5 border border-grey space-y-4 xs:space-y-0 xs:space-x-16 px-4 transition-all cursor-pointer">
               {/*<i className={`${category.icon}`}></i>*/}
               <div className="w-12 h-12 rounded-full bg-third"></div>
               <div className={`flex flex-col space-y-4`}>
