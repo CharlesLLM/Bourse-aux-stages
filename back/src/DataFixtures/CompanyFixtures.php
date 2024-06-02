@@ -28,6 +28,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'websiteLinkLabel' => 'mentalworks.fr',
             'xLink' => 'https://www.x.com/entreprise-parisienne',
             'linkedinLink' => 'https://www.linkedin.com/entreprise-parisienne',
+            'phone' => '03 44 86 22 55',
             'enabled' => true,
             'tags' => [
                 TagFixtures::TAG_IT,
@@ -44,6 +45,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'postalCode' => '69001',
             'city' => 'Lyon',
             'country' => 'FR',
+            'phone' => '01 23 45 67 89',
             'tags' => [
                 TagFixtures::TAG_IT,
             ],
@@ -108,6 +110,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             ->setWebsiteLinkLabel($data['websiteLinkLabel'] ?? null)
             ->setXLink($data['xLink'] ?? null)
             ->setLinkedinLink($data['linkedinLink'] ?? null)
+            ->setPhone($data['phone'] ?? null)
             ->setEnabled($data['enabled'] ?? false)
             ->setCategory($this->getReference(CompanyCategoryFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyCategoryFixtures::FIXTURE_RANGE)))
         ;

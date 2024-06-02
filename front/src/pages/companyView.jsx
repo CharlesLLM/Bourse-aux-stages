@@ -14,7 +14,6 @@ function CompanyView() {
         }
         const data = await response.json();
         setCompany(data);
-        console.log(data);
       } catch (err) {
         console.error('Error fetching data: ', err);
       }
@@ -88,8 +87,58 @@ function CompanyView() {
                   <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
                 </svg>
               </a>
+              {/* TODO: Add map */}
             </div>
             <hr className="w-96" />
+          </div>
+
+          <div className="space-y-6">
+            <h2 className="text-4xl font-semibold">Nous joindre</h2>
+            <div>
+              {company.phone && <p className="font-normal text-textGrey">Téléphone : {company.phone}</p>}
+              <p className="font-normal text-textGrey">Du lundi au vendredi de 8h30 à 18h30</p>
+            </div>
+            <div>
+              <a href="/" target="_blank" rel="noreferrer" className="bg-white text-primary font-semibold w-fit flex gap-4 items-center">
+                Nous envoyer un message
+                <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="fill-primary size-4">
+                  <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
+                </svg>
+              </a>
+            </div>
+            <hr className="w-96" />
+          </div>
+
+          <div className="space-y-6">
+            <h2 className="text-4xl font-semibold">Vos contacts</h2>
+            {company.admins && company.admins.length > 0 && company.admins.map((admin) => (
+              <div key={`${company.id}-${admin.id}`} className="space-y-4">
+                <div className="space-y-4">
+                  <div>
+                    <p className="font-bold text-textGrey">{admin.position}</p>
+                    <p className="font-normal text-textGrey">{admin.user.firstName} <span className="uppercase">{admin.user.lastName}</span></p>
+                  </div>
+                  <div className="flex gap-5 items-center">
+                    {admin.linkedinLink && (
+                      <a href={admin.linkedinLink} target="_blank" rel="noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" className="fill-primary">
+                          <path d="M18.4696 -0.00010431H1.52957C1.33915 -0.00274893 1.15007 0.0321432 0.973136 0.102579C0.796201 0.173016 0.634874 0.277616 0.498368 0.410408C0.361862 0.543199 0.252852 0.70158 0.177562 0.876505C0.102273 1.05143 0.0621787 1.23947 0.0595703 1.4299V18.5699C0.0621787 18.7603 0.102273 18.9484 0.177562 19.1233C0.252852 19.2982 0.361862 19.4566 0.498368 19.5894C0.634874 19.7222 0.796201 19.8268 0.973136 19.8972C1.15007 19.9676 1.33915 20.0025 1.52957 19.9999H18.4696C18.66 20.0025 18.8491 19.9676 19.026 19.8972C19.2029 19.8268 19.3643 19.7222 19.5008 19.5894C19.6373 19.4566 19.7463 19.2982 19.8216 19.1233C19.8969 18.9484 19.937 18.7603 19.9396 18.5699V1.4299C19.937 1.23947 19.8969 1.05143 19.8216 0.876505C19.7463 0.70158 19.6373 0.543199 19.5008 0.410408C19.3643 0.277616 19.2029 0.173016 19.026 0.102579C18.8491 0.0321432 18.66 -0.00274893 18.4696 -0.00010431ZM6.08957 16.7399H3.08957V7.7399H6.08957V16.7399ZM4.58957 6.4799C4.17583 6.4799 3.77904 6.31554 3.48648 6.02298C3.19393 5.73043 3.02957 5.33363 3.02957 4.9199C3.02957 4.50616 3.19393 4.10937 3.48648 3.81681C3.77904 3.52425 4.17583 3.3599 4.58957 3.3599C4.80927 3.33498 5.03175 3.35675 5.24245 3.42378C5.45314 3.49081 5.64731 3.60159 5.81223 3.74886C5.97715 3.89613 6.1091 4.07657 6.19944 4.27838C6.28979 4.48018 6.33649 4.69879 6.33649 4.9199C6.33649 5.141 6.28979 5.35961 6.19944 5.56141C6.1091 5.76322 5.97715 5.94366 5.81223 6.09093C5.64731 6.23821 5.45314 6.34898 5.24245 6.41601C5.03175 6.48304 4.80927 6.50481 4.58957 6.4799ZM16.9096 16.7399H13.9096V11.9099C13.9096 10.6999 13.4796 9.9099 12.3896 9.9099C12.0522 9.91237 11.7238 10.0182 11.4484 10.2131C11.1731 10.408 10.9641 10.6826 10.8496 10.9999C10.7713 11.2349 10.7374 11.4825 10.7496 11.7299V16.7299H7.74957C7.74957 16.7299 7.74957 8.5499 7.74957 7.7299H10.7496V8.9999C11.0221 8.527 11.4185 8.13741 11.896 7.8731C12.3735 7.60878 12.9141 7.47975 13.4596 7.4999C15.4596 7.4999 16.9096 8.7899 16.9096 11.5599V16.7399Z" />
+                        </svg>
+                      </a>
+                    )}
+                    {admin.email && (
+                      <a href={`mailto:${admin.email}`} rel="noreferrer">
+                        <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" className="stroke-primary stroke-2">
+                          <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" strokeLinecap="round" strokeLinejoin="round"/>
+                          <rect x="3" y="5" width="18" height="14" rx="2" strokeLinecap="round"/>
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+                </div>
+                <hr className="w-96"/>
+              </div>
+            ))}
           </div>
         </div>
       </div>

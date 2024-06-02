@@ -76,6 +76,10 @@ class Company
     #[Groups(['company', 'offer'])]
     private ?string $linkedinLink = null;
 
+    #[ORM\Column(length: 15, nullable: true)]
+    #[Groups(['company'])]
+    private ?string $phone = null;
+
     #[ORM\Column(nullable: true)]
     #[Groups(['companies', 'company'])]
     private ?float $latitude = null;
@@ -94,6 +98,7 @@ class Company
     private CompanyCategory $category;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
+    #[Groups(['company'])]
     private Collection $admins;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
@@ -245,6 +250,18 @@ class Company
     public function setLinkedinLink(?string $linkedinLink): static
     {
         $this->linkedinLink = $linkedinLink;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
 
         return $this;
     }
