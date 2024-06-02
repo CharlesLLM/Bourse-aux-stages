@@ -10,7 +10,7 @@ function Navbar() {
           <a href="/">Accueil</a>
         </li>
         <li className="flex items-center">
-          <a href="/">Offres</a>
+          <a href="/offres">Offres</a>
         </li>
         <li className="flex items-center">
           <a href="/">Demandes</a>

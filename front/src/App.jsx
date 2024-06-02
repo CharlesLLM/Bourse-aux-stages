@@ -25,13 +25,12 @@ const router = createBrowserRouter([
     element: <CompanyView />,
   },
   {
-    path: "/company-offers",
+    path: "/offres",
     element: <CompanyOffers />,
   }
 ]);
 
 function App() {
-
   return (
     <Layout children={<RouterProvider router={router}/>}/>
   )

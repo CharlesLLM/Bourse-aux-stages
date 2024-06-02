@@ -13,18 +13,20 @@ const CheckboxFilter = ({ title, options, selectedValues = [], onCheckboxChange 
       {isVisible && (
         <div className="flex flex-col gap-6">
           {options.map((option, index) => (
-            <div className="flex gap-4 items-center" key={index}>
-              <input
-                id={option.value}
-                name={option.name}
-                type="checkbox"
-                value={option.value}
-                className="w-6 h-6 accent-[#4640DE] shrink-0"
-                checked={selectedValues.includes(option.value)}
-                onChange={() => onCheckboxChange(option.name, option.value)}
-              />
-              <label htmlFor={option.value} className="text-lg">{option.label}</label>
-            </div>
+              <div key={index} className="checkbox">
+                <label htmlFor={option.value}>
+                  <input
+                    id={option.value}
+                    name={option.name}
+                    type="checkbox"
+                    value={option.value}
+                    checked={selectedValues.includes(option.value)}
+                    onChange={() => onCheckboxChange(option.name, option.value)}
+                    />
+                  <span className="checkbox-span"></span>
+                  <h3 className="font-normal">{option.label}</h3>
+                </label>
+              </div>
           ))}
         </div>
       )}

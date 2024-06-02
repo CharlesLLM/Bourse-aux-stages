@@ -37,8 +37,6 @@ function CompanyOffers() {
             // niveau d'étude
             const isLevelMatch = selectedFilters.levelSearched.length === 0 || selectedFilters.levelSearched.includes(offer.levelSearched);
             // durée
-            console.log(selectedFilters.daysSpan)
-            console.log(offer.daysSpan)
             const isDurationMatch = selectedFilters.daysSpan.length === 0 || selectedFilters.daysSpan.some(duration => {
                 switch (duration) {
                   case 'LESS_THAN_2':
