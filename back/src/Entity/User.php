@@ -8,12 +8,14 @@ use App\Enum\GenderEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -29,27 +31,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[Groups(['student', 'request'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotNull]
+    #[Groups(['student', 'request'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
+    #[Groups(['student', 'request'])]
     private ?string $lastName = null;
 
     #[ORM\Column(enumType: GenderEnum::class, length: 10)]
     #[Assert\NotNull]
+    #[Groups(['student', 'request'])]
     private ?GenderEnum $gender = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotNull]
     #[Assert\Email]
+    #[Groups(['student', 'request'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotNull]
+    #[Groups(['student', 'request'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
@@ -69,7 +77,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Language::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['student'])]
     private ?Language $language = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['student', 'request'])]
+    private ?\DateTimeInterface $birthDate = null;
 
     public function __construct()
     {
@@ -277,6 +290,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLanguage(?Language $language): static
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(\DateTimeInterface $birthDate): static
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }

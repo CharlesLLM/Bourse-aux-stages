@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
@@ -21,10 +22,12 @@ class Student
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[Groups(['request'])]
     private ?Uuid $id = null;
 
     #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['request', 'student'])]
     private ?User $user = null;
 
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Experience::class, orphanRemoval: true)]
@@ -45,6 +48,12 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: SpontaneousApplication::class)]
     private Collection $spontaneousApplications;
 
+    /**
+     * @var Collection<int, Request>
+     */
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Request::class)]
+    private Collection $requests;
+
     public function __construct()
     {
         $this->experiences = new ArrayCollection();
@@ -53,6 +62,7 @@ class Student
         $this->formations = new ArrayCollection();
         $this->applications = new ArrayCollection();
         $this->spontaneousApplications = new ArrayCollection();
+        $this->requests = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -222,6 +232,36 @@ class Student
         if ($this->spontaneousApplications->removeElement($spontaneousApplication)) {
             if ($spontaneousApplication->getStudent() === $this) {
                 $spontaneousApplication->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Request>
+     */
+    public function getRequests(): Collection
+    {
+        return $this->requests;
+    }
+
+    public function addRequest(Request $request): static
+    {
+        if (!$this->requests->contains($request)) {
+            $this->requests->add($request);
+            $request->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRequest(Request $request): static
+    {
+        if ($this->requests->removeElement($request)) {
+            // set the owning side to null (unless already changed)
+            if ($request->getStudent() === $this) {
+                $request->setStudent(null);
             }
         }
 

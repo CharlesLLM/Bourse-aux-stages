@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Admin;
+use App\Tests\Factory\AdminFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -22,13 +23,8 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::DATA as $key => $item) {
-            $admin = $this->processAdmin($item);
-            $manager->persist($admin);
 
-            ++$key;
-            $this->addReference(self::FIXTURE_RANGE.$key, $admin);
-        }
+        AdminFactory::createMany(10);
 
         $manager->flush();
     }

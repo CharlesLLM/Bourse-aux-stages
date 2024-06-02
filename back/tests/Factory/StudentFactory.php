@@ -4,6 +4,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Student;
 use App\Repository\StudentRepository;
+use Faker\Factory;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -36,11 +37,13 @@ final class StudentFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $faker = Factory::create('fr_FR');
+
         return [
-            'address' => self::faker()->text(255),
-            'city' => self::faker()->text(50),
-            'country' => self::faker()->text(30),
-            'postalCode' => self::faker()->text(15),
+            'address' => $faker->address(),
+            'city' => $faker->city(),
+            'country' => $faker->country(),
+            'postalCode' => $faker->postcode(),
             'user' => UserFactory::new(),
         ];
     }

@@ -1,4 +1,3 @@
-import React from "react";
 import LinkTo from "../utils/linkTo.jsx";
 import {useNavigate} from "react-router-dom";
 
@@ -45,7 +44,8 @@ function WorkSector() {
       title: 'Business',
       number: 235,
     },
-  ]
+  ];
+
   return (
     <div className="space-y-5 md:space-y-10">
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-between items-start md:items-end">
@@ -54,7 +54,7 @@ function WorkSector() {
       </div>
       <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
         {data.map((category) => (
-          <div onClick={() => navigate("/")} className="group flex flex-col items-center xs:items-start px-4 py-5 border border-grey space-y-8 transition-all cursor-pointer hover:bg-primary">
+          <div onClick={() => navigate("/")} className="group flex flex-col items-center xs:items-start px-4 xs:w-[33vw] md:w-[25vw] lg:w-[20vw] py-10 border border-grey space-y-8 transition-all cursor-pointer hover:bg-primary">
             {/*<i className={`${category.icon}`}></i>*/}
             <div className="w-12 h-12 rounded-full bg-third group-hover:bg-white"></div>
             <p className="uppercase group-hover:text-white lg:text-lg xl:text-xl font-bold">{category.title}</p>
@@ -63,8 +63,7 @@ function WorkSector() {
         ))}
       </div>
     </div>
-
   )
 }
 
-export default WorkSector
+export default WorkSector;

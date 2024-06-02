@@ -1,7 +1,4 @@
-import React from "react";
-
 function FeaturedCompany() {
-
   const data = [
     '../../public/placeholder.webp',
     '../../public/placeholder.webp',
@@ -11,7 +8,7 @@ function FeaturedCompany() {
   ]
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-16">
       <p className="text-grey">Entreprises à la une</p>
       <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-5 gap-8">
         {data.map((companyLogo) => (

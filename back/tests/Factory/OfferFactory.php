@@ -3,9 +3,12 @@
 namespace App\Tests\Factory;
 
 use App\Entity\Offer;
+use App\Entity\Tag;
+use App\Enum\OffersNameEnum;
 use App\Enum\OfferTypeEnum;
 use App\Enum\PromoteStatusEnum;
 use App\Repository\OfferRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -38,11 +41,12 @@ final class OfferFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+
         return [
             'availablePlaces' => self::faker()->numberBetween(0, 100),
             'company' => CompanyFactory::new(),
             'description' => self::faker()->text(),
-            'name' => self::faker()->text(255),
+            'name' => self::faker()->randomElement(OffersNameEnum::cases())->value,
             'promoteStatus' => self::faker()->randomElement(PromoteStatusEnum::cases()),
             'remote' => self::faker()->boolean(),
             'revenue' => self::faker()->randomFloat(),
