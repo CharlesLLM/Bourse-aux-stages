@@ -21,6 +21,10 @@ function ListHero({ titleWord, subtitle, breadcrumb }) {
 ListHero.propTypes = {
   titleWord: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
+  breadcrumb: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    href: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default ListHero;

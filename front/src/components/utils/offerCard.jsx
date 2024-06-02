@@ -1,4 +1,5 @@
 import Badge from './badge';
+import PropTypes from "prop-types";
 
 function OfferCard({ offer }) {
   return (
@@ -18,5 +19,19 @@ function OfferCard({ offer }) {
     </div>
   );
 }
+
+OfferCard.propTypes = {
+  offer: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    })),
+  }).isRequired,
+};
 
 export default OfferCard;

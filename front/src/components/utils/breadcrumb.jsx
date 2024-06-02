@@ -27,4 +27,11 @@ function Breadcrumb({ links }) {
   );
 }
 
+Breadcrumb.propTypes = {
+  links: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    href: PropTypes.string.isRequired,
+  })).isRequired,
+};
+
 export default Breadcrumb;
