@@ -37,8 +37,10 @@ final class AdminFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
+            'email' => self::faker()->email(),
             'enabled' => self::faker()->boolean(),
-            'position' => self::faker()->text(100),
+            'linkedinLink' => 'https://www.linkedin.com/in/',
+            'position' => self::faker()->text(20),
             'user' => UserFactory::new(),
             'company' => CompanyFactory::new(),
         ];

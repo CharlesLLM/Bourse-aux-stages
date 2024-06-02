@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Company;
 use App\Tests\Factory\CompanyFactory;
-use App\Tests\Factory\TagFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -12,20 +11,24 @@ use Doctrine\Persistence\ObjectManager;
 class CompanyFixtures extends Fixture implements DependentFixtureInterface
 {
     public const REFERENCE_IDENTIFIER = 'company_';
-    public const FIXTURE_RANGE = 20;
+    public const FIXTURE_RANGE = 3;
     public const DATA = [
         [
             'name' => 'MentalWorks',
             'siret' => '123 456 789 01234',
             'summary' => 'Mentalworks est à la fois une agence web et webmarketing mais aussi une SSII/ESN spécialisée dans le développement et la maintenance d’applications sur-mesure.',
             'description' => 'Mentalworks représente une nouvelle génération : celle des agences digitales technologiques. Notre particularité est d\'intégrer à la fois une agence web et e-marketing (conseil stratégique, SEO/SEA/CM) mais aussi une SSII/ESN composée de développeurs spécialisés pour couvrir toutes les technologies et répondre à tous les besoins: créer ou développer des applications métiers ou applis mobiles/tablettes, relier ou synchroniser un site e-commerce avec un ERP/CRM existant ou avec tout autre système d\'information, etc.',
+            'size' => 22,
             'address' => '41 Rue Irene Joliot Curie',
             'additionalAddress' => 'Bâtiment Millenium',
             'postalCode' => '60610',
             'city' => 'Lacroix Saint-Ouen',
-            'country' => 'France',
+            'country' => 'FR',
+            'websiteLink' => 'https://www.mentalworks.fr',
+            'websiteLinkLabel' => 'mentalworks.fr',
             'xLink' => 'https://www.x.com/entreprise-parisienne',
             'linkedinLink' => 'https://www.linkedin.com/entreprise-parisienne',
+            'phone' => '03 44 86 22 55',
             'enabled' => true,
             'tags' => [
                 TagFixtures::TAG_IT,
@@ -37,10 +40,12 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Truebill',
             'siret' => '000 000 000 00000',
             'summary' => 'Prenez le contrôle de votre argent. Truebill développe une application mobile qui aide les consommateurs à prendre le contrôle de leurs finances...',
+            'size' => 50,
             'address' => '1 Place de la Comédie',
             'postalCode' => '69001',
             'city' => 'Lyon',
-            'country' => 'France',
+            'country' => 'FR',
+            'phone' => '01 23 45 67 89',
             'tags' => [
                 TagFixtures::TAG_IT,
             ],
@@ -49,10 +54,11 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             'name' => 'Coinbase',
             'siret' => '987 654 321 09876',
             'summary' => 'Coinbase est un porte-monnaie numérique et une plateforme où les commerçants et les consommateurs peuvent effectuer des transactions avec des cryptomonnaies...',
+            'size' => 100,
             'address' => '3 Boulevard Michelet',
             'postalCode' => '13008',
             'city' => 'Marseille',
-            'country' => 'France',
+            'country' => 'FR',
             'tags' => [
                 TagFixtures::TAG_IT,
                 TagFixtures::TAG_FINANCES,
@@ -62,15 +68,28 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        foreach (self::DATA as $key => $data) {
+            $company = $this->processCompany($data);
+            $manager->persist($company);
+            ++$key;
+            $this->addReference(self::REFERENCE_IDENTIFIER.$key, $company);
+        }
 
-        $tags = TagFactory::new()->many(self::FIXTURE_RANGE)->create();
-        shuffle($tags);
-        CompanyFactory::new()->many(10)->create(function() use ($tags) {
-            $selectedTags = array_slice($tags, 0, mt_rand(2, 3));
+        $tags = [];
+        for ($i = 1; $i <= TagFixtures::FIXTURE_RANGE; ++$i) {
+            $tags[] = $this->getReference(TagFixtures::REFERENCE_IDENTIFIER.$i);
+        }
+
+        CompanyFactory::new()->many(10)->create(function () use ($tags) {
+            $selectedCategory = $this->getReference(CompanyCategoryFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyCategoryFixtures::FIXTURE_RANGE));
+            $selectedTags = \array_slice($tags, 0, mt_rand(1, 3));
+
             return [
-                'tags' => $selectedTags
+                'category' => $selectedCategory,
+                'tags' => $selectedTags,
             ];
         });
+
         $manager->flush();
     }
 
@@ -81,14 +100,19 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
             ->setSiret($data['siret'])
             ->setSummary($data['summary'] ?? null)
             ->setDescription($data['description'] ?? null)
+            ->setSize($data['size'])
             ->setAddress($data['address'])
             ->setAdditionalAddress($data['additionalAddress'] ?? null)
             ->setPostalCode($data['postalCode'])
             ->setCity($data['city'])
             ->setCountry($data['country'])
+            ->setWebsiteLink($data['websiteLink'] ?? null)
+            ->setWebsiteLinkLabel($data['websiteLinkLabel'] ?? null)
             ->setXLink($data['xLink'] ?? null)
             ->setLinkedinLink($data['linkedinLink'] ?? null)
+            ->setPhone($data['phone'] ?? null)
             ->setEnabled($data['enabled'] ?? false)
+            ->setCategory($this->getReference(CompanyCategoryFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyCategoryFixtures::FIXTURE_RANGE)))
         ;
 
         foreach ($data['tags'] as $tag) {
@@ -101,6 +125,7 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
     public function getDependencies(): array
     {
         return [
+            CompanyCategoryFixtures::class,
             TagFixtures::class,
         ];
     }

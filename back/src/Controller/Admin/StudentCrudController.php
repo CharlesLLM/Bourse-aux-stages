@@ -21,7 +21,7 @@ class StudentCrudController extends AbstractCrudController
             TextField::new('address', 'common.address'),
             TextField::new('postalCode', 'common.postal_code'),
             TextField::new('city', 'common.city'),
-            TextField::new('country', 'common.country'),
+            TextField::new('country', 'common.country')->hideOnIndex(),
         ];
     }
 }

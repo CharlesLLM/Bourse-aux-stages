@@ -14,7 +14,7 @@ function Button({text, path, blue = false}) {
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
-  blue: PropTypes.string.isRequired,
+  blue: PropTypes.string,
 };
 
 export default Button;

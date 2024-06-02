@@ -23,3 +23,7 @@ supervisord.pid
 ###> docker-compose ###
 docker-compose-override.yml
 ###< docker-compose ###
+
+###> project ###
+/public/uploads/
+###< project ###

@@ -4,7 +4,7 @@ import Footer from "../components/footer.jsx";
 
 function Layout({children}) {
   return (
-    <div className="w-screen h-screen">
+    <div className="w-full h-screen">
       <Navbar />
       {children}
       <Footer />

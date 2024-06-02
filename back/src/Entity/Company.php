@@ -30,43 +30,79 @@ class Company
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $name = null;
+
+    #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['companies', 'company'])]
+    private ?string $slug = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
+    #[Assert\Regex(pattern: '/^\d{3}\s\d{3}\s\d{3}\s\d{5}$/')]
     #[Groups(['offer'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['companies', 'company'])]
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['company'])]
     private ?string $description = null;
 
+    #[ORM\Column]
+    #[Groups(['companies', 'company'])]
+    private ?int $size = null;
+
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['offer'])]
+    #[Groups(['company'])]
+    private ?string $websiteLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company'])]
+    private ?string $websiteLinkLabel = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company', 'offer'])]
     private ?string $xLink = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $linkedinLink = null;
 
+    #[ORM\Column(length: 15, nullable: true)]
+    #[Groups(['company'])]
+    private ?string $phone = null;
+
     #[ORM\Column(nullable: true)]
+    #[Groups(['companies', 'company'])]
     private ?float $latitude = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['companies', 'company'])]
     private ?float $longitude = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['companies', 'company'])]
+    private ?string $logo = null;
+
+    #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['companies', 'company'])]
+    private CompanyCategory $category;
+
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
+    #[Groups(['company'])]
     private Collection $admins;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
+    #[Groups(['companies', 'company'])]
     private Collection $offers;
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class)]
@@ -76,7 +112,12 @@ class Company
     private Collection $spontaneousApplications;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'companies')]
+    #[Groups(['companies', 'company'])]
     private Collection $tags;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['company'])]
+    private ?array $images = null;
 
     public function __construct()
     {
@@ -85,6 +126,11 @@ class Company
         $this->applications = new ArrayCollection();
         $this->spontaneousApplications = new ArrayCollection();
         $this->tags = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
     }
 
     public function getId(): ?Uuid
@@ -100,6 +146,18 @@ class Company
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }
@@ -140,6 +198,42 @@ class Company
         return $this;
     }
 
+    public function getSize(): ?int
+    {
+        return $this->size;
+    }
+
+    public function setSize(int $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function getWebsiteLink(): ?string
+    {
+        return $this->websiteLink;
+    }
+
+    public function setWebsiteLink(?string $websiteLink): static
+    {
+        $this->websiteLink = $websiteLink;
+
+        return $this;
+    }
+
+    public function getWebsiteLinkLabel(): ?string
+    {
+        return $this->websiteLinkLabel;
+    }
+
+    public function setWebsiteLinkLabel(?string $websiteLinkLabel): static
+    {
+        $this->websiteLinkLabel = $websiteLinkLabel;
+
+        return $this;
+    }
+
     public function getXLink(): ?string
     {
         return $this->xLink;
@@ -164,6 +258,18 @@ class Company
         return $this;
     }
 
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(?string $phone): static
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
     public function getLatitude(): ?float
     {
         return $this->latitude;
@@ -184,6 +290,30 @@ class Company
     public function setLongitude(?float $longitude): static
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): static
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getCategory(): ?CompanyCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?CompanyCategory $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }
@@ -316,6 +446,32 @@ class Company
     public function removeTag(Tag $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function slugify(string $text): string
+    {
+        return preg_replace('/\s+/', '-', mb_strtolower(trim(strip_tags($text)), 'UTF-8'));
+    }
+
+    #[ORM\PrePersist]
+    #[ORM\PreUpdate]
+    public function updateSlug(): void
+    {
+        if (null === $this->slug) {
+            $this->slug = $this->slugify($this->name);
+        }
+    }
+
+    public function getImages(): ?array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): static
+    {
+        $this->images = $images;
 
         return $this;
     }

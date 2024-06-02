@@ -16,6 +16,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         [
             'user' => 'user_2',
             'company' => 'company_1',
+            'email' => 'test@test.fr',
             'position' => 'PDG',
             'enabled' => true,
         ],
@@ -23,8 +24,18 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
 
     public function load(ObjectManager $manager): void
     {
+        foreach (self::DATA as $data) {
+            $admin = $this->processAdmin($data);
+            $manager->persist($admin);
+        }
 
-        AdminFactory::createMany(10);
+        AdminFactory::new()->many(10)->create(function () {
+            $selectedCompany = $this->getReference(CompanyFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyFixtures::FIXTURE_RANGE));
+
+            return [
+                'company' => $selectedCompany,
+            ];
+        });
 
         $manager->flush();
     }
@@ -35,6 +46,7 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         $admin->setPosition($data['position'])
             ->setUser($this->getReference($data['user']))
             ->setCompany($this->getReference($data['company']))
+            ->setEmail($data['email'])
             ->setEnabled($data['enabled'])
         ;
         $admin->getUser()->addRole('ROLE_ADMIN');

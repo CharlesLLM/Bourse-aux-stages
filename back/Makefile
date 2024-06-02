@@ -30,8 +30,8 @@ db:
 
 perm:
 	sudo chown -R $(USER):$(USER) .
-	mkdir -p ./var ./public/
-	sudo chown -R www-data:$(USER) ./var ./public/
+	mkdir -p ./var ./public/uploads/ ./public/uploads/company/
+	sudo chown -R www-data:$(USER) ./var ./public/uploads/ ./public/uploads/company/
 	sudo chmod -R g+rwx .
 
 cc:

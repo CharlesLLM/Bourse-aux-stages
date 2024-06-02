@@ -4,26 +4,30 @@ namespace App\Entity\Traits;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 trait LocatableTrait
 {
     #[ORM\Column(length: 255)]
-    #[Groups(['offer', 'student'])]
+    #[Groups(['company', 'offer', 'student'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['company'])]
     private ?string $additionalAddress = null;
 
     #[ORM\Column(length: 15)]
-    #[Groups(['offer', 'student', 'request'])]
+    #[Assert\Regex(pattern: '/^\d{5}$/')]
+    #[Groups(['company', 'offer', 'student', 'request'])]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['offer', 'student', 'request'])]
+    #[Groups(['company', 'offer', 'student', 'request'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['offer', 'student', 'request'])]
+    #[Assert\Country]
+    #[Groups(['company', 'offer', 'student', 'request'])]
     private ?string $country = null;
 
     public function getAddress(): ?string

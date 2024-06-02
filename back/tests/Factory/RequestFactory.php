@@ -2,16 +2,12 @@
 
 namespace App\Tests\Factory;
 
-use App\Entity\Offer;
 use App\Entity\Request;
 use App\Enum\OffersNameEnum;
 use App\Enum\OfferTypeEnum;
-use App\Repository\OfferRepository;
 use Zenstruck\Foundry\ModelFactory;
-use Zenstruck\Foundry\Proxy;
-use Zenstruck\Foundry\RepositoryProxy;
 
-final class RequestFactory  extends ModelFactory
+final class RequestFactory extends ModelFactory
 {
     public function __construct()
     {

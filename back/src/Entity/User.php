@@ -36,12 +36,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 50)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'company'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'company'])]
     private ?string $lastName = null;
 
     #[ORM\Column(enumType: GenderEnum::class, length: 10)]

@@ -6,22 +6,27 @@ use App\Repository\TagRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 class Tag
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[Groups(['companies', 'company', 'offer'])]
+    private ?Uuid $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['offer'])]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 10)]
-    #[Groups(['offer'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $color = null;
 
     #[ORM\ManyToMany(targetEntity: Offer::class, mappedBy: 'tags')]
@@ -36,7 +41,7 @@ class Tag
         $this->companies = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
@@ -111,5 +116,10 @@ class Tag
         }
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
     }
 }
