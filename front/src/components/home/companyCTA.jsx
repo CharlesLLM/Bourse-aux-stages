@@ -9,7 +9,7 @@ function CompanyCTA(){
         <p className={`text-white text-sm lg:text-md`}>Vous pourrez gérer votre planning d'accueil et bénéficier de nombreux service intégrés</p>
         <Button text={"Créez votre compte"} path={"*"} />
       </div>
-      <div className="pt-12 md:pt-32">
+      <div className="pt-12 md:pt-16">
         <img src="/home/dashboardCompany.svg" className={` w-full md:w-[45vw]`} alt="dashboard Company" />
       </div>
     </div>

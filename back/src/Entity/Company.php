@@ -89,7 +89,7 @@ class Company
     private ?float $longitude = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['companies', 'company'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $logo = null;
 
     #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
