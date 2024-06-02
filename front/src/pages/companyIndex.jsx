@@ -62,8 +62,9 @@ function CompanyIndex() {
       <ListHero
         titleWord="entreprises"
         subtitle="Découvrez les entreprises qui proposent des offres de stage ou d'alternance"
+        breadcrumb={[{ name: 'Accueil', href: '/' }, { name: 'Entreprises', href: '/entreprises' }]}
       />
-      <div className="flex md:px-48 md:py-[72px] gap-16 w-full">
+      <div className="flex md:px-32 md:py-[72px] gap-16 w-full">
         <div className="w-64 space-y-10">
           <TagFilters tags={tags} handleTags={handleTags} />
           <CategoryFilters categories={categories} handleCategories={handleCategories} />
