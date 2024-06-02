@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import LinkTo from "../utils/linkTo.jsx";
 import {useNavigate} from "react-router-dom";
 import {differenceInDays, differenceInMonths, differenceInYears, format, parse, parseISO} from 'date-fns';
@@ -22,6 +22,7 @@ function LastRequests() {
         setError(err);
       }
     };
+
     latestRequests();
   }, []);
 
@@ -39,9 +40,7 @@ function LastRequests() {
   };
 
   const calculateAge = (birthDateString) => {
-    const birthDate = parseISO(birthDateString);
-    return differenceInYears(new Date(), birthDate);
-
+    return differenceInYears(new Date(), parseISO(birthDateString));
   }
 
   if (requests && requests.length > 0) {

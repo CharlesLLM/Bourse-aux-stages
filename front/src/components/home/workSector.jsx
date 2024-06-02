@@ -1,4 +1,3 @@
-import React from "react";
 import LinkTo from "../utils/linkTo.jsx";
 import {useNavigate} from "react-router-dom";
 
@@ -45,7 +44,8 @@ function WorkSector() {
       title: 'Business',
       number: 235,
     },
-  ]
+  ];
+
   return (
     <div className="space-y-5 md:space-y-10">
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-between items-start md:items-end">
@@ -63,8 +63,7 @@ function WorkSector() {
         ))}
       </div>
     </div>
-
   )
 }
 
-export default WorkSector
+export default WorkSector;

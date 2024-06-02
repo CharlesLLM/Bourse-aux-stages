@@ -1,9 +1,6 @@
-import React from "react";
 import Button from "../utils/button.jsx";
 
 function CompanyCTA(){
-
-
   return (
     <div className={` relative overflow-hidden flex flex-col md:flex-row items-center justify-center bg-primary px-8 w-[88vw] space-x-4 `}
          style={{clipPath: "polygon(20% 0, 100% 0, 100% 85%, 80% 100%, 0 100%, 0 15%)"}}>

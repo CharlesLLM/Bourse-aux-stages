@@ -1,8 +1,5 @@
-import React from "react";
 import {useNavigate} from "react-router-dom";
 import PropTypes from "prop-types";
-import LinkTo from "./linkTo.jsx";
-
 
 function Button({text, path, blue = false}) {
   const navigate = useNavigate();
@@ -13,6 +10,7 @@ function Button({text, path, blue = false}) {
     </div>
   )
 }
+
 Button.propTypes = {
   text: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,

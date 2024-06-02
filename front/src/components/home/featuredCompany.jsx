@@ -1,7 +1,4 @@
-import React from "react";
-
 function FeaturedCompany() {
-
   const data = [
     '../../public/placeholder.webp',
     '../../public/placeholder.webp',
