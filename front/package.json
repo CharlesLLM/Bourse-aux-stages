@@ -17,11 +17,13 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.22.3",
     "react-widgets": "^5.8.4",
     "react-widgets-tailwind": "^1.1.5",
     "sass": "^1.77.4",
-    "sort-by": "^1.2.0"
+    "sort-by": "^1.2.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

@@ -10,6 +10,8 @@ import CompanyView from "./pages/companyView";
 import Home from "../../front/src/pages/home";
 import CompanyOffers from "../../front/src/pages/companyOffers";
 import Layout from "./layout/layout.jsx";
+import Application from "./pages/application.jsx";
+import Offer from "./pages/offer.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
   {
     path: "/offres",
     element: <CompanyOffers />,
+  },
+  {
+    path: '/offre/:id',
+    element: <Offer />,
+  },
+  {
+    path: 'postuler/:id',
+    element: <Application />
   }
 ]);
 
