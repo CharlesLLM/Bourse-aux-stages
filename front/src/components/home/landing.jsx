@@ -27,7 +27,7 @@ function Landing() {
             {/* <img src="images/rectangle1.svg" className="absolute w-[360px] ml-[340px] bottom-0 z-10" /> */}
             <img src="images/rectangle2.svg" className="absolute w-[520px] right-40 -bottom-12 z-10" />
             <img src="images/rectangle3.svg" className="absolute w-[520px] right-0 bottom-0 z-10" />
-            <img src="images/rectangle4.svg" className="absolute w-[260px] ml-[660px] top-14 z-10" />
+            <img src="images/rectangle4.svg" className="absolute w-[260px] right-[360px] top-14 z-10" />
         </div>
     </div>
   )

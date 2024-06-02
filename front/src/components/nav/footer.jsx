@@ -7,11 +7,11 @@ import { FaTwitter } from "react-icons/fa";
 
 function Footer(){
   return (
-    <div className="bg-dark px-32 p-12 mt-32">
+    <div className="bg-dark px-32 p-12">
       <div className="flex flex-row flex-wrap place-content-around text-[#D6DDEB] h-auto pb-16 gap-8 sm:gap-3">
         <div className="w-4/12 min-w-56">
           <div className="flex flex-row flex-nowrap gap-2">
-            <img src="logo.svg" className="w-8 h-8"></img>
+            <img src="/logo.svg" className="w-8 h-8"></img>
             <h3 className="text-white text-2xl font-bold"> Bourse aux Stages </h3>
           </div>
           <p> Première plateforme dédiée à la recherche de stages et d’alternance qui relie automatiquement les étudiants et les entreprises.</p>

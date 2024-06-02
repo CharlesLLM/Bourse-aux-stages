@@ -60,7 +60,7 @@ function CompanyIndex() {
   return (
     <div className="flex flex-col items-center">
       <ListHero
-        titleWord="entreprises"
+        mainText="Liste des entreprises"
         subtitle="Découvrez les entreprises qui proposent des offres de stage ou d'alternance"
         breadcrumb={[{ name: 'Accueil', href: '/' }, { name: 'Entreprises', href: '/entreprises' }]}
       />

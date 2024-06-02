@@ -13,12 +13,12 @@ function Breadcrumb({ links }) {
               <div>
                 <button
                   onClick={() => navigate(link.href)}
-                  className="text-primary"
+                  className="text-black"
                 >{link.name}</button><span className="mx-2">/</span>
               </div>
             )}
             {index === links.length - 1 && (
-              <span>{link.name}</span>
+              <span className="text-primary">{link.name}</span>
             )}
           </li>
         ))}
