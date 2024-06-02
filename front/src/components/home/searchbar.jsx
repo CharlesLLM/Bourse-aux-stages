@@ -50,13 +50,12 @@ function Searchbar() {
             </div>
 
             <div className="flex flex-row gap-2 items-start w-full">
-                <div>< LuMapPin className="w-6 h-6 mt-2" /></div>
+                <div>
+                    <LuMapPin className="w-6 h-6 mt-2" />
+                </div>
                 {cities.length === 0 ? (
-            <div className="flex flex-row gap-2">
-                <div> icon </div>
-                {loading && (
                     <Combobox busy placeholder="Chargement..." />
-                ) || (
+                ) : (
                     <Combobox
                         data={cities}
                         dataKey="code"
@@ -64,6 +63,7 @@ function Searchbar() {
                         placeholder="Sélectionner une ville"
                         filter='contains'
                         onChange={handleSearchInputChange}
+                        className="w-full"
                     />
                 )}
             </div> 

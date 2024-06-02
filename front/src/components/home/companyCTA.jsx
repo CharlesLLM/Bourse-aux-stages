@@ -2,7 +2,7 @@ import Button from "../utils/button.jsx";
 
 function CompanyCTA(){
   return (
-    <div className="w-full px-32">
+    <div className="w-full px-32 pt-8">
       <div className={`relative overflow-hidden flex flex-col md:flex-row items-center justify-center bg-primary w-full space-x-4`}
           style={{clipPath: "polygon(20% 0, 100% 0, 100% 85%, 80% 100%, 0 100%, 0 15%)"}}>
         <div className={`flex flex-col px-16 md:px-2 space-y-6 mt-6 w-full  md:pt-0 md:w-[30vw]`}>
