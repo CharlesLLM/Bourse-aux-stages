@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\OfferTypeEnum;
 use App\Enum\PromoteStatusEnum;
@@ -21,29 +20,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Offer
 {
-    use DateableTrait;
     use TimestampableTrait;
 
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['offer'])]
+    #[Groups(['offer', 'company'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Groups(['offer'])]
+    #[Groups(['offer', 'company'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 20, enumType: OfferTypeEnum::class)]
     #[Assert\NotNull]
-    #[Groups(['companies', 'company', 'offer'])]
+    #[Groups(['offer', 'companies', 'company'])]
     private ?OfferTypeEnum $type = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotNull]
-    #[Groups(['offer'])]
+    #[Groups(['offer', 'company'])]
     private ?string $description = null;
 
     #[ORM\Column(enumType: PromoteStatusEnum::class, length: 10, nullable: true)]
@@ -63,13 +61,21 @@ class Offer
     #[Groups(['offer'])]
     private ?int $availablePlaces = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['company'])]
+    private \DateTimeInterface $startDate;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['company'])]
+    private \DateTimeInterface $endDate;
+
     #[ORM\ManyToOne(inversedBy: 'offers')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['offer'])]
     private ?Company $company = null;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'offers')]
-    #[Groups(['offer'])]
+    #[Groups(['offer', 'company'])]
     private Collection $tags;
 
     public function __construct()
@@ -162,6 +168,30 @@ class Offer
     public function setAvailablePlaces(int $availablePlaces): static
     {
         $this->availablePlaces = $availablePlaces;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->startDate;
+    }
+
+    public function setStartDate(\DateTimeInterface $startDate): static
+    {
+        $this->startDate = $startDate;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->endDate;
+    }
+
+    public function setEndDate(\DateTimeInterface $endDate): static
+    {
+        $this->endDate = $endDate;
 
         return $this;
     }

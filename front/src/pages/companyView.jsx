@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import OfferCard from '../components/utils/offerCard.jsx';
 
 function CompanyView() {
   const { slug } = useParams();
   const [company, setCompany] = useState([]);
+  const [intershipOffers, setInternshipOffers] = useState([]);
+  const [apprenticeshipOffers, setApprenticeshipOffers] = useState([]);
 
   useEffect(() => {
     const getCompany = async () => {
@@ -14,6 +17,9 @@ function CompanyView() {
         }
         const data = await response.json();
         setCompany(data);
+
+        setInternshipOffers(data.offers.filter((offer) => offer.type === 'stage'));
+        setApprenticeshipOffers(data.offers.filter((offer) => offer.type === 'alternance'));
       } catch (err) {
         console.error('Error fetching data: ', err);
       }
@@ -23,6 +29,7 @@ function CompanyView() {
   }, []);
 
   return (
+    // Header
     <div className="flex flex-col items-center">
       <div className="h-[300px] w-full bg-lightGrey px-32 flex flex-col justify-center gap-6">
         <p className="text-5xl font-semibold">{company.name}</p>
@@ -35,15 +42,18 @@ function CompanyView() {
           </a>
         )}
       </div>
+
+      {/* Main content */}
       <div className="flex md:px-32 md:py-[72px] gap-16 w-full">
-        <div className="flex flex-col gap-6 w-2/3">
+        {/* Left content */}
+        <div className="flex flex-col gap-10 w-2/3">
           <div className="space-y-4">
-            <h2 className="text-4xl font-semibold">Présentation</h2>
+            <h2 className="text-3xl font-semibold">Présentation</h2>
             <p className="text-textGrey font-bold">{company.summary}</p>
             <p className="font-normal">{company.description}</p>
           </div>
           <div className="space-y-6">
-            <h2 className="text-4xl font-semibold">Réseaux sociaux</h2>
+            <h2 className="text-3xl font-semibold">Réseaux sociaux</h2>
             <div className="flex gap-4">
               {company.linkedinLink && (
                 <a href={company.linkedinLink} target="_blank" rel="noreferrer" className="border border-primary p-2 flex items-center gap-2.5">
@@ -63,7 +73,43 @@ function CompanyView() {
               )}
             </div>
           </div>
+
+          {/* Images section */}
+          {company.images && company.images.length > 0 && (
+            <div className="flex gap-3">
+              <div className="space-y-4">
+                {company.images[0] && (
+                  <img
+                    key={company.images[0]}
+                    src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.images[0]}`}
+                    alt={company.name}
+                    className="object-cover w-[460px] h-[400px]"
+                  />
+                )}
+                {company.images[1] && (
+                  <img
+                    key={company.images[1]}
+                    src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.images[1]}`}
+                    alt={company.name}
+                    className="object-cover w-[460px] h-[200px]"
+                  />
+                )}
+              </div>
+              <div className="space-y-2">
+                {company.images.slice(2).map((image) => (
+                  <img
+                    key={image}
+                    src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${image}`}
+                    alt={company.name}
+                    className="object-cover w-72 h-[200px]"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
+
+        {/* Right content */}
         <div className="w-1/3 space-y-10">
           {company.logo && (
             <img
@@ -73,7 +119,7 @@ function CompanyView() {
             />
           )}
           <div className="space-y-4">
-            <h2 className="text-4xl font-semibold">Situation</h2>
+            <h2 className="text-3xl font-semibold">Situation</h2>
             <div>
               <p className="font-bold text-textGrey">{company.name}</p>
               <p className="font-normal text-textGrey">{company.address}</p>
@@ -93,7 +139,7 @@ function CompanyView() {
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-4xl font-semibold">Nous joindre</h2>
+            <h2 className="text-3xl font-semibold">Nous joindre</h2>
             <div>
               {company.phone && <p className="font-normal text-textGrey">Téléphone : {company.phone}</p>}
               <p className="font-normal text-textGrey">Du lundi au vendredi de 8h30 à 18h30</p>
@@ -110,7 +156,7 @@ function CompanyView() {
           </div>
 
           <div className="space-y-6">
-            <h2 className="text-4xl font-semibold">Vos contacts</h2>
+            <h2 className="text-3xl font-semibold">Vos contacts</h2>
             {company.admins && company.admins.length > 0 && company.admins.map((admin) => (
               <div key={`${company.id}-${admin.id}`} className="space-y-4">
                 <div className="space-y-4">
@@ -139,6 +185,28 @@ function CompanyView() {
                 <hr className="w-96"/>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Offers section */}
+      <div className="w-full bg-lightGrey px-32 py-[72px] flex flex-col justify-center gap-6">
+        <div className="flex flex-col gap-12 w-full">
+          <div className="space-y-7">
+            <h2 className="text-3xl font-semibold">Offres de stages proposées</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {intershipOffers.map((offer) => (
+                <OfferCard key={offer.id} offer={offer} />
+              ))}
+            </div>
+          </div>
+          <div className="space-y-7">
+            <h2 className="text-3xl font-semibold">Offres en alternance proposées</h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {apprenticeshipOffers.map((offer) => (
+                <OfferCard key={offer.id} offer={offer} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

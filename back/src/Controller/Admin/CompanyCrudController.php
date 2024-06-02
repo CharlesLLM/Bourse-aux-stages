@@ -3,15 +3,20 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Company;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class CompanyCrudController extends AbstractCrudController
 {
@@ -47,6 +52,69 @@ class CompanyCrudController extends AbstractCrudController
                 ->setUploadDir('public/uploads/company/')
                 ->setUploadedFileNamePattern('[slug]-[uuid].[extension]')
                 ->setRequired(false),
+
+            CollectionField::new('images')
+                ->setEntryType(FileType::class)
+                ->setFormTypeOptions([
+                    'entry_options' => [
+                        'label' => false,
+                        'required' => false,
+                        'data_class' => null,
+                    ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'by_reference' => false,
+                ])
+                ->setLabel('Images')
+                ->setRequired(false),
         ];
+    }
+
+    public function createEntity(string $entityFqcn)
+    {
+        $company = new Company();
+        return $company;
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $this->handleFileUpload($entityInstance);
+        parent::persistEntity($entityManager, $entityInstance);
+    }
+
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $this->handleFileUpload($entityInstance);
+        parent::updateEntity($entityManager, $entityInstance);
+    }
+
+    private function handleFileUpload($entityInstance): void
+    {
+        /** @var Company $company */
+        $company = $entityInstance;
+
+        $images = $company->getImages();
+        $updatedImages = [];
+
+        foreach ($images as $key => $image) {
+            if ($image instanceof UploadedFile) {
+                $newFilename = uniqid().'.'.$image->guessExtension();
+
+                try {
+                    $image->move(
+                        $this->getParameter('kernel.project_dir').'/public/uploads/company',
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Handle exception if something happens during file upload
+                }
+
+                $updatedImages[] = $newFilename;
+            } else {
+                $updatedImages[] = $image;
+            }
+        }
+
+        $company->setImages($updatedImages);
     }
 }

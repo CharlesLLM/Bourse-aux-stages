@@ -115,6 +115,10 @@ class Company
     #[Groups(['companies', 'company'])]
     private Collection $tags;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['company'])]
+    private ?array $images = null;
+
     public function __construct()
     {
         $this->admins = new ArrayCollection();
@@ -458,5 +462,17 @@ class Company
         if (null === $this->slug) {
             $this->slug = $this->slugify($this->name);
         }
+    }
+
+    public function getImages(): ?array
+    {
+        return $this->images;
+    }
+
+    public function setImages(?array $images): static
+    {
+        $this->images = $images;
+
+        return $this;
     }
 }

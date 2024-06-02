@@ -1,4 +1,4 @@
-import Badge from "../badge";
+import Badge from "../utils/badge";
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
 
