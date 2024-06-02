@@ -5,7 +5,7 @@ import OfferCell from "./offerCell.jsx";
 function OffersList({ data, currentPage, setCurrentPage, PageSize, nbOffers }) {
   return (
     <div>
-      <div className="flex flex-col gap-4 md:px-12 md:mx-0">
+      <div className="flex flex-col gap-4 md:mx-0">
         {data.map((offer, index) => (
           <OfferCell
             key={index}

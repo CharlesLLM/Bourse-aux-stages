@@ -106,7 +106,7 @@ function CompanyOffers() {
             breadcrumb={[{ name: 'Accueil', href: '/' }, { name: 'Offres', href: '/offres' }, { name: 'Stages', href: '/offres' } ]}
         />
         <div className="flex flex-col md:flex-row md:px-32 pt-16 gap-16 bg-white">
-            <div className="md:w-3/12">
+            <div className="md:w-64">
                 {/* filtres */}
                 <OffersFilters setSelectedFilters={setSelectedFilters} selectedFilters={selectedFilters}/>
             </div>
@@ -126,7 +126,7 @@ function CompanyOffers() {
                         </p>
                     </div>
                 </div>
-                <div className="flex flex-col gap-4 md:px-12 md:mx-0">
+                <div className="flex flex-col gap-4 md:mx-0">
                     {/* offres */}
                     <OffersList
                         data={currentData}
