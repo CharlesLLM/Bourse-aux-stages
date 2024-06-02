@@ -14,7 +14,7 @@ import Layout from "./layout/layout.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <CompanyOffers />,
+    element: <Home />,
   },
   {
     path: "/entreprises",
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
     path: "/entreprises/:slug",
     element: <CompanyView />,
   },
+  {
+    path: "/company-offers",
+    element: <CompanyOffers />,
+  }
 ]);
 
 function App() {
