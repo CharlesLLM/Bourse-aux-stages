@@ -10,7 +10,7 @@ function Badge({ variant, tag }) {
       );
     case "offerTag":
       return (
-        <span style={{backgroundColor: `${tag.color}1A`, color: tag.color}} className="rounded-full text-sm font-semibold px-4 py-2 h-fit capitalize">
+        <span style={{backgroundColor: `${tag.color}1A`, color: tag.color}} className="rounded-full text-sm font-semibold px-4 py-1 h-fit capitalize">
           {tag.name}
         </span>
       );

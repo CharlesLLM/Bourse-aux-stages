@@ -31,4 +31,13 @@ class CompanyController extends AbstractController
     {
         return new JsonResponse($serializer->serialize($company, 'json', ['groups' => ['company']]), Response::HTTP_OK, [], true);
     }
+
+    #[Route('/companies/top', name: 'app_company_top', methods: ['GET'])]
+    public function getCompaniesWithMostOffers(CompanyRepository $companyRepository, SerializerInterface $serializer): JsonResponse
+    {
+        $companies = $companyRepository->findCompaniesWithMostOffers();
+        $jsonContent = $serializer->serialize($companies, 'json', ['groups' => ['companies']]);
+
+        return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
+    }
 }

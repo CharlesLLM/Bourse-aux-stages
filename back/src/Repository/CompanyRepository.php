@@ -14,6 +14,18 @@ class CompanyRepository extends ServiceEntityRepository
         parent::__construct($registry, Company::class);
     }
 
+    public function findCompaniesWithMostOffers(): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.offers', 'o')
+            ->orderBy('COUNT(o)', 'DESC')
+            ->groupBy('c')
+            ->setMaxResults(5)
+        ;
+
+        return $qb->getQuery()->execute();
+    }
+
     public function findByFilters(array $tagIds = [], array $categoryIds = [], array $sizes = []): array
     {
         $tagIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $tagIds);

@@ -55,7 +55,7 @@ function WorkSector() {
   ];
 
   return (
-    <div className="space-y-5 md:space-y-10">
+    <div className="space-y-5 md:space-y-10 px-32">
       <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-between items-start md:items-end">
         <h2 className="xl:text-5xl lg:text-4xl text-3xl">Top des <span className="text-secondary">profils recherchés</span></h2>
         <LinkTo text={'Tous les profils'} color={'secondary'} page={''} />
