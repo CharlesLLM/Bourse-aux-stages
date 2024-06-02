@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import LinkTo from "../utils/linkTo.jsx";
 import Badge from "../utils/badge.jsx";
+import OfferTypeTag from "../utils/offerTypeTag.jsx";
 
 function LastOffers() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function LastOffers() {
 
   if (offers && offers.length > 0) {
     return (
-      <div className="space-y-5 md:space-y-10 w-full">
+      <div className="space-y-5 md:space-y-10 w-full px-32">
         <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:justify-between items-start md:items-end">
           <h2 className="xl:text-5xl lg:text-4xl text-3xl">Dernières <span className="text-secondary">offres</span></h2>
           <LinkTo text={'Toutes les offres'} color={'secondary'} page={''} />
@@ -42,7 +43,7 @@ function LastOffers() {
                     className="w-full h-full object-contain rounded-full"
                   />
                 </div>
-                <p className={`text-sm text-primary font-normal bg-primary/[0.15] h-fit py-1 px-3 capitalize`}>{offer.type}</p>
+                <OfferTypeTag text={offer.type} />
               </div>
               <p className="text-lg font-semibold line-clamp-2">{offer.name}</p>
               <div className={`text-grey flex flex-row items-center justify-center xs:justify-start w-full space-x-2`}>

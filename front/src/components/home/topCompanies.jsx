@@ -24,7 +24,7 @@ function topCompanies() {
   }, []);
 
   return (
-    <div className="space-y-6 w-full">
+    <div className="space-y-6 w-full px-32">
       <p className="text-lg font-normal">Entreprises à la une</p>
       <div className="grid grid-cols-2 xs:grid-cols-3 lg:grid-cols-5 gap-8">
         {companies.length > 0 && companies.map((company) => (

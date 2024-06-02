@@ -6,7 +6,7 @@ import LastRequests from "../components/home/lastRequests.jsx";
 
 function Home() {
   return (
-    <div className="space-y-16 px-16 flex flex-col items-center">
+    <div className="space-y-16 flex flex-col items-center">
       <TopCompanies />
       <CompanyCTA />
       <LastOffers />
