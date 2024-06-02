@@ -9,16 +9,7 @@ function OffersList({ data, currentPage, setCurrentPage, PageSize, nbOffers }) {
         {data.map((offer, index) => (
           <OfferCell
             key={index}
-            logo={offer.logo}
-            offerName={offer.offerName}
-            companyName={offer.companyName}
-            location={offer.location}
-            startDate={offer.startDate}
-            endDate={offer.endDate}
-            daysSpan={offer.daysSpan}
-            remainingDays={offer.remainingDays}
-            offerType={offer.offerType}
-            tags={offer.tags}
+            offer={offer}
           />
         ))}
       </div>

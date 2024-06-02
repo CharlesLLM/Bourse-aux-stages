@@ -1,4 +1,5 @@
 import { React, useMemo, useState, useEffect } from "react";
+import ListHero from "../components/listHero.jsx";
 import OffersList from "../components/stageOffers/offersList.jsx";
 import OffersFilters from "../components/stageOffers/offersFilters.jsx";
 import '../../assets/styles/underline.scss';
@@ -98,12 +99,13 @@ function CompanyOffers() {
     }, [sortedData, currentPage]);
 
     return (
-      <div className="bg-[#F8F8FD] px-5 md:px-0 pt-10">
-        <div className="text-center">
-            <h1 className="font-bold text-4xl md:text-5xl lg:text-7xl"> Offres de <span className="text-secondary custom-underline">stage</span></h1>
-            <p className="text-[#25324B] mt-14">Découvrez les offres de stages actuellement proposées par les entreprises</p>
-        </div>
-        <div className="flex flex-col md:flex-row md:px-32 mt-16 pt-16 gap-16 bg-white">
+      <div className="bg-[#F8F8FD] px-5 md:px-0">
+        <ListHero
+            mainText="Offres de stage"
+            subtitle="Découvrez les entreprises qui proposent des offres de stage ou d'alternance"
+            breadcrumb={[{ name: 'Accueil', href: '/' }, { name: 'Offres', href: '/offres' }, { name: 'Stages', href: '/offres' } ]}
+        />
+        <div className="flex flex-col md:flex-row md:px-32 pt-16 gap-16 bg-white">
             <div className="md:w-3/12">
                 {/* filtres */}
                 <OffersFilters setSelectedFilters={setSelectedFilters} selectedFilters={selectedFilters}/>
