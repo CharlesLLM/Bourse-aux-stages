@@ -87,10 +87,10 @@ function CompanyOffers() {
         return new Date(parts[2], parts[1] - 1, parts[0]);
     }
 
-    //retour page 1 quand l'ordre d'affichage change
+    //retour page 1 quand l'ordre d'affichage ou le filtre change
     useEffect(() => {
         setCurrentPage(1);
-    }, [sortOption]);
+    }, [sortOption, selectedFilters]);
 
     //page affiché à l'écran
     const currentData = useMemo(() => {
