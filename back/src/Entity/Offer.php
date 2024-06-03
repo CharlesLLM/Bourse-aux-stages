@@ -62,11 +62,11 @@ class Offer
     private ?int $availablePlaces = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['company'])]
+    #[Groups(['offer', 'company'])]
     private \DateTimeInterface $startDate;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['company'])]
+    #[Groups(['offer', 'company'])]
     private \DateTimeInterface $endDate;
 
     #[ORM\ManyToOne(inversedBy: 'offers')]

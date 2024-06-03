@@ -39,7 +39,7 @@ class Company
     private ?string $name = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['companies', 'company'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 20)]

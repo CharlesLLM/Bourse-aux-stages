@@ -30,8 +30,8 @@ function CompanyView() {
   }, []);
 
   return (
-    // Header
     <div className="flex flex-col items-center">
+      {/* Header */}
       <div className="h-[300px] w-full bg-lightGrey px-32 flex flex-col pt-5 pb-10 gap-8">
         <Breadcrumb links={[
           { name: 'Accueil', href: '/' },

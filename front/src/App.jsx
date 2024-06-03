@@ -11,7 +11,7 @@ import Home from "../../front/src/pages/home";
 import CompanyOffers from "../../front/src/pages/companyOffers";
 import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
-import Offer from "./pages/offer.jsx";
+import OfferView from "./pages/offerView.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     element: <CompanyIndex />,
   },
   {
-    path: "/entreprises/:slug",
+    path: "/entreprise/:slug",
     element: <CompanyView />,
   },
   {
@@ -32,10 +32,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/offre/:id',
-    element: <Offer />,
+    element: <OfferView />,
   },
   {
-    path: 'postuler/:id',
+    path: '/offre/:id/postuler',
     element: <Application />
   }
 ]);

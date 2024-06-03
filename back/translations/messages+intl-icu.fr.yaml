@@ -40,6 +40,8 @@ company.offers: Offres
 offer.type: Type
 offer.type.internship: Stage
 offer.type.apprenticeship: Alternance
+offer.start_date: Date de début
+offer.end_date: Date de fin
 offer.revenue: Rémunération
 offer.available_places: Places disponibles
 offer.remote: Télétravail

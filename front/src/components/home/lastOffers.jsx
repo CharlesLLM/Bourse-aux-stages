@@ -34,7 +34,7 @@ function LastOffers() {
         </div>
         <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {offers?.map(offer => (
-            <div key={offer.id} onClick={() => navigate("/")} className="group flex flex-col items-center xs:items-start p-6 xs:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border border-grey gap-y-4 transition-all cursor-pointer">
+            <div key={offer.id} onClick={() => navigate(`/offre/${offer.id}`)}  className="group flex flex-col items-center xs:items-start p-6 xs:max-w-1/2 md:max-w-1/3 lg:max-w-1/4 border border-grey gap-y-4 transition-all cursor-pointer">
               {/*<i className={`${category.icon}`}></i>*/}
               <div className={`flex flex-row justify-between w-full`}>
                 <div className="w-16 h-16 rounded-full">
