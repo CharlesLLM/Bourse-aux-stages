@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import OfferHeader from "../components/stageOffers/offerHeader.jsx";
 import Checkbox from "../components/utils/checkbox.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
@@ -13,6 +13,7 @@ import {IoIosLink, IoMdArrowBack} from "react-icons/io";
 
 function Application() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [offer, setOffer] = useState([]);
   const [skills, setSkills] = useState([]);
   const [languages, setLanguages] = useState([]);
@@ -273,6 +274,9 @@ function Application() {
 
     // Do something with the application object, like sending it to a server
     console.log(application);
+
+    // Navigate to offer page
+    navigate(`/offre/${offer.id}`);
   };
 
 
