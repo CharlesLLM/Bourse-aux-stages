@@ -5,8 +5,8 @@ const CheckboxFilter = ({ title, options, selectedValues = [], onCheckboxChange 
   const [isVisible, setIsVisible] = useState(true);
 
   return (
-    <div className="mb-6">
-      <button className="font-bold text-xl flex flex-row justify-between w-full mb-7" onClick={() => setIsVisible(!isVisible)}>
+    <div className="space-y-5">
+      <button className="font-bold text-xl flex flex-row justify-between w-full" onClick={() => setIsVisible(!isVisible)}>
         <p>{title}</p>
         <p className="pt-1">{isVisible ? <IoIosArrowUp /> : <IoIosArrowDown />}</p>
       </button>
