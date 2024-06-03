@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     element: <CompanyIndex />,
   },
   {
-    path: "/entreprises/:slug",
+    path: "/entreprise/:slug",
     element: <CompanyView />,
   },
   {
