@@ -1,5 +1,6 @@
-import React, {useRef, useState} from "react";
-import Breadcrumb from "../components/utils/breadcrumb.jsx";
+import React, {useEffect, useRef, useState} from "react";
+import {useParams} from "react-router-dom";
+import OfferHeader from "../components/stageOffers/offerHeader.jsx";
 import Checkbox from "../components/utils/checkbox.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
 import Input from "../components/utils/input.jsx";
@@ -11,6 +12,8 @@ import {v4 as uuidv4} from "uuid";
 import {IoIosLink, IoMdArrowBack} from "react-icons/io";
 
 function Application() {
+  const { id } = useParams();
+  const [offer, setOffer] = useState([]);
   const [skills, setSkills] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [experiences, setExperiences] = useState([]);
@@ -158,6 +161,22 @@ function Application() {
     }
   };
 
+  useEffect(() => {
+    const getOffer = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offer/${id}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setOffer(data);
+      } catch (err) {
+        console.error('Error fetching data: ', err);
+      }
+    };
+
+    getOffer();
+  }, []);
 
   const handleRemoveSkill = (id) => {
     setSkills(skills.filter(skill => skill.id !== id));
@@ -259,15 +278,7 @@ function Application() {
 
   return (
     <div>
-      {/* Header */}
-      {/* <div className="h-[300px] w-full bg-lightGrey px-32 flex flex-col pt-5 pb-10 gap-8">
-        <Breadcrumb links={[
-          { name: 'Accueil', href: '/' },
-          { name: 'Entreprises', href: '/entreprises' },
-          { name: offer.name, href: `/entreprises/${offer.company.slug}` },
-        ]} />
-      </div> */}
-
+      <OfferHeader offer={offer} />
       <form className="w-full flex flex-col md:flex-row md:space-x-12 px-8 space-y-6 md:space-y-0">
         <div className="space-y-6 w-full md:w-2/3">
           <h2 className="text-4xl">Postulez à cette offre de stage</h2>
