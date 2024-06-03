@@ -29,7 +29,7 @@ function Breadcrumb({ links }) {
 
 Breadcrumb.propTypes = {
   links: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
     href: PropTypes.string.isRequired,
   })).isRequired,
 };

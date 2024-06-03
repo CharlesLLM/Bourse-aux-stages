@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import Layout from "../layout/layout.jsx";
+import Breadcrumb from "../components/utils/breadcrumb.jsx";
 import Checkbox from "../components/utils/checkbox.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
 import Input from "../components/utils/input.jsx";
@@ -11,7 +11,6 @@ import {v4 as uuidv4} from "uuid";
 import {IoIosLink, IoMdArrowBack} from "react-icons/io";
 
 function Application() {
-
   const [skills, setSkills] = useState([]);
   const [languages, setLanguages] = useState([]);
   const [experiences, setExperiences] = useState([]);
@@ -50,7 +49,6 @@ function Application() {
   const experienceDescriptionRef = useRef(null);
   const experienceStartDateRef = useRef(null);
   const experienceEndDateRef = useRef(null);
-
 
   const genders = ['Homme', 'Femme', 'Autre']
   const studyLevels = [
@@ -258,36 +256,44 @@ function Application() {
     console.log(application);
   };
 
+
   return (
     <div>
+      {/* Header */}
+      {/* <div className="h-[300px] w-full bg-lightGrey px-32 flex flex-col pt-5 pb-10 gap-8">
+        <Breadcrumb links={[
+          { name: 'Accueil', href: '/' },
+          { name: 'Entreprises', href: '/entreprises' },
+          { name: offer.name, href: `/entreprises/${offer.company.slug}` },
+        ]} />
+      </div> */}
+
       <form className="w-full flex flex-col md:flex-row md:space-x-12 px-8 space-y-6 md:space-y-0">
         <div className="space-y-6 w-full md:w-2/3">
           <h2 className="text-4xl">Postulez à cette offre de stage</h2>
           <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div className="">
-            <div className="space-y-6 ">
-              <h3 className="text-2xl">Vous êtes</h3>
-              <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between space-y-6 sm:space-y-0">
-                <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} />
-                <Input type="text" name="firstname" label="Prénom" required={true} inputRef={firstnameRef} />
-                <Input type="text" name="lastname" label="Nom" required={true} inputRef={nameRef} />
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} />
-                <Input type="tel" name="birthDay" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
-                <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} />
-                <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} />
-                <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} />
-                <Input type="text" name="secondAddress" label="Complement d'adresse" required={false} inputRef={secondAddressRef} />
-                <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} />
-                <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} />
-              </div>
-              <Input type="url" name="personalWebsite" required={false} label="Adresse de votre site web personnel" inputRef={personalWebsiteRef} />
-              <Input type="url" name="linkedin" required={false} label="Lien vers votre page Linkedin" inputRef={linkedinRef} />
-              <div className="flex space-x-8">
-                <Checkbox name="drivingLicence" label="J'ai le permis de conduire" inputRef={drivingLicenceRef} />
-                <Checkbox name="disability" label="J'ai une forme d'handicap" inputRef={disabilityRef} />
-              </div>
+          <div className="space-y-6 ">
+            <h3 className="text-2xl">Vous êtes</h3>
+            <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between space-y-6 sm:space-y-0">
+              <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} />
+              <Input type="text" name="firstname" label="Prénom" required={true} inputRef={firstnameRef} />
+              <Input type="text" name="lastname" label="Nom" required={true} inputRef={nameRef} />
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} />
+              <Input type="tel" name="birthDay" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
+              <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} />
+              <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} />
+              <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} />
+              <Input type="text" name="secondAddress" label="Complement d'adresse" required={false} inputRef={secondAddressRef} />
+              <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} />
+              <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} />
+            </div>
+            <Input type="url" name="personalWebsite" required={false} label="Adresse de votre site web personnel" inputRef={personalWebsiteRef} />
+            <Input type="url" name="linkedin" required={false} label="Lien vers votre page Linkedin" inputRef={linkedinRef} />
+            <div className="flex space-x-8">
+              <Checkbox name="drivingLicence" label="J'ai le permis de conduire" inputRef={drivingLicenceRef} />
+              <Checkbox name="disability" label="J'ai une forme d'handicap" inputRef={disabilityRef} />
             </div>
           </div>
           <span className="block w-full h-0.5 bg-grey/50"></span>

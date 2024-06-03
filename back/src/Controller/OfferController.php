@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Offer;
 use App\Repository\OfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,6 +17,14 @@ class OfferController extends AbstractController
     {
         $offers = $offerRepository->findBy([], ['createdAt' => 'DESC'], 8);
         $jsonContent = $serializer->serialize($offers, 'json', ['groups' => ['offer']]);
+
+        return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/offer/{id}', name: 'offer_detail')]
+    public function getOfferDetail(Offer $offer, SerializerInterface $serializer): JsonResponse
+    {
+        $jsonContent = $serializer->serialize($offer, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
