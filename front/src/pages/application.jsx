@@ -241,7 +241,7 @@ function Application() {
         motivations: '', // You need to add the reference for the rich text editor
       },
       skills: skills.map(skill => skill.name),
-      languages: languages.map(language => ({ name: language.name, level: language.level })),
+      languages: languages.map(language => ({name: language.name, level: language.level})),
       experiences: experiences.map(experience => ({
         company: experience.company,
         position: experience.position,
@@ -257,13 +257,13 @@ function Application() {
     // Do something with the application object, like sending it to a server
     console.log(application);
   };
+
   return (
-    <Layout>
+    <div>
       <form className="w-full flex flex-col md:flex-row md:space-x-12 px-8 space-y-6 md:space-y-0">
         <div className="space-y-6 w-full md:w-2/3">
           <h2 className="text-4xl">Postulez à cette offre de stage</h2>
           <span className="block w-full h-0.5 bg-grey/50"></span>
-          return (
           <div className="">
             <div className="space-y-6 ">
               <h3 className="text-2xl">Vous êtes</h3>
@@ -566,7 +566,7 @@ function Application() {
       <div className="pb-20">
         <button type="button" className="mt-6 ml-8 border border-dark text-dark px-6 py-3 flex items-center"><IoMdArrowBack className="text-xl" /> Retour</button>
       </div>
-    </Layout>
+    </div>
   )
 }
 
