@@ -1,6 +1,8 @@
-import React from 'react';
+import { useNavigate } from "react-router-dom";
+import OfferTypeTag from "../utils/offerTypeTag";
 
 const OfferCell = ({ offer }) => {
+  const navigate = useNavigate();
   const progressBarColor = offer.remainingDays > 7 ? '#56CDAD' : offer.remainingDays > 5 ? '#FF9900' : '#FF007A';
 
   // Calcule taille de la bare de prog, min et max pour s'assurer que la barre ne dépasse pas de la div et qu'il y'aura au moins une petite partie de celle-ci affiché même
@@ -10,14 +12,13 @@ const OfferCell = ({ offer }) => {
   return (
     <div className="flex flex-row flex-wrap justify-between border border-[#25324B] p-5 border-opacity-10 gap-5">
       <div className="w-20 h-20 flex justify-center align-center flex-wrap">
-          <img src={`images/${offer.logo}`} alt={`${offer.companyName} logo`}/>
+        <img src={`images/${offer.logo}`} alt={`${offer.companyName} logo`} className="object-contain"/>
       </div>
       <div className="md:w-6/12">
         <h3 className="text-xl font-bold">{offer.name}</h3>
         <p><span className="font-semibold">{offer.companyName}</span><span className="text-[#7C8493]"> • </span>{offer.location}<span className="text-[#7C8493]"> • </span>Du {offer.startDate} au {offer.endDate} ({offer.daysSpan} jours)</p>
         <div className="flex flex-row gap-2 items-center flex-wrap ">
-          {offer.offerType === 'Stage' && <span className="text-[#4640DE] bg-[#F8F8FD] font-semibold px-2 py-1">{offer.offerType}</span>}
-          {offer.offerType === 'Alternance' && <span className="text-[#ff6019] bg-[#fff5f1] font-semibold px-2 py-1">{offer.offerType}</span>}
+          <OfferTypeTag text={offer.offerType} />
           <span className="bg-[#D6DDEB] w-px h-8 relative inline-block mx-1 mt-1"></span>
           {offer.tags.map((tag, index) => {
             switch (tag) {
@@ -45,7 +46,8 @@ const OfferCell = ({ offer }) => {
         </div>
       </div>
       <div className='flex flex-col justify-end items-end'>
-        <button className="bg-[#4640DE] py-3 px-7 text-white font-semibold w-52"> En savoir plus</button>
+        <button className="bg-[#4640DE] py-3 px-7 text-white font-semibold w-52" onClick={() => navigate(`/offre/${offer.id}`)}
+        > En savoir plus</button>
         <div className='w-52'>
           <div className="w-full bg-gray-200 h-1.5 dark:bg-gray-700 mt-4 mb-1">
               <div className="h-1.5" style={{ width: `${progressBarWidth}%`, backgroundColor: progressBarColor  }}></div>

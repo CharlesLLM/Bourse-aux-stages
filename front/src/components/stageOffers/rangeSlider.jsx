@@ -17,9 +17,9 @@ function RangeSlider({ step, min, max, value, onSliderChange }) {
                 max={max}
                 step={step}
                 onChange={handleChange}
-                className="w-full appearance-none bg-[#25324B] h-0.5 rounded-full outline-none focus:outline-none accent-[#4640DE] 
-                before:relative before:inline-block before:block before:absolute -before:left-0 -before:text-xl before:top-2 -before:-z-10 before:text-[#25324B] before:text-sm before:bg-[#25324B] before:h-5 before:w-0.5
-                after:relative after:inline-block after:block after:absolute after:right-0 -after:text-3xl after:top-2 -after:-z-10 after:text-[#25324B] after:text-sm after:bg-[#25324B] after:w-0.5"
+                className="w-full appearance-none bg-[#898989] h-0.5 rounded-full outline-none focus:outline-none accent-[#4640DE] 
+                before:absolute before:left-0 before:top-2 before:bg-[#898989] before:h-[15px] before:w-0.5
+                after:absolute after:right-0 after:top-2 after:bg-[#898989] after:h-[15px] after:w-0.5"
             />
             <p className="font-semibold text-blue-800 mt-2">A moins de {value} km</p>
         </React.Fragment>
