@@ -32,7 +32,7 @@ function topCompanies() {
             <img
               src={company.logo ? `${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.logo}` : "/placeholder.webp"}
               className="max-w-40 max-h-28 object-contain cursor-pointer"
-              onClick={() => navigate(`/company/${company.slug}`)}
+              onClick={() => navigate(`/entreprises/${company.slug}`)}
               alt="companyLogo"
             />
           </div>
