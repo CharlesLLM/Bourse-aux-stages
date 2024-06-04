@@ -19,9 +19,10 @@ class OfferController extends AbstractController
         $type = $request->query->get('type');
         $tags = $request->query->get('tags') ? explode(',', $request->query->get('tags')) : [];
         $levels = $request->query->get('levels') ? explode(',', $request->query->get('levels')) : [];
+        $distance = $request->query->get('distance') ?? 50;
         $durations = $request->query->get('durations') ? json_decode($request->query->get('durations'), true) : [];
 
-        $offers = $offerRepository->findByFilters($type, $tags, $levels, $durations);
+        $offers = $offerRepository->findByFilters($type, $tags, $levels, $durations, $distance);
         $jsonContent = $serializer->serialize($offers, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);

@@ -29,6 +29,7 @@ function CompanyOffers() {
             url += `&levels=${selectedFilters.levels}`;
             // TODO : improve durations url parameter
             url += `&durations=[${selectedFilters.durations}]`;
+            url += `&distance=${selectedFilters.distance}`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
