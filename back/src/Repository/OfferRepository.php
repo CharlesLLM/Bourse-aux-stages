@@ -14,8 +14,13 @@ class OfferRepository extends ServiceEntityRepository
         parent::__construct($registry, Offer::class);
     }
 
-    public function findByFilters(?string $type = null, array $tagIds = [], array $levels = [], array $durations = []): array
-    {
+    public function findByFilters(
+        ?string $type = null,
+        array $tagIds = [],
+        array $levels = [],
+        array $durations = [],
+        ?int $distance = null
+    ): array {
         $tagIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $tagIds);
 
         $durationsFilter = array_map(function ($filter) {
@@ -39,6 +44,13 @@ class OfferRepository extends ServiceEntityRepository
             $qb
                 ->andWhere('o.type = :type')
                 ->setParameter('type', $type)
+            ;
+        }
+
+        if ($distance) {
+            $qb
+                ->andWhere('o.distance <= :distance')
+                ->setParameter('distance', $distance)
             ;
         }
 

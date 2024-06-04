@@ -54,6 +54,10 @@ class Offer
     private ?LevelEnum $requiredLevel = null;
 
     #[ORM\Column]
+    #[Groups(['offer'])]
+    private ?int $distance = null;
+
+    #[ORM\Column]
     #[Assert\NotNull]
     #[Groups(['offer'])]
     private ?float $revenue = null;
@@ -153,6 +157,18 @@ class Offer
     public function setRequiredLevel(LevelEnum $requiredLevel): static
     {
         $this->requiredLevel = $requiredLevel;
+
+        return $this;
+    }
+
+    public function getDistance(): ?int
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(int $distance): static
+    {
+        $this->distance = $distance;
 
         return $this;
     }

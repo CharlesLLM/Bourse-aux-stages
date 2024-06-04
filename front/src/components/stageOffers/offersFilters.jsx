@@ -6,11 +6,6 @@ import CheckboxFilter from "./checkboxFilter.jsx";
 const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
   const [isVisibleDistance, setIsVisibleDistance] = useState(true);
 
-  // Paramètres du slider
-  const sliderStep = 1;
-  const sliderMin = 1;
-  const sliderMax = 100;
-
   // maj des filtres quand les checkboxes change
   const handleCheckboxChange = (name, value) => {
     setSelectedFilters(prevState => ({
@@ -70,7 +65,7 @@ const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
           </button>
           {isVisibleDistance && (
             <div className="relative w-full">
-              <RangeSlider value={selectedFilters.distance} step={sliderStep} min={sliderMin} max={sliderMax} onSliderChange={handleSliderChange} />
+              <RangeSlider value={selectedFilters.distance} onSliderChange={handleSliderChange} />
             </div>
           )}
         </div>

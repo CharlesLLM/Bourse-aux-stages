@@ -22,6 +22,7 @@ final class OfferFactory extends ModelFactory
             'availablePlaces' => self::faker()->numberBetween(0, 100),
             'company' => CompanyFactory::new(),
             'description' => self::faker()->text(),
+            'distance' => self::faker()->numberBetween(0, 100),
             'endDate' => self::faker()->dateTimeBetween('+4 months', '+16 months'),
             'endPublicationDate' => self::faker()->dateTimeBetween('+3 days', '+2 month'),
             'name' => self::faker()->randomElement(OffersNameEnum::cases())->value,

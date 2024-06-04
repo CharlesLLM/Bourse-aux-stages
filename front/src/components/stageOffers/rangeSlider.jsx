@@ -1,6 +1,6 @@
 import React from "react";
 
-function RangeSlider({ step, min, max, value, onSliderChange }) {
+function RangeSlider({ value, onSliderChange }) {
     // maj de la valeur au changement de l'input 
     const handleChange = event => {
         event.preventDefault();
@@ -13,9 +13,9 @@ function RangeSlider({ step, min, max, value, onSliderChange }) {
             <input
                 type="range"
                 value={value}
-                min={min}
-                max={max}
-                step={step}
+                min={10}
+                max={100}
+                step={10}
                 onChange={handleChange}
                 className="w-full appearance-none bg-[#898989] h-0.5 rounded-full outline-none focus:outline-none accent-primary 
                 before:absolute before:left-0 before:top-2 before:bg-[#898989] before:h-[15px] before:w-0.5
