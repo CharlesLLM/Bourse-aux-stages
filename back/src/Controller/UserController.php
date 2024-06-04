@@ -14,7 +14,7 @@ class UserController extends AbstractController
     {
         $uploadedFile = $request->files->get('file');
         $userId = $request->request->get('userId');
-        $userDirectory = $this->getParameter('upload_directory') . '/' . $userId;
+        $userDirectory = $this->getParameter('upload_directory').'/'.$userId;
         if (!file_exists($userDirectory)) {
             mkdir($userDirectory, 0777, true);
         }

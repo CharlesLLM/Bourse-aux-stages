@@ -45,7 +45,7 @@ const OfferCell = ({ offer }) => {
             {offer.tags && offer.tags.map((tag) => (
               <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />
             ))}
-            {offer.offerType === 'Stage' && offer.daysSpan >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
+            {offer.offerType === 'Stage' && offer.durations >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
           </div>
         </div>
       </div>

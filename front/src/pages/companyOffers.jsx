@@ -13,9 +13,9 @@ function CompanyOffers() {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOption, setSortOption] = useState("MOST_RECENT");
     const [selectedFilters, setSelectedFilters] = useState({
-        profile: [],
-        levelSearched: [],
-        daysSpan: [],
+        profiles: [],
+        levels: [],
+        durations: [],
         distance: 50,
     });
 
@@ -25,8 +25,10 @@ function CompanyOffers() {
         const getOffers = async () => {
             let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
             url += `?type=${type}`;
-            url += `&tags=${selectedFilters.profile.map((tag) => tag.id).join(',')}`;
-            url += `&durations=${JSON.stringify(selectedFilters.daysSpan.map((duration) => duration.value))}`;
+            url += `&tags=${selectedFilters.profiles}`;
+            url += `&levels=${selectedFilters.levels}`;
+            // TODO : improve durations url parameter
+            url += `&durations=[${selectedFilters.durations}]`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
@@ -35,7 +37,7 @@ function CompanyOffers() {
                 const data = await response.json();
                 setOffers(data);
 
-                if (selectedFilters.profile.length === 0 && selectedFilters.daysSpan.length === 0) {
+                if (selectedFilters.profiles.length === 0 && selectedFilters.levels.length === 0 && selectedFilters.durations.length === 0) {
                     const tags = data.map((company) => company.tags).flat();
                     const uniqueTags = tags.filter((tag, index, self) => self.findIndex(t => t.id === tag.id) === index);
                     setTags(uniqueTags);
@@ -48,7 +50,6 @@ function CompanyOffers() {
         getOffers();
     }, [selectedFilters]);
 
-    //change l'ordre d'affichage selon sortOption
     const sortedData = useMemo(() => {
         const sorted = [...offers];
         if (sortOption === "MOST_RECENT") {
@@ -67,7 +68,6 @@ function CompanyOffers() {
         return sorted;
     }, [offers, sortOption]);
 
-    //retour page 1 quand l'ordre d'affichage ou le filtre change
     useEffect(() => {
         setCurrentPage(1);
     }, [sortOption, selectedFilters]);

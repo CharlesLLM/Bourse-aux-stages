@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import RangeSlider from "./rangeSlider.jsx";
 import CheckboxFilter from "./checkboxFilter.jsx";
-import TagFilters from '../company/tagFilters.jsx';
 
 const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
   const [isVisibleDistance, setIsVisibleDistance] = useState(true);
@@ -30,35 +29,37 @@ const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
     }));
   };
 
-  const handleTags = tags => {
-    setSelectedFilters({ ...selectedFilters, tags });
-  };
-
   return (
     <React.Fragment>
       <div className="w-64 space-y-10">
-        <TagFilters tags={tags} handleTags={handleTags} />
+        <CheckboxFilter
+          title="Profils métiers"
+          options={tags.map(tag => ({ name: 'profiles', value: tag.id, label: tag.name }))}
+          selectedValues={selectedFilters.profiles}
+          onCheckboxChange={handleCheckboxChange}
+        />
         <CheckboxFilter
           title="Niveau recherché"
           options={[
-            { name: 'levelSearched', value: 'Master, DEA, DESS', label: 'Master, DEA, DESS' },
-            { name: 'levelSearched', value: 'Licence', label: 'Licence' },
-            { name: 'levelSearched', value: 'BTS, DUT, BUT', label: 'BTS, DUT, BUT' },
-            { name: 'levelSearched', value: 'Bac', label: 'BAC' },
-            { name: 'levelSearched', value: 'CAP, BEP', label: 'CAP, BEP' },
+            { name: 'levels', value: 'Master, DEA, DESS', label: 'Master, DEA, DESS' },
+            { name: 'levels', value: 'Licence', label: 'Licence' },
+            { name: 'levels', value: 'BTS, DUT, BUT', label: 'BTS, DUT, BUT' },
+            { name: 'levels', value: 'Bac', label: 'BAC' },
+            { name: 'levels', value: 'CAP, BEP', label: 'CAP, BEP' },
           ]}
-          selectedValues={selectedFilters.levelSearched}
+          selectedValues={selectedFilters.levels}
           onCheckboxChange={handleCheckboxChange}
         />
         <CheckboxFilter
           title="Durée"
           options={[
-            { name: 'daysSpan', value: 'LESS_THAN_2', label: 'Moins de 2 mois' },
-            { name: 'daysSpan', value: 'BETWEEN_2_AND_6', label: 'Entre 2 et 6 mois' },
-            { name: 'daysSpan', value: 'BETWEEN_6_AND_12', label: 'Entre 6 et 12 mois' },
-            { name: 'daysSpan', value: 'MORE_THAN_12', label: 'Plus de 12 mois' },
+            // Improve this part by using actual values
+            { name: 'durations', value: "[1,59]", label: 'Moins de 2 mois' },
+            { name: 'durations', value: "[60,180]", label: 'Entre 2 et 6 mois' },
+            { name: 'durations', value: "[181,365]", label: 'Entre 6 et 12 mois' },
+            { name: 'durations', value: "[365,9999]", label: 'Plus de 12 mois' },
           ]}
-          selectedValues={selectedFilters.daysSpan}
+          selectedValues={selectedFilters.durations}
           onCheckboxChange={handleCheckboxChange}
         />
 
