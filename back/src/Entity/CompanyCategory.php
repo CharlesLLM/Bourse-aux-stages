@@ -23,6 +23,11 @@ class CompanyCategory
     #[Groups(['companies', 'company'])]
     private ?string $name = null;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -38,10 +43,5 @@ class CompanyCategory
         $this->name = $name;
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\TimestampableTrait;
+use App\Enum\LevelEnum;
 use App\Enum\OfferTypeEnum;
 use App\Enum\PromoteStatusEnum;
 use App\Repository\OfferRepository;
@@ -47,6 +48,10 @@ class Offer
     #[ORM\Column(enumType: PromoteStatusEnum::class, length: 10, nullable: true)]
     #[Groups(['offer'])]
     private ?PromoteStatusEnum $promoteStatus = null;
+
+    #[ORM\Column(enumType: LevelEnum::class, length: 20)]
+    #[Groups(['offer'])]
+    private ?LevelEnum $requiredLevel = null;
 
     #[ORM\Column]
     #[Assert\NotNull]
@@ -136,6 +141,18 @@ class Offer
     public function setPromoteStatus(PromoteStatusEnum $promoteStatus): static
     {
         $this->promoteStatus = $promoteStatus;
+
+        return $this;
+    }
+
+    public function getRequiredLevel(): ?LevelEnum
+    {
+        return $this->requiredLevel;
+    }
+
+    public function setRequiredLevel(LevelEnum $requiredLevel): static
+    {
+        $this->requiredLevel = $requiredLevel;
 
         return $this;
     }

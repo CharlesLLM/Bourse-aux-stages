@@ -73,6 +73,7 @@ class CompanyCrudController extends AbstractCrudController
     public function createEntity(string $entityFqcn)
     {
         $company = new Company();
+
         return $company;
     }
 

@@ -41,6 +41,11 @@ class Tag
         $this->companies = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
     public function getId(): ?Uuid
     {
         return $this->id;
@@ -116,10 +121,5 @@ class Tag
         }
 
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 }

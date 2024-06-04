@@ -14,7 +14,7 @@ class OfferRepository extends ServiceEntityRepository
         parent::__construct($registry, Offer::class);
     }
 
-    public function findByFilters(string $type = null, array $tagIds = [], array $durations = []): array
+    public function findByFilters(?string $type = null, array $tagIds = [], array $levels = [], array $durations = []): array
     {
         $tagIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $tagIds);
 
@@ -31,13 +31,13 @@ class OfferRepository extends ServiceEntityRepository
             return null;
         }, $durations);
 
-        $qb = $this->createQueryBuilder('c')
-            ->leftJoin('c.tags', 't')
+        $qb = $this->createQueryBuilder('o')
+            ->leftJoin('o.tags', 't')
         ;
 
         if ($type) {
             $qb
-                ->andWhere('c.type = :type')
+                ->andWhere('o.type = :type')
                 ->setParameter('type', $type)
             ;
         }
@@ -49,21 +49,31 @@ class OfferRepository extends ServiceEntityRepository
             ;
         }
 
+        if (!empty($levels)) {
+            $qb
+                ->andWhere('o.requiredLevel IN (:levels)')
+                ->setParameter('levels', $levels)
+            ;
+        }
+
         if (!empty($durationsFilter)) {
-            $qb->andWhere('c.startDate IS NOT NULL')
-                ->andWhere('c.endDate IS NOT NULL')
+            $qb->andWhere('o.startDate IS NOT NULL')
+                ->andWhere('o.endDate IS NOT NULL')
             ;
 
             $orCondition = $qb->expr()->orX();
 
             foreach ($durationsFilter as $filter) {
                 if (!empty($filter)) {
-                    $qb
-                        ->andWhere('DATEDIFF(c.endDate, c.startDate) >= :minDuration')
-                        ->andWhere('DATEDIFF(c.endDate, c.startDate) <= :maxDuration')
-                        ->setParameter('minDuration', $filter['min'])
-                        ->setParameter('maxDuration', $filter['max'])
-                    ;
+                    $orCondition->add(
+                        $qb->expr()->andX(
+                            $qb->expr()->gte('DATE_DIFF(o.endDate, o.startDate)', ':minDuration'),
+                            $qb->expr()->lte('DATE_DIFF(o.endDate, o.startDate)', ':maxDuration')
+                        )
+                    );
+
+                    $qb->setParameter('minDuration', $filter['min']);
+                    $qb->setParameter('maxDuration', $filter['max']);
                 }
             }
 
