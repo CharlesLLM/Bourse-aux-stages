@@ -17,7 +17,7 @@ function RangeSlider({ step, min, max, value, onSliderChange }) {
                 max={max}
                 step={step}
                 onChange={handleChange}
-                className="w-full appearance-none bg-[#898989] h-0.5 rounded-full outline-none focus:outline-none accent-[#4640DE] 
+                className="w-full appearance-none bg-[#898989] h-0.5 rounded-full outline-none focus:outline-none accent-primary 
                 before:absolute before:left-0 before:top-2 before:bg-[#898989] before:h-[15px] before:w-0.5
                 after:absolute after:right-0 after:top-2 after:bg-[#898989] after:h-[15px] after:w-0.5"
             />

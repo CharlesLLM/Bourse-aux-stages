@@ -11,16 +11,20 @@ const OfferCell = ({ offer }) => {
     offerDurationString = `${Math.floor(offerDuration / 30)} mois et ${offerDuration % 30} jours`;
   }
 
-  const publicationDuration = Math.floor((new Date (offer.endPublicationDate) - offer.createdAt) / (1000 * 60 * 60 * 24));
+  const publicationDuration = Math.floor((new Date (offer.endPublicationDate) - new Date (offer.createdAt)) / (1000 * 60 * 60 * 24));
   const remainingTime = Math.floor((new Date (offer.endPublicationDate) - new Date()) / (1000 * 60 * 60 * 24));
-  const progressBarColor = remainingTime > 7 ? '#56CDAD' : remainingTime > 5 ? '#FF9900' : '#FF007A';
-  const progressBarWidth = (publicationDuration - remainingTime) / publicationDuration * 100;
+  const progressBarWidth = remainingTime / publicationDuration * 100;
+  const progressBarColor = progressBarWidth > 40 ? '#56CDAD' : progressBarWidth > 10 ? '#FF9900' : '#FF007A';
 
   return (
     <div className="flex justify-between gap-4 border border-borderGrey p-6 w-full">
       <div className="flex gap-6">
         <div className="w-[72px] h-[72px]">
-          <img src={`images/${offer.company.logo}`} alt={`${offer.company.name} logo`} className="object-contain"/>
+          <img
+            src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${offer.company.logo}`}
+            alt={`${offer.company.name} logo`}
+            className="object-contain"
+          />
         </div>
         <div className="space-y-2">
           <h3 className="text-xl font-bold">{offer.name}</h3>
@@ -38,24 +42,24 @@ const OfferCell = ({ offer }) => {
           <div className="flex gap-2 items-center flex-wrap ">
             <OfferTypeTag text={offer.type} />
             <span className={`h-6 w-[1px] bg-borderGrey`}></span>
-            {offer.tags && offer.tags.map((tag) => {
+            {offer.tags && offer.tags.map((tag) => (
               <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />
-            })}
+            ))}
             {offer.offerType === 'Stage' && offer.daysSpan >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-end items-end">
+      <div className="flex flex-col w-44">
         <button 
-          className="bg-[#4640DE] py-3 px-6 text-white font-semibold w-full"
+          className="bg-primary py-3 px-6 text-white font-semibold w-full"
           onClick={() => navigate(`/offre/${offer.id}`)}
         >En savoir plus</button>
-        <div className="w-full bg-gray-200 h-1.5 dark:bg-gray-700 mt-4 mb-2">
+        <div className="w-full bg-borderGrey mt-4 mb-2">
             <div className="h-1.5" style={{ width: `${progressBarWidth}%`, backgroundColor: progressBarColor  }}></div>
         </div>
         <p className="text-xs font-normal">
           {remainingTime < 1 
-            ? "Reste moins d'un jour pour postuler" 
+            ? "Dernier jour pour postuler" 
             : remainingTime == 1 
               ? "Reste 1 jour pour postuler" 
               : `Reste ${remainingTime} jours pour postuler`

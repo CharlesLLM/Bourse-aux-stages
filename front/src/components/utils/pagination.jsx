@@ -61,7 +61,7 @@ const Pagination = props => {
           <li
             key={pageNumber}
             className={classnames('text-xl cursor-pointer', {
-              "w-16 h-16 rounded-lg bg-[#4640DE] flex items-center justify-center text-white": pageNumber === currentPage
+              "w-16 h-16 rounded-lg bg-primary flex items-center justify-center text-white": pageNumber === currentPage
             })}
             onClick={() => onPageChange(pageNumber)}
           >
