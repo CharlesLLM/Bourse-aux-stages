@@ -11,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RequestController extends AbstractController
 {
-    #[Route('/request/latest', name: 'latest_requests')]
+    #[Route('/request/latest', name: 'app_latest_requests')]
     public function getLatestOffers(RequestRepository $requestRepository, SerializerInterface $serializer): JsonResponse
     {
         $requests = $requestRepository->findBy([], ['createdAt' => 'DESC'], 8);

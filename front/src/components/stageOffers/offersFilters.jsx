@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import RangeSlider from "./rangeSlider.jsx";
 import CheckboxFilter from "./checkboxFilter.jsx";
+import TagFilters from '../company/tagFilters.jsx';
 
-const OffersFilters = ({ setSelectedFilters, selectedFilters }) => {
+const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
   const [isVisibleDistance, setIsVisibleDistance] = useState(true);
 
   // Paramètres du slider
@@ -29,33 +30,14 @@ const OffersFilters = ({ setSelectedFilters, selectedFilters }) => {
     }));
   };
 
+  const handleTags = tags => {
+    setSelectedFilters({ ...selectedFilters, tags });
+  };
+
   return (
     <React.Fragment>
       <div className="w-64 space-y-10">
-        <CheckboxFilter
-          title="Type d'offre"
-          options={[
-            { id: 'internship', name: 'InternshipOrApprenticeship', value: 'Stage', label: 'Stage' },
-            { id: 'apprenticeship', name: 'InternshipOrApprenticeship', value: 'Alternance', label: 'Alternance' }
-          ]}
-          selectedValues={selectedFilters.InternshipOrApprenticeship}
-          onCheckboxChange={handleCheckboxChange}
-        />
-        <CheckboxFilter
-          title="Profils métiers"
-          options={[
-            { name: 'profile', value: 'Design', label: 'Design' },
-            { name: 'profile', value: 'Commercial', label: 'Commercial' },
-            { name: 'profile', value: 'Marketing', label: 'Marketing' },
-            { name: 'profile', value: 'Business', label: 'Business' },
-            { name: 'profile', value: 'Management', label: 'Management' },
-            { name: 'profile', value: 'Finance', label: 'Finance' },
-            { name: 'profile', value: 'Industrie', label: 'Industrie' },
-            { name: 'profile', value: 'Informatique', label: 'Informatique' },
-          ]}
-          selectedValues={selectedFilters.profile}
-          onCheckboxChange={handleCheckboxChange}
-        />
+        <TagFilters tags={tags} handleTags={handleTags} />
         <CheckboxFilter
           title="Niveau recherché"
           options={[

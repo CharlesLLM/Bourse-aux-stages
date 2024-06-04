@@ -50,7 +50,7 @@ function OfferHeader({ offer, enableApplyButton = false }) {
                 <div className="flex gap-2">
                   <OfferTypeTag text={offer.type} />
                   <span className="w-[1px] bg-borderGrey"></span>
-                  {offer.tags?.map((tag) => (
+                  {offer.tags && offer.tags.map((tag) => (
                     <Badge key={tag.id} tag={tag} variant="offerTag" />
                   ))}
                 </div>
