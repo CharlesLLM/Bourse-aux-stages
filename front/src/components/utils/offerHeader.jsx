@@ -26,7 +26,7 @@ function OfferHeader({ offer, enableApplyButton = false }) {
         {offer.company && (
           <div className="flex items-center justify-between bg-white p-6">
             <div className="flex items-center gap-4 xl:gap-8">
-              <div className="flex items-center py-1">
+              <div className="flex items-center py-1 cursor-pointer" onClick={() => navigate(`/entreprise/${offer.company.slug}`)}>
                 <img
                   src={`${import.meta.env.VITE_BACK_ENDPOINT}uploads/company/${offer.company.logo}`}
                   alt={offer.company.name}
