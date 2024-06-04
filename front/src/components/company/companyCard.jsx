@@ -8,7 +8,7 @@ function CompanyCard({ company }) {
   const apprenticeshipsNumber = company.offers.length - stagesNumber;
 
   return (
-    <div className="bg-white shadow-md p-6 w-full max-w-[440px] cursor-pointer" onClick={() => navigate(`/entreprises/${company.slug}`)}>
+    <div className="bg-white shadow-md p-6 w-full max-w-[440px] cursor-pointer" onClick={() => navigate(`/entreprise/${company.slug}`)}>
       <div className="flex justify-between mb-6">
         <img
           src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.logo}`}

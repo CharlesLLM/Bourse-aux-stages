@@ -36,7 +36,7 @@ function CompanyView() {
         <Breadcrumb links={[
           { name: 'Accueil', href: '/' },
           { name: 'Entreprises', href: '/entreprises' },
-          { name: company.name, href: `/entreprises/${slug}` },
+          { name: company.name, href: `/entreprise/${slug}` },
         ]} />
         <div className="flex flex-col justify-center gap-6">
           <p className="text-5xl font-semibold">{company.name}</p>
