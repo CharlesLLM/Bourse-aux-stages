@@ -13,7 +13,7 @@ function ListHero({ mainText, subtitle, breadcrumb }) {
         <p className="text-5xl mb-10">{textFirstPart}&nbsp;
           <span className="text-secondary relative">
             {textLastWord}
-            <img src="underline.svg" alt="Underline" className="absolute top-full left-0 w-full" />
+            <img src="/underline.svg" alt="Underline" className="absolute top-full left-0 w-full" />
           </span>
         </p>
         <p className="text-lg font-normal text-textGrey">{subtitle}</p>

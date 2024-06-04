@@ -1,64 +1,66 @@
 import { useNavigate } from "react-router-dom";
+import Badge from "../utils/badge";
 import OfferTypeTag from "../utils/offerTypeTag";
 
 const OfferCell = ({ offer }) => {
   const navigate = useNavigate();
-  const progressBarColor = offer.remainingDays > 7 ? '#56CDAD' : offer.remainingDays > 5 ? '#FF9900' : '#FF007A';
 
-  // Calcule taille de la bare de prog, min et max pour s'assurer que la barre ne dépasse pas de la div et qu'il y'aura au moins une petite partie de celle-ci affiché même
-  //à zero
-  const progressBarWidth = Math.max(Math.min(Math.floor((offer.remainingDays / offer.daysSpan) * 100), 100), 1);
+  const offerDuration = Math.floor((new Date(offer.endDate) - new Date(offer.startDate)) / (1000 * 60 * 60 * 24));
+  let offerDurationString = `${offerDuration} jours`;
+  if (offerDuration > 365) {
+    offerDurationString = `${Math.floor(offerDuration / 30)} mois et ${offerDuration % 30} jours`;
+  }
+
+  const publicationDuration = Math.floor((new Date (offer.endPublicationDate) - offer.createdAt) / (1000 * 60 * 60 * 24));
+  const remainingTime = Math.floor((new Date (offer.endPublicationDate) - new Date()) / (1000 * 60 * 60 * 24));
+  const progressBarColor = remainingTime > 7 ? '#56CDAD' : remainingTime > 5 ? '#FF9900' : '#FF007A';
+  const progressBarWidth = (publicationDuration - remainingTime) / publicationDuration * 100;
 
   return (
-    <div className="flex flex-row flex-wrap justify-between border border-[#25324B] p-5 border-opacity-10 gap-5">
-      <div className="w-20 h-20 flex justify-center align-center flex-wrap">
-        <img src={`images/${offer.logo}`} alt={`${offer.companyName} logo`} className="object-contain"/>
-      </div>
-      <div className="md:w-6/12">
-        <h3 className="text-xl font-bold">{offer.name}</h3>
-        <p><span className="font-semibold">{offer.companyName}</span><span className="text-[#7C8493]"> • </span>{offer.location}<span className="text-[#7C8493]"> • </span>Du {offer.startDate} au {offer.endDate} ({offer.daysSpan} jours)</p>
-        <div className="flex flex-row gap-2 items-center flex-wrap ">
-          <OfferTypeTag text={offer.offerType} />
-          <span className="bg-[#D6DDEB] w-px h-8 relative inline-block mx-1 mt-1"></span>
-          {offer.tags.map((tag, index) => {
-            switch (tag) {
-              case 'Marketing':
-                return <span key={index} className="bg-[#EB85331A] text-[#FFB836] px-2 py-1 rounded-full"> {tag} </span>;
-              case 'Design':
-                return <span key={index} className="bg-[#56CDAD1A] text-[#56CDAD] px-2 py-1 rounded-full"> {tag} </span>;
-              case 'Management':
-                return <span key={index} className="bg-[#d6ebc3] text-[#77BF38] px-2 py-1 rounded-full"> {tag} </span>;
-              case 'Business':
-                return <span key={index} className="bg-[#FFF9D8] text-[#CCB000] px-2 py-1 rounded-full"> {tag} </span>;
-              case 'Finance':
-                return <span key={index} className="bg-[#b2c8dd] text-[#004990] px-2 py-1 rounded-full"> {tag} </span>;
-              case 'Industrie':
-                return <span key={index} className="bg-[#B29869] text-[#e7e0d2] px-2 py-1 rounded-full"> {tag} </span>;
-              case 'Informatique':
-                return <span key={index} className="bg-[#AFA7A4] text-[#F7F6F5] px-2 py-1 rounded-full"> {tag} </span>;  
-              case 'Commercial':
-                return <span key={index} className="bg-[#DCD8E0] text-[#543D66] px-2 py-1 rounded-full"> {tag} </span>; 
-              default:
-                return <span key={index} className="offer-tag"> {tag} </span>;
-            }
-          })}
-          { offer.offerType === 'Stage' && offer.daysSpan >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>  }
+    <div className="flex justify-between gap-4 border border-borderGrey p-6 w-full">
+      <div className="flex gap-6">
+        <div className="w-[72px] h-[72px]">
+          <img src={`images/${offer.company.logo}`} alt={`${offer.company.name} logo`} className="object-contain"/>
         </div>
-      </div>
-      <div className='flex flex-col justify-end items-end'>
-        <button className="bg-[#4640DE] py-3 px-7 text-white font-semibold w-52" onClick={() => navigate(`/offre/${offer.id}`)}
-        > En savoir plus</button>
-        <div className='w-52'>
-          <div className="w-full bg-gray-200 h-1.5 dark:bg-gray-700 mt-4 mb-1">
-              <div className="h-1.5" style={{ width: `${progressBarWidth}%`, backgroundColor: progressBarColor  }}></div>
+        <div className="space-y-2">
+          <h3 className="text-xl font-bold">{offer.name}</h3>
+          <div className="flex flex-col xl:flex-row xl:items-center xl:gap-2">
+            <p className="font-bold">{offer.company.name}</p>
+            <span className="h-1 w-1 bg-darkGrey rounded-full"></span>
+            <p className="font-normal">{offer.company.city}</p>
+            {offer.startDate && offer.endDate && (
+              <div className="flex items-center gap-2">
+                <span className="h-1 w-1 bg-darkGrey rounded-full"></span>
+                <p className="font-normal">Du {new Date(offer.startDate).toLocaleDateString()} au {new Date(offer.endDate).toLocaleDateString()} ({offerDurationString})</p>
+              </div>
+            )}
           </div>
-            {offer.remainingDays < 1 
-              ? "Reste moins d'un jour pour postuler" 
-              : offer.remainingDays == 1 
-                ? "Reste 1 jour pour postuler" 
-                : `Reste ${offer.remainingDays} jours pour postuler`
-            }
+          <div className="flex gap-2 items-center flex-wrap ">
+            <OfferTypeTag text={offer.type} />
+            <span className={`h-6 w-[1px] bg-borderGrey`}></span>
+            {offer.tags && offer.tags.map((tag) => {
+              <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />
+            })}
+            {offer.offerType === 'Stage' && offer.daysSpan >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
+          </div>
         </div>
+      </div>
+      <div className="flex flex-col justify-end items-end">
+        <button 
+          className="bg-[#4640DE] py-3 px-6 text-white font-semibold w-full"
+          onClick={() => navigate(`/offre/${offer.id}`)}
+        >En savoir plus</button>
+        <div className="w-full bg-gray-200 h-1.5 dark:bg-gray-700 mt-4 mb-2">
+            <div className="h-1.5" style={{ width: `${progressBarWidth}%`, backgroundColor: progressBarColor  }}></div>
+        </div>
+        <p className="text-xs font-normal">
+          {remainingTime < 1 
+            ? "Reste moins d'un jour pour postuler" 
+            : remainingTime == 1 
+              ? "Reste 1 jour pour postuler" 
+              : `Reste ${remainingTime} jours pour postuler`
+          }
+        </p>
       </div>
     </div>
   );

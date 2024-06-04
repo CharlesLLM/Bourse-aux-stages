@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     element: <CompanyView />,
   },
   {
-    path: "/offres",
+    path: "/offres/:type",
     element: <CompanyOffers />,
   },
   {

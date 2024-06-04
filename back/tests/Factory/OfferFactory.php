@@ -21,12 +21,13 @@ final class OfferFactory extends ModelFactory
             'availablePlaces' => self::faker()->numberBetween(0, 100),
             'company' => CompanyFactory::new(),
             'description' => self::faker()->text(),
-            'endDate' => self::faker()->dateTime(),
+            'endDate' => self::faker()->dateTimeBetween('+4 months', '+1 year'),
+            'endPublicationDate' => self::faker()->dateTimeBetween('+3 days', '+2 month'),
             'name' => self::faker()->randomElement(OffersNameEnum::cases())->value,
             'promoteStatus' => self::faker()->randomElement(PromoteStatusEnum::cases()),
             'remote' => self::faker()->boolean(),
             'revenue' => self::faker()->randomFloat(),
-            'startDate' => self::faker()->dateTime(),
+            'startDate' => self::faker()->dateTimeBetween('+2 months', '+4 months'),
             'type' => self::faker()->randomElement(OfferTypeEnum::cases()),
         ];
     }

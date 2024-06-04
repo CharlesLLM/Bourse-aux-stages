@@ -1,90 +1,71 @@
 import { React, useMemo, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import ListHero from "../components/listHero.jsx";
-import OffersList from "../components/stageOffers/offersList.jsx";
+import Pagination from "../components/utils/pagination.jsx";
+import OfferCell from "../components/stageOffers/offerCell.jsx";
 import OffersFilters from "../components/stageOffers/offersFilters.jsx";
 import '../../assets/styles/underline.scss';
 
 function CompanyOffers() {
-    //recup des données
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        fetch('/data/data.json')
-            .then(response => response.json())
-            .then(data => setData(data));
-    }, []);
-
-    //les filtres sélectionnés sont enregistrés dans cette variable
+    const { type } = useParams();
+    const [offers, setOffers] = useState([]);
+    const [tags, setTags] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [sortOption, setSortOption] = useState("MOST_RECENT");
     const [selectedFilters, setSelectedFilters] = useState({
-        InternshipOrApprenticeship: [],
         profile: [],
         levelSearched: [],
         daysSpan: [],
-        distance: 50, // distance par def
+        distance: 50,
     });
-    //nombre d'offres affiché par page
-    let PageSize = 7;
-    //page affiché à l'écran
-    const [currentPage, setCurrentPage] = useState(1);
-    //ordre affichage
-    const [sortOption, setSortOption] = useState("MOST_RECENT");
 
-    //filtre l'affichage des offres
-    const filteredData = useMemo(() => {
-        return data.filter(offer => {
-            // stage/alternance
-            const isTypeMatch = selectedFilters.InternshipOrApprenticeship.length === 0 || selectedFilters.InternshipOrApprenticeship.includes(offer.offerType);
-            // profile
-            const isProfileMatch = selectedFilters.profile.length === 0 || offer.tags.some(tag => selectedFilters.profile.includes(tag));
-            // niveau d'étude
-            const isLevelMatch = selectedFilters.levelSearched.length === 0 || selectedFilters.levelSearched.includes(offer.levelSearched);
-            // durée
-            const isDurationMatch = selectedFilters.daysSpan.length === 0 || selectedFilters.daysSpan.some(duration => {
-                switch (duration) {
-                  case 'LESS_THAN_2':
-                    return offer.daysSpan < 60;
-                  case 'BETWEEN_2_AND_6':
-                    return offer.daysSpan >= 60 && offer.daysSpan <= 180;
-                  case 'BETWEEN_6_AND_12':
-                    return offer.daysSpan > 180 && offer.daysSpan <= 360;
-                  case 'MORE_THAN_12':
-                    return offer.daysSpan > 360;
-                  default:
-                    return false;
+    let pageSize = 7;
+
+    useEffect(() => {
+        const getOffers = async () => {
+            let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
+            url += `?type=${type}`;
+            url += `&tags=${selectedFilters.profile.map((tag) => tag.id).join(',')}`;
+            url += `&durations=${JSON.stringify(selectedFilters.daysSpan.map((duration) => duration.value))}`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
-              });
-            // distance
-            const isDistanceMatch = offer.distance <= selectedFilters.distance;
-      
-            return isDistanceMatch && isProfileMatch && isTypeMatch && isLevelMatch && isDurationMatch;
-          });
-    }, [data, selectedFilters]);
+                const data = await response.json();
+                setOffers(data);
 
-    const nbOffers = filteredData.length;
+                if (selectedFilters.profile.length === 0 && selectedFilters.daysSpan.length === 0) {
+                    const tags = data.map((company) => company.tags).flat();
+                    const uniqueTags = tags.filter((tag, index, self) => self.findIndex(t => t.id === tag.id) === index);
+                    setTags(uniqueTags);
+                }
+          } catch (err) {
+            console.error('Error fetching data: ', err);
+          }
+        };
+    
+        getOffers();
+    }, [selectedFilters]);
 
     //change l'ordre d'affichage selon sortOption
     const sortedData = useMemo(() => {
-        const sorted = [...filteredData];
+        const sorted = [...offers];
         if (sortOption === "MOST_RECENT") {
             sorted.sort((a, b) => {
-                const dateA = parseFrenchDate(a.publishedDate);
-                const dateB = parseFrenchDate(b.publishedDate);
+                const dateA = a.createdAt;
+                const dateB = b.createdAt;
                 return dateB - dateA;
             });
         } else {
             sorted.sort((a, b) => {
-                const dateA = parseFrenchDate(a.publishedDate);
-                const dateB = parseFrenchDate(b.publishedDate);
+                const dateA = a.createdAt;
+                const dateB = b.createdAt;
                 return dateA - dateB;
             });
         }
         return sorted;
-    }, [filteredData, sortOption]);
-    
-    //change l'ordre de la date pour les filtres et ordre d'affichage
-    function parseFrenchDate(dateString) {
-        const parts = dateString.split('/');
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    }
+    }, [offers, sortOption]);
 
     //retour page 1 quand l'ordre d'affichage ou le filtre change
     useEffect(() => {
@@ -93,8 +74,8 @@ function CompanyOffers() {
 
     //page affiché à l'écran
     const currentData = useMemo(() => {
-        const firstPageIndex = (currentPage - 1) * PageSize;
-        const lastPageIndex = firstPageIndex + PageSize;
+        const firstPageIndex = (currentPage - 1) * pageSize;
+        const lastPageIndex = firstPageIndex + pageSize;
         return sortedData.slice(firstPageIndex, lastPageIndex);
     }, [sortedData, currentPage]);
 
@@ -102,19 +83,26 @@ function CompanyOffers() {
       <div className="bg-[#F8F8FD] px-5 md:px-0">
         <ListHero
             mainText="Offres de stage"
-            subtitle="Découvrez les entreprises qui proposent des offres de stage ou d'alternance"
-            breadcrumb={[{ name: 'Accueil', href: '/' }, { name: 'Offres', href: '/offres' }, { name: 'Stages', href: '/offres' } ]}
+            subtitle="Découvrez les offres de stages actuellement proposées par les entreprises"
+            breadcrumb={[
+                { name: 'Accueil', href: '/' },
+                { name: 'Offres', href: '/offres' },
+                { name: 'Stages', href: '/offres' }
+            ]}
         />
-        <div className="flex flex-col md:flex-row md:px-32 pt-16 gap-16 bg-white">
+        <div className="flex flex-col md:flex-row md:px-32 py-16 gap-16 bg-white">
             <div className="md:w-64">
-                {/* filtres */}
-                <OffersFilters setSelectedFilters={setSelectedFilters} selectedFilters={selectedFilters}/>
+                <OffersFilters
+                    setSelectedFilters={setSelectedFilters}
+                    selectedFilters={selectedFilters}
+                    tags={tags}
+                />
             </div>
-            <div className="md:w-8/12">
+            <div className="w-full">
                 <div className="sm:flex sm:flex-row justify-between">
                     <div className="mb-6">
                         <h3 className="text-4xl text-black font-bold"> Résultats </h3>
-                        <p> {nbOffers} offres trouvés </p>
+                        <p>{offers.length} offres trouvés </p>
                     </div>
                     <div>
                         <p>
@@ -128,18 +116,27 @@ function CompanyOffers() {
                 </div>
                 <div className="flex flex-col gap-4 md:mx-0">
                     {/* offres */}
-                    <OffersList
-                        data={currentData}
-                        currentPage={currentPage}
-                        setCurrentPage={setCurrentPage}
-                        PageSize={PageSize}
-                        nbOffers={nbOffers}
-                    />
+                    <div>
+                        <div className="flex flex-col gap-4 md:mx-0">
+                            {currentData.map((offer) => (
+                                <OfferCell key={offer.id} offer={offer} />
+                            ))}
+                        </div>
+                        <div>
+                            <Pagination
+                                className="pagination-bar"
+                                currentPage={currentPage}
+                                totalCount={offers.length}
+                                pageSize={pageSize}
+                                onPageChange={(page) => setCurrentPage(page)}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
       </div>
     )
   }
-  
+
   export default CompanyOffers;

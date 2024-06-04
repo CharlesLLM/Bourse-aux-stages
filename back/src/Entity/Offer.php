@@ -62,6 +62,10 @@ class Offer
     private ?int $availablePlaces = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['offer'])]
+    private ?\DateTimeInterface $endPublicationDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['offer', 'company'])]
     private \DateTimeInterface $startDate;
 
@@ -168,6 +172,18 @@ class Offer
     public function setAvailablePlaces(int $availablePlaces): static
     {
         $this->availablePlaces = $availablePlaces;
+
+        return $this;
+    }
+
+    public function getEndPublicationDate(): ?\DateTimeInterface
+    {
+        return $this->endPublicationDate;
+    }
+
+    public function setEndPublicationDate(\DateTimeInterface $endPublicationDate): static
+    {
+        $this->endPublicationDate = $endPublicationDate;
 
         return $this;
     }
