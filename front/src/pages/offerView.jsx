@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import OfferHeader from '../components/stageOffers/offerHeader.jsx';
+import OfferHeader from '../components/utils/offerHeader.jsx';
 
 function OfferView() {
   const { id } = useParams();

@@ -11,7 +11,7 @@ function Navbar() {
         </li>
         <li className="flex items-center relative group">
           <p className="cursor-pointer">Offres</p>
-          <ul className="absolute left-0 top-full w-32 bg-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-all duration-500 transform -translate-y-6 group-hover:translate-y-0">
+          <ul className="absolute left-0 top-full w-32 z-20 bg-white rounded shadow-lg opacity-0 transition-all duration-500 transform -translate-y-6 group-hover:opacity-100 group-hover:translate-y-0">
             <li className="flex items-center px-4 py-2 border-l-2 border-white hover:bg-lightGrey hover:border-primary">
               <a href="/offres/stage" className="whitespace-nowrap">Stage</a>
             </li>

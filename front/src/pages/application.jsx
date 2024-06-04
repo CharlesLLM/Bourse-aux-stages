@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import OfferHeader from "../components/stageOffers/offerHeader.jsx";
 import Checkbox from "../components/utils/checkbox.jsx";
+import OfferHeader from "../components/utils/offerHeader.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
 import Input from "../components/utils/input.jsx";
 import RichText from "../components/utils/richText.jsx";
