@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Badge from "../utils/badge";
 import OfferTypeTag from "../utils/offerTypeTag";
 import PropTypes from "prop-types";
+import ProgressBar from "../utils/progressBar";
 
 const OfferCell = ({ offer }) => {
   const navigate = useNavigate();
@@ -11,11 +12,6 @@ const OfferCell = ({ offer }) => {
   if (offerDuration > 365) {
     offerDurationString = `${Math.floor(offerDuration / 30)} mois et ${offerDuration % 30} jours`;
   }
-
-  const publicationDuration = Math.floor((new Date (offer.endPublicationDate) - new Date (offer.createdAt)) / (1000 * 60 * 60 * 24));
-  const remainingTime = Math.floor((new Date (offer.endPublicationDate) - new Date()) / (1000 * 60 * 60 * 24));
-  const progressBarWidth = remainingTime / publicationDuration * 100;
-  const progressBarColor = progressBarWidth > 40 ? '#56CDAD' : progressBarWidth > 10 ? '#FF9900' : '#FF007A';
 
   return (
     <div className="flex justify-between gap-4 border border-borderGrey p-6 w-full">
@@ -55,17 +51,7 @@ const OfferCell = ({ offer }) => {
           className="bg-primary py-3 px-6 text-white font-semibold w-full"
           onClick={() => navigate(`/offre/${offer.id}`)}
         >En savoir plus</button>
-        <div className="w-full bg-borderGrey mt-4 mb-2">
-            <div className="h-1.5" style={{ width: `${progressBarWidth}%`, backgroundColor: progressBarColor  }}></div>
-        </div>
-        <p className="text-xs font-normal">
-          {remainingTime < 1 
-            ? "Dernier jour pour postuler" 
-            : remainingTime == 1 
-              ? "Reste 1 jour pour postuler" 
-              : `Reste ${remainingTime} jours pour postuler`
-          }
-        </p>
+        <ProgressBar startDate={offer.startDate} endDate={offer.endDate} endPublicationDate={offer.endPublicationDate} createdAt={offer.createdAt} displayLabelTop={false} />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import OfferHeader from '../components/utils/offerHeader.jsx';
-
+import OfferBody from '../components/utils/offerBody.jsx'
 function OfferView() {
   const { id } = useParams();
   const [offer, setOffer] = useState([]);
@@ -26,6 +26,7 @@ function OfferView() {
   return (
     <div>
       <OfferHeader offer={offer} enableApplyButton />
+      <OfferBody offer={offer} enableApplyButton />
     </div>
   )
 }
