@@ -97,18 +97,18 @@ class Company
     #[Groups(['companies', 'company'])]
     private CompanyCategory $category;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Admin::class, cascade: ['remove'])]
     #[Groups(['company'])]
     private Collection $admins;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Offer::class, cascade: ['remove'])]
     #[Groups(['companies', 'company'])]
     private Collection $offers;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class, orphanRemoval: true)]
     private Collection $applications;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: SpontaneousApplication::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: SpontaneousApplication::class, orphanRemoval: true)]
     private Collection $spontaneousApplications;
 
     #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'companies')]
