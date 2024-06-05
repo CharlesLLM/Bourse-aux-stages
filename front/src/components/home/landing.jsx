@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Searchbar from './searchbar.jsx';
+import { useEffect, useState } from "react";
+// import Searchbar from './searchbar.jsx';
 import '../../../assets/styles/underline.scss';
 
 function Landing() {
@@ -30,14 +30,14 @@ function Landing() {
         <div className="flex flex-col mx-6 md:mx-32 mt-6 pb-20">
             <div className="z-50 mt-12 w-2/3">
                 <div className="mb-8">
-                    <h1 className="font-bold text-4xl md:text-5xl lg:text-7xl lg:leading-[84px]"> Trouver un stage n'aura jamais été <span className="text-secondary custom-underline">aussi facile!</span></h1>
-                    <p className="text-darkGray text-xl mt-12 font-normal leading-8"> Trouvez les offres de stage ou d'alternance près de chez vous qui correspondent à votre profil et à vos attentes.</p>
+                    <h1 className="font-bold text-4xl md:text-5xl lg:text-7xl lg:leading-[84px]"> Trouver un stage n&apos;aura jamais été <span className="text-secondary custom-underline">aussi facile!</span></h1>
+                    <p className="text-darkGray text-xl mt-12 font-normal leading-8"> Trouvez les offres de stage ou d&apos;alternance près de chez vous qui correspondent à votre profil et à vos attentes.</p>
                 </div>
                 {/* <Searchbar /> */}
                 <div className="mt-2 text-darkGrey">
                   <p className="text-darkGray text-lg font-normal">
                     <span className="text-secondary font-bold">{counts.internships}</span> offres de <span className="font-bold">stages</span> | 
-                    <span className="text-secondary font-bold"> {counts.apprenticeships}</span> offres <span className="font-bold">d'alternance</span> n'attendent que vous !
+                    <span className="text-secondary font-bold"> {counts.apprenticeships}</span> offres <span className="font-bold">d&apos;alternance</span> n&apos;attendent que vous !
                   </p>
                 </div>
             </div>

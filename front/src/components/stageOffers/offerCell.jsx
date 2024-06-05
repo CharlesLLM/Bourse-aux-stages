@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Badge from "../utils/badge";
 import OfferTypeTag from "../utils/offerTypeTag";
+import PropTypes from "prop-types";
 
 const OfferCell = ({ offer }) => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const OfferCell = ({ offer }) => {
             {offer.tags && offer.tags.map((tag) => (
               <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />
             ))}
-            {offer.offerType === 'Stage' && offer.durations >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
+            {offer.type === 'Stage' && offerDuration >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
           </div>
         </div>
       </div>
@@ -68,6 +69,27 @@ const OfferCell = ({ offer }) => {
       </div>
     </div>
   );
+};
+
+OfferCell.propTypes = {
+  offer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    company: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
+      logo: PropTypes.string
+    }).isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    endPublicationDate: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired
+    })).isRequired,
+  })
 };
 
 export default OfferCell;

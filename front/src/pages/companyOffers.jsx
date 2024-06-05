@@ -1,4 +1,4 @@
-import { React, useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ListHero from "../components/listHero.jsx";
 import Pagination from "../components/utils/pagination.jsx";

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+import PropTypes from 'prop-types';
 
 const CheckboxFilter = ({ title, options, selectedValues = [], onCheckboxChange }) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -32,6 +33,17 @@ const CheckboxFilter = ({ title, options, selectedValues = [], onCheckboxChange 
       )}
     </div>
   );
+};
+
+CheckboxFilter.propTypes = {
+  title: PropTypes.string.isRequired,
+  options: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    label: PropTypes.string.isRequired
+  })).isRequired,
+  selectedValues: PropTypes.array,
+  onCheckboxChange: PropTypes.func.isRequired
 };
 
 export default CheckboxFilter;

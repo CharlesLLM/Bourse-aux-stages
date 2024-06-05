@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import OfferHeader from '../components/utils/offerHeader.jsx';
 
 function OfferView() {
   const { id } = useParams();
   const [offer, setOffer] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getOffer = async () => {

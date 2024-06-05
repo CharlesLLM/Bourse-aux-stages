@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import RangeSlider from "./rangeSlider.jsx";
 import CheckboxFilter from "./checkboxFilter.jsx";
+import PropTypes from "prop-types";
 
 const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
   const [isVisibleDistance, setIsVisibleDistance] = useState(true);
@@ -72,6 +73,23 @@ const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
       </div>
     </React.Fragment>
   );
+};
+
+OffersFilters.propTypes = {
+  setSelectedFilters: PropTypes.func.isRequired,
+  selectedFilters: PropTypes.shape({
+    profiles: PropTypes.array,
+    levels: PropTypes.array,
+    durations: PropTypes.array,
+    distance: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ])
+  }).isRequired,
+  tags: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired
+  })).isRequired
 };
 
 export default OffersFilters;
