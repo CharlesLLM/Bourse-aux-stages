@@ -60,7 +60,7 @@ function CompanyView() {
             <p className="text-textGrey font-bold">{company.summary}</p>
             <p className="font-normal">{company.description}</p>
           </div>
-          {company.linkedinLink || company.xLink && (
+          {(company.linkedinLink || company.xLink) && (
             <div className="space-y-6">
               <h2 className="text-3xl font-semibold">Réseaux sociaux</h2>
               <div className="flex gap-4">
