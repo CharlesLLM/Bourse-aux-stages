@@ -82,15 +82,27 @@ function CompanyOffers() {
 
     return (
       <div className="bg-lightGrey px-5 md:px-0">
-        <ListHero
-            mainText="Offres de stage"
-            subtitle="Découvrez les offres de stages actuellement proposées par les entreprises"
-            breadcrumb={[
-                { name: 'Accueil', href: '/' },
-                { name: 'Offres', href: '/offres' },
-                { name: 'Stages', href: '/offres' }
-            ]}
-        />
+        {type && type === "stage" ? (
+            <ListHero
+                mainText={`Offres de stage`}
+                subtitle={`Découvrez les offres de stage actuellement proposées par les entreprises`}
+                breadcrumb={[
+                    { name: 'Accueil', href: '/' },
+                    { name: 'Offres', href: '/offres/stage' },
+                    { name: 'Stages', href: '/offres/stage' }
+                ]}
+            />
+        ) : (
+            <ListHero
+                mainText={`Offres d'alternance`}
+                subtitle={`Découvrez les offres d'alternance actuellement proposées par les entreprises`}
+                breadcrumb={[
+                    { name: 'Accueil', href: '/' },
+                    { name: 'Offres', href: '/offres/alternance' },
+                    { name: 'Alternances', href: '/offres/alternance' }
+                ]}
+            />
+        )}
         <div className="flex flex-col md:flex-row md:px-32 py-16 gap-16 bg-white">
             <div className="md:w-64">
                 <OffersFilters
