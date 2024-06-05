@@ -14,6 +14,19 @@ class OfferRepository extends ServiceEntityRepository
         parent::__construct($registry, Offer::class);
     }
 
+    public function countByType(): array
+    {
+        $counts = $this->createQueryBuilder('o')
+            ->select('o.type, COUNT(o.id) as count')
+            ->groupBy('o.type')
+            ->getQuery()
+            ->execute()
+        ;
+        $counts = array_map(fn ($count) => [$count['type']->value => (int) $count['count']], $counts);
+
+        return array_merge(...$counts);
+    }
+
     public function findByFilters(
         ?string $type = null,
         array $tagIds = [],

@@ -16,7 +16,7 @@ function CompanyOffers() {
         profiles: [],
         levels: [],
         durations: [],
-        distance: 50,
+        distance: "",
     });
 
     let pageSize = 7;
@@ -29,7 +29,7 @@ function CompanyOffers() {
             url += `&levels=${selectedFilters.levels}`;
             // TODO : improve durations url parameter
             url += `&durations=[${selectedFilters.durations}]`;
-            url += `&distance=${selectedFilters.distance}`;
+            url += `&distance=${selectedFilters.distance ? selectedFilters.distance : 0}`;
             try {
                 const response = await fetch(url);
                 if (!response.ok) {
