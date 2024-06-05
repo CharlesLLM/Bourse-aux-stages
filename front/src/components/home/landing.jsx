@@ -26,7 +26,7 @@ function Landing() {
   }, []);
 
   return (
-    <div className="bg-[#F8F8FD] relative overflow-hidden h-[600px]">
+    <div className="bg-lightGrey relative overflow-hidden h-[600px]">
         <div className="flex flex-col mx-6 md:mx-32 mt-6 pb-20">
             <div className="z-50 mt-12 w-2/3">
                 <div className="mb-8">
@@ -34,7 +34,7 @@ function Landing() {
                     <p className="text-darkGray text-xl mt-12 font-normal leading-8"> Trouvez les offres de stage ou d'alternance près de chez vous qui correspondent à votre profil et à vos attentes.</p>
                 </div>
                 {/* <Searchbar /> */}
-                <div className="mt-2 text-[#25324B]">
+                <div className="mt-2 text-darkGrey">
                   <p className="text-darkGray text-lg font-normal">
                     <span className="text-secondary font-bold">{counts.internships}</span> offres de <span className="font-bold">stages</span> | 
                     <span className="text-secondary font-bold"> {counts.apprenticeships}</span> offres <span className="font-bold">d'alternance</span> n'attendent que vous !

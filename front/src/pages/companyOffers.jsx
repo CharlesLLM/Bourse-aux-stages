@@ -81,7 +81,7 @@ function CompanyOffers() {
     }, [sortedData, currentPage]);
 
     return (
-      <div className="bg-[#F8F8FD] px-5 md:px-0">
+      <div className="bg-lightGrey px-5 md:px-0">
         <ListHero
             mainText="Offres de stage"
             subtitle="Découvrez les offres de stages actuellement proposées par les entreprises"
@@ -107,7 +107,7 @@ function CompanyOffers() {
                     </div>
                     <div>
                         <p>
-                            <span className="text-[#25324B]"> Trier par: </span> 
+                            <span className="text-darkGrey"> Trier par: </span> 
                             <select className="bg-inherit"onChange={(e) => setSortOption(e.target.value)} value={sortOption}>
                                 <option value="MOST_RECENT"> Date de publication (plus récent) </option>
                                 <option value="LEAST_RECENT"> Date de publication (plus ancien) </option>
