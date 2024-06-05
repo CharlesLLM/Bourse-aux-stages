@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class OfferFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const FIXTURE_RANGE = 30;
+    public const FIXTURE_RANGE = 50;
 
     public function load(ObjectManager $manager): void
     {
@@ -18,11 +18,13 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
             $tags[] = $this->getReference(TagFixtures::REFERENCE_IDENTIFIER.$i);
         }
 
-        OfferFactory::new()->many(30)->create(function () use ($tags) {
+        OfferFactory::new()->many(50)->create(function () use ($tags) {
             $selectedCompany = $this->getReference(CompanyFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyFixtures::FIXTURE_RANGE));
             $selectedTags = [];
-            foreach ($tags as $tag) {
-                rand(0, 1) ? $selectedTags[] = $tag : null;
+            while (count($selectedTags) < 1) {
+                foreach ($tags as $tag) {
+                    rand(0, 1) ? $selectedTags[] = $tag : null;
+                }
             }
 
             return [

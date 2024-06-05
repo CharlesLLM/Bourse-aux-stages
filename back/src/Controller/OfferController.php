@@ -13,25 +13,40 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class OfferController extends AbstractController
 {
+    public function __construct(
+        private OfferRepository $offerRepository,
+        private SerializerInterface $serializer,
+    ) {
+    }
+
     #[Route('/offers', name: 'app_offer_index', methods: ['GET'])]
-    public function getLatestCompanies(Request $request, OfferRepository $offerRepository, SerializerInterface $serializer): JsonResponse
+    public function getLatestCompanies(Request $request, SerializerInterface $serializer): JsonResponse
     {
         $type = $request->query->get('type');
         $tags = $request->query->get('tags') ? explode(',', $request->query->get('tags')) : [];
         $levels = $request->query->get('levels') ? explode(',', $request->query->get('levels')) : [];
-        $distance = $request->query->get('distance') ?? 50;
+        $distance = $request->query->get('distance') ?? null;
         $durations = $request->query->get('durations') ? json_decode($request->query->get('durations'), true) : [];
 
-        $offers = $offerRepository->findByFilters($type, $tags, $levels, $durations, $distance);
+        $offers = $this->offerRepository->findByFilters($type, $tags, $levels, $durations, $distance);
         $jsonContent = $serializer->serialize($offers, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/offer/latest', name: 'app_latest_offers')]
-    public function getLatestOffers(OfferRepository $offerRepository, SerializerInterface $serializer): JsonResponse
+    #[Route('/offers/count', name: 'app_offer_count', methods: ['GET'])]
+    public function getOffersCount(): JsonResponse
     {
-        $offers = $offerRepository->findBy([], ['createdAt' => 'DESC'], 8);
+        $counts = $this->offerRepository->countByType();
+        $counts = json_encode($counts);
+
+        return new JsonResponse($counts, Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/offer/latest', name: 'app_latest_offers')]
+    public function getLatestOffers(SerializerInterface $serializer): JsonResponse
+    {
+        $offers = $this->offerRepository->findBy([], ['createdAt' => 'DESC'], 8);
         $jsonContent = $serializer->serialize($offers, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);

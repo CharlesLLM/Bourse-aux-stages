@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Searchbar from './searchbar.jsx';
 import '../../../assets/styles/underline.scss';
 
 function Landing() {
-  const nbStages = 100;
-  const nbAlternances = 50;
+  const [counts, setCounts] = useState({ internships: 0, apprenticeships: 0 });
+
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offers/count`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCounts({
+          internships: data.stage,
+          apprenticeships: data.alternance,
+        });
+      } catch (err) {
+        console.error('Error fetching data: ', err);
+      }
+    };
+
+    fetchCounts();
+  }, []);
 
   return (
     <div className="bg-[#F8F8FD] relative overflow-hidden h-[600px]">
@@ -17,8 +36,8 @@ function Landing() {
                 {/* <Searchbar /> */}
                 <div className="mt-2 text-[#25324B]">
                   <p className="text-darkGray text-lg font-normal">
-                    <span className="text-secondary font-bold">{nbStages}</span> offres de <span className="font-bold">stages</span> | 
-                    <span className="text-secondary font-bold"> {nbAlternances}</span> offres <span className="font-bold">d'alternance</span> n'attendent que vous !
+                    <span className="text-secondary font-bold">{counts.internships}</span> offres de <span className="font-bold">stages</span> | 
+                    <span className="text-secondary font-bold"> {counts.apprenticeships}</span> offres <span className="font-bold">d'alternance</span> n'attendent que vous !
                   </p>
                 </div>
             </div>
