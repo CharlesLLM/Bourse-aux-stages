@@ -27,7 +27,7 @@ function CompanyView() {
     };
 
     getCompany();
-  }, []);
+  }, [slug]);
 
   return (
     <div className="flex flex-col items-center">

@@ -1,4 +1,3 @@
-import React from 'react';
 import classnames from 'classnames';
 import {usePagination} from './usePagination';
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
@@ -72,7 +71,7 @@ function Pagination ({ onPageChange, totalCount, siblingCount = 1, currentPage, 
       </li>
     </ul>
   );
-};
+}
 
 Pagination.propTypes = {
   onPageChange: PropTypes.func.isRequired,

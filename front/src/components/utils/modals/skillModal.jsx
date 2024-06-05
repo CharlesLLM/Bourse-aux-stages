@@ -1,4 +1,4 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 const Modal = ({ closeModal, children }) => {
   return (
@@ -26,6 +26,11 @@ const Modal = ({ closeModal, children }) => {
       </div>
     </div>
   );
+};
+
+Modal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Modal;

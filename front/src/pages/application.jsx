@@ -176,7 +176,7 @@ function Application() {
     };
 
     getOffer();
-  }, []);
+  }, [id]);
 
   const handleRemoveSkill = (id) => {
     setSkills(skills.filter(skill => skill.id !== id));

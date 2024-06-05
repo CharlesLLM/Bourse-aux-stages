@@ -49,7 +49,7 @@ function CompanyOffers() {
         };
     
         getOffers();
-    }, [selectedFilters]);
+    }, [type, selectedFilters]);
 
     const sortedData = useMemo(() => {
         const sorted = [...offers];
@@ -78,7 +78,7 @@ function CompanyOffers() {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
         return sortedData.slice(firstPageIndex, lastPageIndex);
-    }, [sortedData, currentPage]);
+    }, [sortedData, currentPage, pageSize]);
 
     return (
       <div className="bg-lightGrey px-5 md:px-0">

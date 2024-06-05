@@ -21,7 +21,7 @@ function OfferView() {
     };
 
     getOffer();
-  }, []);
+  }, [id]);
 
   return (
     <div>

@@ -1,9 +1,5 @@
-import React from "react";
-import { FaFacebookF } from "react-icons/fa";
+import { FaFacebookF, FaDribbble, FaLinkedinIn, FaTwitter } from "react-icons/fa";
 import { FaInstagram } from "react-icons/fa6";
-import { FaDribbble } from "react-icons/fa";
-import { FaLinkedinIn } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
 
 function Footer(){
   return (
@@ -35,7 +31,7 @@ function Footer(){
           </div>
           <div className="flex flex-row flex-wrap sm:flex-nowrap gap-2">
            <input name="email" className="border-b-2 border-slate-700 text-grey h-12 p-4 w-56" placeholder="Votre email"></input>
-            <button className="bg-primary px-6 text-white h-12 w-32"> C'est parti </button>
+            <button className="bg-primary px-6 text-white h-12 w-32"> C&apos;est parti </button>
           </div>
         </div>
       </div>

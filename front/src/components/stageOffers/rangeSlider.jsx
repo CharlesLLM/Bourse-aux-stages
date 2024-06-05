@@ -26,7 +26,7 @@ function RangeSlider({ value, onSliderChange }) {
       )}
     </React.Fragment>
   );
-};
+}
 
 RangeSlider.propTypes = {
   value: PropTypes.oneOfType([
