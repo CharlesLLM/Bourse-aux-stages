@@ -51,40 +51,35 @@ class OfferRepository extends ServiceEntityRepository
 
         $qb = $this->createQueryBuilder('o')
             ->leftJoin('o.tags', 't')
+            ->where('o.startDate IS NOT NULL')
+            ->andWhere('o.endDate IS NOT NULL')
+            ->andWhere('o.endPublicationDate > :now')
+            ->setParameter('now', new \DateTime())
         ;
 
         if ($type) {
-            $qb
-                ->andWhere('o.type = :type')
-                ->setParameter('type', $type)
-            ;
+            $qb->andWhere('o.type = :type')
+                ->setParameter('type', $type);
         }
 
         if ($distance) {
-            $qb
-                ->andWhere('o.distance <= :distance')
-                ->setParameter('distance', $distance)
-            ;
+            $qb->andWhere('o.distance <= :distance')
+                ->setParameter('distance', $distance);
         }
 
         if (!empty($tagIds)) {
-            $qb
-                ->andWhere('t.id IN (:tagIds)')
-                ->setParameter('tagIds', $tagIds)
-            ;
+            $qb->andWhere('t.id IN (:tagIds)')
+                ->setParameter('tagIds', $tagIds);
         }
 
         if (!empty($levels)) {
-            $qb
-                ->andWhere('o.requiredLevel IN (:levels)')
-                ->setParameter('levels', $levels)
-            ;
+            $qb->andWhere('o.requiredLevel IN (:levels)')
+                ->setParameter('levels', $levels);
         }
 
         if (!empty($durationsFilter)) {
             $qb->andWhere('o.startDate IS NOT NULL')
-                ->andWhere('o.endDate IS NOT NULL')
-            ;
+                ->andWhere('o.endDate IS NOT NULL');
 
             $orCondition = $qb->expr()->orX();
 

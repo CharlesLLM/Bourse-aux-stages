@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function topCompanies() {
+function TopCompanies() {
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect( () => {
     const getTopCompanies = async () => {
@@ -16,7 +15,7 @@ function topCompanies() {
         const data = await response.json();
         setCompanies(data);
       } catch (err) {
-        setError(err);
+        console.error('Error fetching data: ', err);
       }
     };
 
@@ -42,4 +41,4 @@ function topCompanies() {
   )
 }
 
-export default topCompanies;
+export default TopCompanies;

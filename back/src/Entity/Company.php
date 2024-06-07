@@ -52,7 +52,7 @@ class Company
     #[Groups(['companies', 'company'])]
     private ?string $summary = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: Types::TEXT)]
     #[Groups(['company'])]
     private ?string $description = null;
 
@@ -191,7 +191,7 @@ class Company
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
+    public function setDescription(string $description): static
     {
         $this->description = $description;
 

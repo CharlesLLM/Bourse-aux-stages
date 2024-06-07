@@ -1,4 +1,3 @@
-import React from "react";
 import PropTypes from "prop-types";
 
 function SelectInput({options = [], name, label, required, inputRef}) {
@@ -15,7 +14,6 @@ function SelectInput({options = [], name, label, required, inputRef}) {
   )
 }
 
-
 SelectInput.propTypes = {
   options: PropTypes.arrayOf(PropTypes.string).isRequired,
   name: PropTypes.string.isRequired,
@@ -26,4 +24,5 @@ SelectInput.propTypes = {
     PropTypes.shape({ current: PropTypes.instanceOf(Element) })
   ])
 };
-export default SelectInput
+
+export default SelectInput;

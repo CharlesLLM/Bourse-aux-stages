@@ -7,7 +7,6 @@ import OfferTypeTag from "../utils/offerTypeTag.jsx";
 function LastOffers() {
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect( () => {
     const latestOffers = async () => {
@@ -19,7 +18,7 @@ function LastOffers() {
         const data = await response.json();
         setOffers(data);
       } catch (err) {
-        setError(err);
+        console.error('Error fetching data: ', err);
       }
     };
     latestOffers();

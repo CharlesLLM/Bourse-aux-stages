@@ -1,18 +1,9 @@
-import React from 'react';
 import classnames from 'classnames';
 import {usePagination} from './usePagination';
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import PropTypes from 'prop-types';
 
-const Pagination = props => {
-  const {
-    onPageChange,
-    totalCount,
-    siblingCount = 1,
-    currentPage,
-    pageSize,
-    className
-  } = props;
-
+function Pagination ({ onPageChange, totalCount, siblingCount = 1, currentPage, pageSize }) {
   const paginationRange = usePagination({
     currentPage,
     totalCount,
@@ -37,11 +28,11 @@ const Pagination = props => {
 
   return (
     <ul
-      className="flex flex-row flex-wrap justify-center items-center gap-10 my-10"
+      className="flex flex-row flex-wrap justify-center items-center gap-2 my-10"
     >
       {/* Flèche de navigation gauche */}
       <li
-        className={classnames('text-xl cursor-pointer', {
+        className={classnames('w-10 h-10 rounded-lg flex justify-center items-center text-base text-primary cursor-pointer', {
           "hidden": currentPage === 1
         })}
         onClick={onPrevious}
@@ -53,15 +44,15 @@ const Pagination = props => {
          
         // cas ou l'élément est un dots 
         if (pageNumber === "dots") {
-          return <li key={`dots-${index}`} className="text-xl cursor-default	">...</li>;
+          return <li key={`dots-${index}`} className="w-10 h-10 rounded-lg flex justify-center items-center text-base text-[#7C8493] cursor-default	">...</li>;
         }
 		
         // Affichage des éléments de pagination (page 1, 2, 3...)
         return (
           <li
             key={pageNumber}
-            className={classnames('text-xl cursor-pointer', {
-              "w-16 h-16 rounded-lg bg-primary flex items-center justify-center text-white": pageNumber === currentPage
+            className={classnames('w-10 h-10 rounded-lg flex justify-center items-center text-base text-[#7C8493] cursor-pointer', {
+              "bg-primary !text-white": pageNumber === currentPage
             })}
             onClick={() => onPageChange(pageNumber)}
           >
@@ -71,7 +62,7 @@ const Pagination = props => {
       })}
       {/* Flèche de navigation droite */}
       <li
-        className={classnames('text-xl cursor-pointer', {
+        className={classnames('w-10 h-10 rounded-lg flex justify-center items-center text-base text-primary cursor-pointer', {
             "hidden": currentPage === lastPage
           })}
         onClick={onNext}
@@ -80,6 +71,14 @@ const Pagination = props => {
       </li>
     </ul>
   );
+}
+
+Pagination.propTypes = {
+  onPageChange: PropTypes.func.isRequired,
+  totalCount: PropTypes.number.isRequired,
+  siblingCount: PropTypes.number,
+  currentPage: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
 };
 
 export default Pagination;

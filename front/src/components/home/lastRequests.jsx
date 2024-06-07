@@ -1,14 +1,13 @@
 import {useEffect, useState} from "react";
 import LinkTo from "../utils/linkTo.jsx";
 import {useNavigate} from "react-router-dom";
-import {differenceInDays, differenceInMonths, differenceInYears, format, parse, parseISO} from 'date-fns';
-import {fr} from "date-fns/locale/fr";
+import {differenceInDays, differenceInMonths, differenceInYears, format, parseISO} from 'date-fns';
+// import {fr} from "date-fns/locale/fr";
 import OfferTypeTag from "../utils/offerTypeTag.jsx";
 
 function LastRequests() {
   const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
-  const [error, setError] = useState(null);
 
   useEffect( () => {
     const latestRequests = async () => {
@@ -20,7 +19,7 @@ function LastRequests() {
         const data = await response.json();
         setRequests(data);
       } catch (err) {
-        setError(err);
+        console.error('Error fetching data: ', err);
       }
     };
 

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import Checkbox from "../components/utils/checkbox.jsx";
 import OfferHeader from "../components/utils/offerHeader.jsx";
@@ -23,7 +23,6 @@ function Application() {
   const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [error, setError] = useState(null);
   const [errorModal, setErrorModal] = useState(null)
 
   const genderRef = useRef(null);
@@ -140,7 +139,7 @@ function Application() {
       setErrorModal("La date de fin ne peut pas être antérieure à la date de début.");
       return;
     }
-    console.log(newCompanyName.length > 0)
+
     if (newCompanyName.length > 0 && newPosition.length > 0 && newDescription.length > 0 && newStartDate.length > 0 && newEndDate.length > 0) {
       const newExperience = {
         id: uuidv4(),
@@ -177,7 +176,7 @@ function Application() {
     };
 
     getOffer();
-  }, []);
+  }, [id]);
 
   const handleRemoveSkill = (id) => {
     setSkills(skills.filter(skill => skill.id !== id));
@@ -215,15 +214,15 @@ function Application() {
   };
 
   const handleCVUpload = (event) => {
-    console.log('upload')
+    console.log('upload', event)
   }
 
   const handleLetterUpload = (event) => {
-    console.log('upload')
+    console.log('upload', event)
   }
 
   const handleOtherUpload = (event) => {
-    console.log('upload')
+    console.log('upload', event)
   }
 
   const handleRemoveFile = () => {

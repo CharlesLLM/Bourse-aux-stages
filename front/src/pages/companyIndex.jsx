@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Container from '../layout/container.jsx';
 import CompanyCard from '../components/company/companyCard.jsx';
 import CategoryFilters from '../components/company/categoryFilters.jsx';
 import SizeFilters from '../components/company/sizeFilters.jsx';
@@ -64,7 +65,7 @@ function CompanyIndex() {
         subtitle="Découvrez les entreprises qui proposent des offres de stage ou d'alternance"
         breadcrumb={[{ name: 'Accueil', href: '/' }, { name: 'Entreprises', href: '/entreprises' }]}
       />
-      <div className="flex md:px-32 md:py-[72px] gap-16 w-full">
+      <Container>
         <div className="w-64 space-y-10">
           <TagFilters tags={tags} handleTags={handleTags} />
           <CategoryFilters categories={categories} handleCategories={handleCategories} />
@@ -83,7 +84,7 @@ function CompanyIndex() {
             ))}
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   )
 }

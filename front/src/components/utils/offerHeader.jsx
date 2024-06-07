@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../utils/breadcrumb.jsx';
 import Badge from '../utils/badge.jsx';
 import OfferTypeTag from '../utils/offerTypeTag.jsx';
+import PropTypes from "prop-types";
 
 function OfferHeader({ offer, enableApplyButton = false }) {
   const navigate = useNavigate();
@@ -69,5 +70,23 @@ function OfferHeader({ offer, enableApplyButton = false }) {
     </div>
   )
 }
+
+OfferHeader.propTypes = {
+  offer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    company: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
+      logo: PropTypes.string,
+      slug: PropTypes.string.isRequired
+    }).isRequired,
+    startDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    tags: PropTypes.arrayOf(PropTypes.object).isRequired
+  }),
+  enableApplyButton: PropTypes.bool,
+};
 
 export default OfferHeader;
