@@ -44,6 +44,7 @@ function Register() {
   const companyPostalCodeRef = useRef();
   const companySecondAddressRef = useRef();
   const companyPositionRef = useRef();
+  const companyCountryRef = useRef();
 
 
   useEffect(() => {
@@ -56,6 +57,7 @@ function Register() {
       })
       .then(data => {
         setLanguages(data);
+        setSelectedLanguage('fr');
         setLoading(false);
       })
       .catch(error => {
@@ -121,13 +123,14 @@ function Register() {
       ...criteria,
       passwordsMatch: passwordsMatch
     });
+    console.log(criteria.passwordsMatch)
   }
 
   const handleRoleChange = (role) => {
     setRole(role);
   }
   const handleLanguageChange = (event) => {
-    setSelectedLanguage(event.target.value);
+    setSelectedLanguage(event.code);
   };
 
   const handleSubmit = () => {
@@ -176,10 +179,13 @@ function Register() {
         errors.companyCity = "La ville de l'entreprise est requise"
       }
       if (!companyPostalCodeRef.current?.value){
-        errors.companyPostalCode = "Le code postal de l'entreprise est requise"
+        errors.companyPostalCode = "Le code postal de l'entreprise est requis"
       }
       if (!companyPhoneRef.current?.value){
-        errors.companyPhone = "Le téléphone de l'entreprise est requise"
+        errors.companyPhone = "Le téléphone de l'entreprise est requis"
+      }
+      if (!companyCountryRef.current?.value){
+        errors.companyCountry = "Le pays de l'entreprise est requis"
       }
     }
     if (role === 'student') {
@@ -196,10 +202,8 @@ function Register() {
         errors.address = "L'adresse est requise'";
       }
     }
-
     setError(errors);
-
-    if (Object.keys(errors).length === 0) {
+    if (Object.keys(errors).length === 0 && criteria.passwordsMatch) {
       const userData = {
         firstname: firstnameRef.current?.value,
         name: nameRef.current?.value,
@@ -207,30 +211,30 @@ function Register() {
         email: emailRef.current?.value,
         phone: phoneNumberRef.current?.value,
         password: passwordRef.current?.value,
-        confirmPassword: confirmPasswordRef.current?.value,
-        birthDate: birthDateRef.current?.value,
+        confirm_password: confirmPasswordRef.current?.value,
+        birth_date: birthDateRef.current?.value,
         role: role,
         language: selectedLanguage,
         student : {
           address: addressRef.current?.value,
           city: cityRef.current?.value,
           country: countryRef.current?.value,
-          postalCode: postalCodeRef.current?.value,
+          postal_code: postalCodeRef.current?.value,
         },
         admin : {
-          companyPosition: companyPositionRef.current?.value,
+          company_position: companyPositionRef.current?.value,
           company: {
-            address: companyAddressRef,
-            city: companyCityRef,
-            postalCode: companyPostalCodeRef,
-            secondAddress: companySecondAddressRef,
-            name: companyNameRef,
-            siret: companySiretRef,
-            phone: companyPhoneRef,
+            address: companyAddressRef.current?.value,
+            city: companyCityRef.current?.value,
+            country: companyCountryRef.current?.value,
+            postal_code: companyPostalCodeRef.current?.value,
+            second_address: companySecondAddressRef.current?.value,
+            name: companyNameRef.current?.value,
+            siret: companySiretRef.current?.value,
+            phone: companyPhoneRef.current?.value,
           }
         }
       };
-
       fetch(`${import.meta.env.VITE_BACK_ENDPOINT}user/register`, {
         method: 'POST',
         headers: {
@@ -336,7 +340,7 @@ function Register() {
           <p className="text-red-700">{errors?.city}</p>
           <Input name="country" label="Pays" type="text" required={true} inputRef={countryRef} />
           <p className="text-red-700">{errors?.country}</p>
-          <Input name="postalCode" label="Code Postal" type="text" required={true} inputRef={postalCodeRef} />
+          <Input name="postalCode" label="Code Postal" type="number" max={5} required={true} inputRef={postalCodeRef} />
           <p className="text-red-700">{errors?.postalCode}</p>
           {/* eslint-disable-next-line react/no-unescaped-entities */}
           <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>S'inscrire</button>
@@ -348,17 +352,19 @@ function Register() {
           <p className="text-red-700">{errors?.companyName}</p>
           <Input name="companyPosition" label="Position dans l'entreprise" type="text" required={true} inputRef={companyPositionRef} />
           <p className="text-red-700">{errors?.companyPosition}</p>
-          <Input name="companySiret" label="Siret de l'entreprise" type="text" max={14} required={true} inputRef={companySiretRef} />
+          <Input name="companySiret" label="Siret de l'entreprise" type="text" required={true} inputRef={companySiretRef} />
           <p className="text-red-700">{errors?.companySiret}</p>
           <p className="text-red-700">{errors?.companySiretFormat}</p>
           <Input name="companyAddress" label="Adresse de l'entreprise" type="text" required={true} inputRef={companyAddressRef} />
           <p className="text-red-700">{errors?.companyAddress}</p>
           <Input name="companySecondAddress" label="Complément d'adresse" type="text" required={false} inputRef={companySecondAddressRef} />
-          <Input name="companyPostalCode" label="Code postal" type="text" required={true} inputRef={companyPostalCodeRef} />
+          <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
           <p className="text-red-700">{errors?.companyPostalCode}</p>
           <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />
           <p className="text-red-700">{errors?.companyCity}</p>
-          <Input name="companyPhone" label="Téléphone" type="tel" required={true} inputRef={companyPhoneRef} />
+          <Input name="companyCountry" label="Pays" type="text" required={true} inputRef={companyCountryRef} />
+          <p className="text-red-700">{errors?.companyCountry}</p>
+          <Input name="companyPhone" label="Téléphone" type="tel" max={10} required={true} inputRef={companyPhoneRef} />
           <p className="text-red-700">{errors?.companyPhone}</p>
           {/* eslint-disable-next-line react/no-unescaped-entities */}
           <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>S'inscrire</button>

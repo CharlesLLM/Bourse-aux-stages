@@ -60,7 +60,7 @@ class Company
     #[Groups(['company', 'offer'])]
     private ?string $description = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups(['companies', 'company'])]
     private ?int $size = null;
 
@@ -109,7 +109,7 @@ class Company
     private ?string $bigLogo = null;
 
     #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     #[Groups(['companies', 'company'])]
     private CompanyCategory $category;
 
@@ -131,6 +131,9 @@ class Company
     #[ORM\Column(nullable: true)]
     #[Groups(['company', 'offer'])]
     private ?array $images = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $secondAddress = null;
 
     public function __construct()
     {
@@ -506,6 +509,18 @@ class Company
     public function setImages(?array $images): static
     {
         $this->images = $images;
+
+        return $this;
+    }
+
+    public function getSecondAddress(): ?string
+    {
+        return $this->secondAddress;
+    }
+
+    public function setSecondAddress(?string $secondAddress): static
+    {
+        $this->secondAddress = $secondAddress;
 
         return $this;
     }
