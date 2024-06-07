@@ -51,7 +51,7 @@ const OfferCell = ({ offer }) => {
           className="bg-primary py-3 px-6 text-white font-semibold w-full"
           onClick={() => navigate(`/offre/${offer.id}`)}
         >En savoir plus</button>
-        <ProgressBar startDate={offer.startDate} endDate={offer.endDate} endPublicationDate={offer.endPublicationDate} createdAt={offer.createdAt} displayLabelTop={false} />
+        <ProgressBar offer={offer} />
       </div>
     </div>
   );
