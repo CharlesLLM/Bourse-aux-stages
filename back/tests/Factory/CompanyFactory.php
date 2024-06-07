@@ -22,6 +22,7 @@ final class CompanyFactory extends ModelFactory
             'category' => CompanyCategoryFactory::new(),
             'city' => $faker->city(),
             'country' => 'FR',
+            'description' => $faker->text(),
             'enabled' => $faker->boolean(),
             'name' => $faker->company(),
             'postalCode' => $faker->postcode(),
