@@ -7,6 +7,34 @@ import CompanyOffers from "../../front/src/pages/companyOffers";
 import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
+import Register from "./pages/register.jsx";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/entreprises",
+    element: <CompanyIndex />,
+  },
+  {
+    path: "/entreprise/:slug",
+    element: <CompanyView />,
+  },
+  {
+    path: "/offres/:type",
+    element: <CompanyOffers />,
+  },
+  {
+    path: '/offre/:id',
+    element: <OfferView />,
+  },
+  {
+    path: '/offre/:id/postuler',
+    element: <Application />
+  }
+]);
 
 function App() {
   return (
@@ -36,6 +64,10 @@ function App() {
           <Route
             path="/offre/:id/postuler"
             element={<Application />}
+          />
+          <Route
+            path="/inscription"
+            element={<Register />}
           />
         </Route>
       </Routes>

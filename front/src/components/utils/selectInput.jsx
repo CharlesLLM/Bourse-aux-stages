@@ -5,7 +5,7 @@ function SelectInput({options = [], name, label, required, inputRef}) {
     <div className="flex flex-col space-y-2">
       <label className="text-dark" htmlFor={name}>{label}<span className="text-red-700">{required ? '*' : ''}</span></label>
       <select name={name} ref={inputRef} className="border border-grey p-4">
-        <option value="" disabled selected> Veuillez choisir </option>
+        <option value="" disabled defaultValue> Veuillez choisir </option>
         {options.map((option) => (
           <option key={option} value={option}>{option}</option>
         ))}

@@ -27,3 +27,7 @@ docker-compose-override.yml
 ###> project ###
 /public/uploads/
 ###< project ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

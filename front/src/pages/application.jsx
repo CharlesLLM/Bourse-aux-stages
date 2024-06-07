@@ -23,6 +23,7 @@ function Application() {
   const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [error, setError] = useState(null);
   const [errorModal, setErrorModal] = useState(null)
 
   const genderRef = useRef(null);
@@ -271,10 +272,8 @@ function Application() {
       // otherDocument: selectedFile, // You need to store the uploaded file here
     };
 
-    // Do something with the application object, like sending it to a server
     console.log(application);
 
-    // Navigate to offer page
     navigate(`/offre/${offer.id}`);
   };
 
@@ -295,7 +294,7 @@ function Application() {
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} />
-              <Input type="tel" name="birthDay" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
+              <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
               <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} />
               <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} />
               <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} />

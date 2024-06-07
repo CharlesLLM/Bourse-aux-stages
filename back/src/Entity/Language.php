@@ -22,7 +22,7 @@ class Language
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private ?Uuid $id = null;
 
-    #[ORM\Column(length: 30)]
+    #[ORM\Column(length: 255)]
     #[Assert\NotNull]
     private ?string $name = null;
 

@@ -23,4 +23,10 @@ class UserController extends AbstractController
 
         return $this->json(['message' => 'File uploaded successfully']);
     }
+
+    #[Route(path: '/user/register', name: 'register', methods: ['POST'])]
+    public function register(Request $request): JsonResponse
+    {
+        return $this->json($request);
+    }
 }
