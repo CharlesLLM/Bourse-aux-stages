@@ -83,6 +83,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['student', 'request'])]
     private ?\DateTimeInterface $birthDate = null;
+    #[ORM\Column(nullable: true)]
+    private ?string $pic = null;
 
     public function __construct()
     {

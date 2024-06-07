@@ -30,10 +30,6 @@ class Admin
     #[Groups(['company'])]
     private ?string $position = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(['company'])]
-    private ?string $email = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['company'])]
     private ?string $linkedinLink = null;
