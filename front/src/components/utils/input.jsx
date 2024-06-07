@@ -26,4 +26,4 @@ Input.defaultProps = {
   max: null
 };
 
-export default Input
+export default Input;

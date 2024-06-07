@@ -25,4 +25,4 @@ SelectInput.propTypes = {
   ])
 };
 
-export default SelectInput
+export default SelectInput;

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Company;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Uid\Uuid;
 
@@ -16,8 +17,8 @@ class CompanyRepository extends ServiceEntityRepository
 
     public function findCompaniesWithMostOffers(): array
     {
-        $qb = $this->createQueryBuilder('c')
-            ->leftJoin('c.offers', 'o')
+        $qb = $this->queryEnabled();
+        $qb->leftJoin('c.offers', 'o')
             ->orderBy('COUNT(o)', 'DESC')
             ->groupBy('c')
             ->setMaxResults(5)
@@ -44,8 +45,8 @@ class CompanyRepository extends ServiceEntityRepository
             return null;
         }, $sizes);
 
-        $qb = $this->createQueryBuilder('c')
-            ->leftJoin('c.tags', 't')
+        $qb = $this->queryEnabled();
+        $qb->leftJoin('c.tags', 't')
             ->leftJoin('c.category', 'cc')
         ;
 
@@ -89,5 +90,13 @@ class CompanyRepository extends ServiceEntityRepository
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    public function queryEnabled(): QueryBuilder
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.enabled = :enabled')
+            ->setParameter('enabled', true)
+        ;
     }
 }
