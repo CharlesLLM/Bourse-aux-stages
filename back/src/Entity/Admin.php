@@ -34,7 +34,7 @@ class Admin
     #[Groups(['company'])]
     private ?string $linkedinLink = null;
 
-    #[ORM\OneToOne(targetEntity: User::class, inversedBy: 'companyAdmin', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'companyAdmin', targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['company'])]
     private ?User $user = null;
