@@ -1,4 +1,4 @@
-import React, {createContext, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Input from "../components/utils/input.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
 import Radio from "../components/utils/radio.jsx";
@@ -46,7 +46,6 @@ function Register() {
   const companyPositionRef = useRef();
   const companyCountryRef = useRef();
 
-
   useEffect(() => {
     fetch(`${import.meta.env.VITE_BACK_ENDPOINT}languages`)
       .then(response => {
@@ -67,33 +66,54 @@ function Register() {
       });
   }, []);
 
-  function validateSiret(siret) {
-    if (siret.length !== 14 || !/^\d+$/.test(siret)) {
-      return false;
-    }
-
-    function luhnChecksum(num) {
-      let total = 0;
-      let reverseDigits = num.split('').reverse().map(Number);
-      for (let i = 0; i < reverseDigits.length; i++) {
-        let digit = reverseDigits[i];
-        if (i % 2 === 1) {
-          digit *= 2;
-          if (digit > 9) {
-            digit -= 9;
+  function checkEmail() {
+    if (emailRef.current?.value) {
+      fetch(`${import.meta.env.VITE_BACK_ENDPOINT}user/check-email/${emailRef.current?.value}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('L\'email est déjà utilisé');
           }
-        }
-        total += digit;
-      }
-      return total % 10 === 0;
+          return response.json();
+        })
+        .then(data => {
+          console.info(data);
+          setError({email: ''});
+        })
+        .catch(error => {
+          console.log(error)
+          setError({email: 'l\’adresse email est déjà utilisé'});
+        });
+    }
+  }
+
+  function checkSiret() {
+    if (companySiretRef.current?.value) {
+      fetch(`${import.meta.env.VITE_BACK_ENDPOINT}company/check-siret/${companySiretRef.current?.value}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.info(data);
+          setError({siret: ''});
+        })
+        .catch(error => {
+          console.error(error);
+          setError({companySiret: 'Le siret est déjà utilisée'});
+        });
+    }
+  }
+
+  function validateSiret(siret) {
+    let cleanedSiret = siret.replace(/\s+/g, '');
+
+    if (cleanedSiret.length !== 14 || isNaN(cleanedSiret)) {
+      setError({companySiret: 'Le SIRET doit contenir exactement 14 chiffres.'});
     }
 
-    const siren = siret.slice(0, 9);
-    if (!luhnChecksum(siren)) {
-      return false;
-    }
-
-    return luhnChecksum(siret);
+    return cleanedSiret.replace(/(\d{3})(\d{3})(\d{2})(\d{6})/, '$1 $2 $3 $4');
   }
 
   const validatePassword = (password) => {
@@ -172,21 +192,22 @@ function Register() {
       if (companySiretRef.current?.value && !validateSiret(companySiretRef.current?.value)) {
         errors.companySiretFormat = "Le format du siret n'est pas valide";
       }
-      if (!companyAddressRef.current?.value){
+      if (!companyAddressRef.current?.value) {
         errors.companyAddress = "L'adresse de l'entreprise est requise"
       }
-      if (!companyCityRef.current?.value){
+      if (!companyCityRef.current?.value) {
         errors.companyCity = "La ville de l'entreprise est requise"
       }
-      if (!companyPostalCodeRef.current?.value){
+      if (!companyPostalCodeRef.current?.value) {
         errors.companyPostalCode = "Le code postal de l'entreprise est requis"
       }
-      if (!companyPhoneRef.current?.value){
+      if (!companyPhoneRef.current?.value) {
         errors.companyPhone = "Le téléphone de l'entreprise est requis"
       }
-      if (!companyCountryRef.current?.value){
+      if (!companyCountryRef.current?.value) {
         errors.companyCountry = "Le pays de l'entreprise est requis"
       }
+      checkSiret();
     }
     if (role === 'student') {
       if (!cityRef.current?.value) {
@@ -202,6 +223,7 @@ function Register() {
         errors.address = "L'adresse est requise'";
       }
     }
+    checkEmail();
     setError(errors);
     if (Object.keys(errors).length === 0 && criteria.passwordsMatch) {
       const userData = {
@@ -215,13 +237,13 @@ function Register() {
         birth_date: birthDateRef.current?.value,
         role: role,
         language: selectedLanguage,
-        student : {
+        student: {
           address: addressRef.current?.value,
           city: cityRef.current?.value,
           country: countryRef.current?.value,
           postal_code: postalCodeRef.current?.value,
         },
-        admin : {
+        admin: {
           company_position: companyPositionRef.current?.value,
           company: {
             address: companyAddressRef.current?.value,
@@ -230,7 +252,7 @@ function Register() {
             postal_code: companyPostalCodeRef.current?.value,
             second_address: companySecondAddressRef.current?.value,
             name: companyNameRef.current?.value,
-            siret: companySiretRef.current?.value,
+            siret: validateSiret(companySiretRef.current?.value),
             phone: companyPhoneRef.current?.value,
           }
         }
@@ -275,7 +297,7 @@ function Register() {
           <p className="text-red-700">{errors?.gender}</p>
         </div>
         <div>
-          <Input name="mail" label="Email" type="email" required={true} inputRef={emailRef} />
+          <Input name="mail" label="Email" type="email" onBlur={checkEmail} required={true} inputRef={emailRef} />
           <p className="text-red-700">{errors?.email}</p>
         </div>
         <div>
@@ -352,7 +374,7 @@ function Register() {
           <p className="text-red-700">{errors?.companyName}</p>
           <Input name="companyPosition" label="Position dans l'entreprise" type="text" required={true} inputRef={companyPositionRef} />
           <p className="text-red-700">{errors?.companyPosition}</p>
-          <Input name="companySiret" label="Siret de l'entreprise" type="text" required={true} inputRef={companySiretRef} />
+          <Input name="companySiret" label="Siret de l'entreprise" type="text" onChange={checkSiret} required={true} inputRef={companySiretRef} />
           <p className="text-red-700">{errors?.companySiret}</p>
           <p className="text-red-700">{errors?.companySiretFormat}</p>
           <Input name="companyAddress" label="Adresse de l'entreprise" type="text" required={true} inputRef={companyAddressRef} />
