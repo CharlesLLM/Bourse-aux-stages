@@ -32,6 +32,17 @@ class UserController extends AbstractController
         return $this->json(['message' => 'File uploaded successfully']);
     }
 
+    #[Route(path: '/user/check-email/{email}', name: 'check-email', methods: ['GET'])]
+    public function checkEmail(UserRepository $userRepository, string $email = ''): JsonResponse {
+        if ($email) {
+            $emailExists = $userRepository->findOneBy(['email' => $email]) !== null;
+            if ($emailExists) {
+                return $this->json(['error' => 'L\'adresse email est déjà utilisée'], JsonResponse::HTTP_CONFLICT);
+            }
+        }
+        return $this->json('');
+    }
+
     #[Route(path: '/user/register', name: 'register', methods: ['POST'])]
     public function register(Request $request, LanguageRepository $languageRepository, EntityManagerInterface $em): JsonResponse
     {
