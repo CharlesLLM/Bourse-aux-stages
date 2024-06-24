@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum OffersNameEnum: string
+enum OfferNameEnum: string
 {
     case MARKETING_INTERNSHIP = 'Stage de marketing';
     case SOFTWARE_DEVELOPER = 'Développeur logiciel';

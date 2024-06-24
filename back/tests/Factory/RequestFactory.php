@@ -3,7 +3,7 @@
 namespace App\Tests\Factory;
 
 use App\Entity\Request;
-use App\Enum\OffersNameEnum;
+use App\Enum\OfferNameEnum;
 use App\Enum\OfferTypeEnum;
 use Zenstruck\Foundry\ModelFactory;
 
@@ -19,7 +19,7 @@ final class RequestFactory extends ModelFactory
         return [
             'student' => StudentFactory::new(),
             'description' => self::faker()->text(255),
-            'name' => self::faker()->randomElement(OffersNameEnum::cases())->value,
+            'name' => self::faker()->randomElement(OfferNameEnum::cases())->value,
             'type' => self::faker()->randomElement(OfferTypeEnum::cases()),
             'startDate' => self::faker()->dateTimeBetween('+30 days', '+60 days'),
             'endDate' => self::faker()->dateTimeBetween('+90 days', '+120 days'),

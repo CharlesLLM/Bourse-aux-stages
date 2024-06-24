@@ -91,9 +91,18 @@ class Offer
     #[Groups(['offer', 'company'])]
     private Collection $tags;
 
+    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Application::class, orphanRemoval: true)]
+    private Collection $applications;
+
+    #[ORM\ManyToMany(targetEntity: Skill::class, mappedBy: 'offers')]
+    #[Groups(['offer'])]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -137,12 +146,12 @@ class Offer
         return $this;
     }
 
-    public function isPromoteStatus(): PromoteStatusEnum
+    public function isPromoteStatus(): ?PromoteStatusEnum
     {
         return $this->promoteStatus;
     }
 
-    public function setPromoteStatus(PromoteStatusEnum $promoteStatus): static
+    public function setPromoteStatus(?PromoteStatusEnum $promoteStatus): static
     {
         $this->promoteStatus = $promoteStatus;
 
@@ -281,6 +290,56 @@ class Offer
     public function removeTag(Tag $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(Application $application): static
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications->add($application);
+            $application->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(Application $application): static
+    {
+        if ($this->applications->removeElement($application)) {
+            if ($application->getCompany() === $this) {
+                $application->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): static
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+            $skill->addOffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skill $skill): static
+    {
+        if ($this->skills->removeElement($skill)) {
+            $skill->removeOffer($this);
+        }
 
         return $this;
     }

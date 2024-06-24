@@ -44,7 +44,7 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('xLink', 'company.x_link')->hideOnIndex(),
             TextField::new('linkedinLink', 'company.linkedin_link')->hideOnIndex(),
             AssociationField::new('category', 'common.category'),
-            AssociationField::new('tags', 'company.tags')->hideOnIndex(),
+            AssociationField::new('tags', 'common.tags')->hideOnIndex(),
             AssociationField::new('offers', 'company.offers')->hideOnForm(),
             BooleanField::new('enabled', 'common.enabled'),
             ImageField::new('logo', 'company.logo')
@@ -52,6 +52,12 @@ class CompanyCrudController extends AbstractCrudController
                 ->setUploadDir('public/uploads/company/')
                 ->setUploadedFileNamePattern('[slug]-[uuid].[extension]')
                 ->setRequired(false),
+            ImageField::new('bigLogo', 'company.big_logo')
+                ->setBasePath('/uploads/company/')
+                ->setUploadDir('public/uploads/company/')
+                ->setUploadedFileNamePattern('[slug]-[uuid].[extension]')
+                ->setRequired(false)
+                ->hideOnIndex(),
 
             CollectionField::new('images')
                 ->setEntryType(FileType::class)

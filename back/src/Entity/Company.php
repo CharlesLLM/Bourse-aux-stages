@@ -49,11 +49,11 @@ class Company
     private ?string $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['companies', 'company'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['company'])]
+    #[Groups(['company', 'offer'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -92,6 +92,10 @@ class Company
     #[Groups(['companies', 'company', 'offer'])]
     private ?string $logo = null;
 
+    #[ORM\Column(nullable: true)]
+    #[Groups(['company', 'offer'])]
+    private ?string $bigLogo = null;
+
     #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['companies', 'company'])]
@@ -105,9 +109,6 @@ class Company
     #[Groups(['companies', 'company'])]
     private Collection $offers;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class, orphanRemoval: true)]
-    private Collection $applications;
-
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: SpontaneousApplication::class, orphanRemoval: true)]
     private Collection $spontaneousApplications;
 
@@ -116,14 +117,13 @@ class Company
     private Collection $tags;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['company', 'offer'])]
     private ?array $images = null;
 
     public function __construct()
     {
         $this->admins = new ArrayCollection();
         $this->offers = new ArrayCollection();
-        $this->applications = new ArrayCollection();
         $this->spontaneousApplications = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
@@ -306,6 +306,18 @@ class Company
         return $this;
     }
 
+    public function getBigLogo(): ?string
+    {
+        return $this->bigLogo;
+    }
+
+    public function setBigLogo(?string $bigLogo): static
+    {
+        $this->bigLogo = $bigLogo;
+
+        return $this;
+    }
+
     public function getCategory(): ?CompanyCategory
     {
         return $this->category;
@@ -364,32 +376,6 @@ class Company
         if ($this->offers->removeElement($offer)) {
             if ($offer->getCompany() === $this) {
                 $offer->setCompany(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getApplications(): Collection
-    {
-        return $this->applications;
-    }
-
-    public function addApplication(Application $application): static
-    {
-        if (!$this->applications->contains($application)) {
-            $this->applications->add($application);
-            $application->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeApplication(Application $application): static
-    {
-        if ($this->applications->removeElement($application)) {
-            if ($application->getCompany() === $this) {
-                $application->setCompany(null);
             }
         }
 

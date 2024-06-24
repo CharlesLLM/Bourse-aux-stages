@@ -3,8 +3,10 @@ import { useParams } from "react-router-dom";
 import Container from "../layout/container.jsx";
 import Breadcrumb from "../components/utils/breadcrumb.jsx";
 import OfferCard from "../components/utils/offerCard.jsx";
+import { useNavigate } from "react-router-dom";
 
 function CompanyView() {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const [company, setCompany] = useState([]);
   const [intershipOffers, setInternshipOffers] = useState([]);
@@ -122,11 +124,11 @@ function CompanyView() {
 
         {/* Right content */}
         <div className="w-1/3 space-y-10">
-          {company.logo && (
+          {(company.bigLogo || company.logo) && (
             <img
-              src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.logo}`}
+              src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.bigLogo || company.logo}`}
               alt={company.name}
-              className="w-20 h-20 object-cover"
+              className="object-cover max-w-full max-h-16"
             />
           )}
           <div className="space-y-4">
@@ -138,12 +140,12 @@ function CompanyView() {
               <p className="font-normal text-textGrey">{company.postalCode} {company.city}</p>
             </div>
             <div>
-              <a href="/" target="_blank" rel="noreferrer" className="bg-white text-primary font-semibold w-fit flex gap-4 items-center">
+              <div onClick={() => navigate('/')} className="bg-white text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
                 Voir sur une carte
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="fill-primary size-4">
                   <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
                 </svg>
-              </a>
+              </div>
               {/* TODO: Add map */}
             </div>
             <hr className="w-96" />
@@ -156,12 +158,12 @@ function CompanyView() {
               <p className="font-normal text-textGrey">Du lundi au vendredi de 8h30 à 18h30</p>
             </div>
             <div>
-              <a href="/" target="_blank" rel="noreferrer" className="bg-white text-primary font-semibold w-fit flex gap-4 items-center">
+              <div onClick={() => navigate('/')} className="bg-white text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
                 Nous envoyer un message
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="fill-primary size-4">
                   <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
                 </svg>
-              </a>
+              </div>
             </div>
             <hr className="w-96" />
           </div>
@@ -211,7 +213,7 @@ function CompanyView() {
                 <h2 className="text-3xl font-semibold">Offres de stages proposées</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                   {intershipOffers.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} />
+                    <OfferCard key={offer.id} offer={offer} displayHeader={false} />
                   ))}
                 </div>
               </div>
@@ -221,7 +223,7 @@ function CompanyView() {
                 <h2 className="text-3xl font-semibold">Offres en alternance proposées</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                   {apprenticeshipOffers.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} />
+                    <OfferCard key={offer.id} offer={offer} displayHeader={false} />
                   ))}
                 </div>
               </div>

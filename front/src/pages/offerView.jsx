@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import OfferBody from '../components/utils/offerBody.jsx'
 import OfferHeader from '../components/utils/offerHeader.jsx';
 
 function OfferView() {
   const { id } = useParams();
-  const [offer, setOffer] = useState([]);
+  const [offer, setOffer] = useState({});
 
   useEffect(() => {
     const getOffer = async () => {
@@ -25,7 +26,12 @@ function OfferView() {
 
   return (
     <div>
-      <OfferHeader offer={offer} enableApplyButton />
+      {offer.id && (
+        <div>
+          <OfferHeader offer={offer} enableApplyButton />
+          <OfferBody offer={offer} />
+        </div>
+      )}
     </div>
   )
 }

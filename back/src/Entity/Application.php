@@ -37,7 +37,7 @@ class Application
 
     #[ORM\ManyToOne(inversedBy: 'applications')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Company $company = null;
+    private ?Offer $offer = null;
 
     public function getId(): ?Uuid
     {
@@ -80,14 +80,14 @@ class Application
         return $this;
     }
 
-    public function getCompany(): ?Company
+    public function getOffer(): ?Offer
     {
-        return $this->company;
+        return $this->offer;
     }
 
-    public function setCompany(?Company $company): static
+    public function setOffer(?Offer $offer): static
     {
-        $this->company = $company;
+        $this->offer = $offer;
 
         return $this;
     }

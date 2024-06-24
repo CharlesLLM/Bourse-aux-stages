@@ -21,7 +21,7 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
         OfferFactory::new()->many(50)->create(function () use ($tags) {
             $selectedCompany = $this->getReference(CompanyFixtures::REFERENCE_IDENTIFIER.mt_rand(1, CompanyFixtures::FIXTURE_RANGE));
             $selectedTags = [];
-            while (count($selectedTags) < 1) {
+            while (\count($selectedTags) < 1) {
                 foreach ($tags as $tag) {
                     rand(0, 1) ? $selectedTags[] = $tag : null;
                 }

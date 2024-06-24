@@ -17,7 +17,7 @@ final class FormationFactory extends ModelFactory
     {
         return [
             'level' => self::faker()->randomElement(LevelEnum::cases()),
-            'name' => self::faker()->text(255),
+            'name' => self::faker()->text(50),
             'schoolName' => self::faker()->text(100),
             'student' => StudentFactory::new(),
         ];

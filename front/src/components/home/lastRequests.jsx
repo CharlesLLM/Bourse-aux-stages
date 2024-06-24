@@ -3,7 +3,7 @@ import LinkTo from "../utils/linkTo.jsx";
 import {useNavigate} from "react-router-dom";
 import {differenceInDays, differenceInMonths, differenceInYears, format, parseISO} from 'date-fns';
 // import {fr} from "date-fns/locale/fr";
-import OfferTypeTag from "../utils/offerTypeTag.jsx";
+import PrimaryTag from "../utils/primaryTag.jsx";
 
 function LastRequests() {
   const navigate = useNavigate();
@@ -64,7 +64,7 @@ function LastRequests() {
                   <p className={`text-textGrey font-normal`}>{request.student.city}</p>
                 </div>
                 <div className={`text-grey flex items-center gap-2`}>
-                  <OfferTypeTag text={request.type} />
+                  <PrimaryTag text={request.type} />
                   <span className={`h-6 w-[1px] bg-borderGrey`}></span>
                   <p className={`font-normal text-textGrey`}>Du {format(parseISO(request.startDate), 'dd/MM/yyyy')} au {format(parseISO(request.endDate), 'dd/MM/yyyy')} ({calculateDuration(request.startDate, request.endDate)})</p>
                 </div>
