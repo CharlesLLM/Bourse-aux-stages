@@ -1,9 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import Badge from './badge';
 import PropTypes from "prop-types";
 
 function OfferCard({ offer }) {
+  const navigate = useNavigate();
+
   return (
-    <div className="p-6 border border-borderGrey bg-white w-72 min-h-56 space-y-4">
+    <div className="p-6 border border-borderGrey bg-white w-72 min-h-56 space-y-4 cursor-pointer" onClick={() => navigate(`/offre/${offer.id}`)}>
       <div>
         <h3 className="text-lg font-bold">{offer.name}</h3>
         <p className="text-textGrey font-normal">{new Date(offer.startDate).toLocaleDateString()} au {new Date(offer.endDate).toLocaleDateString()}</p>

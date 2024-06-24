@@ -5,7 +5,7 @@ import OfferHeader from '../components/utils/offerHeader.jsx';
 
 function OfferView() {
   const { id } = useParams();
-  const [offer, setOffer] = useState([]);
+  const [offer, setOffer] = useState({});
 
   useEffect(() => {
     const getOffer = async () => {
@@ -26,8 +26,12 @@ function OfferView() {
 
   return (
     <div>
-      <OfferHeader offer={offer} enableApplyButton />
-      <OfferBody offer={offer} />
+      {offer.id && (
+        <div>
+          <OfferHeader offer={offer} enableApplyButton />
+          <OfferBody offer={offer} />
+        </div>
+      )}
     </div>
   )
 }

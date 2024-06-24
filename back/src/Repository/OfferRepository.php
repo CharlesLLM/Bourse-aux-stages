@@ -104,4 +104,40 @@ class OfferRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->execute();
     }
+
+    // Get the 8 offers that are the most similar to the given offer
+    // Criterias: same type, same startDate (+/- 1 week), same duration (+/- 1 week), and at least one common tag
+    public function findSimilar(Offer $offer): array
+    {
+        $duration = $offer->getEndDate()->diff($offer->getStartDate())->days;
+        $offerId = Uuid::fromString($offer->getId())->toBinary();
+        $tagIds = $offer->getTags()->map(fn ($tag) => Uuid::fromString($tag->getId())->toBinary())->toArray();
+
+        $qb = $this->createQueryBuilder('o')
+            ->leftJoin('o.tags', 't')
+            ->where('o.id != :offerId')
+            ->andWhere('o.type = :type')
+            ->andWhere('o.startDate BETWEEN :startDateMin AND :startDateMax')
+            ->andWhere('DATE_DIFF(o.endDate, o.startDate) BETWEEN :durationMin AND :durationMax')
+            ->andWhere('o.endPublicationDate > :now')
+            ->andWhere('o.distance <= :distance')
+            ->andWhere('o.availablePlaces > 0')
+            ->setParameter('offerId', $offerId)
+            ->setParameter('type', $offer->getType())
+            ->setParameter('startDateMin', (clone $offer->getStartDate())->modify('-7 day'))
+            ->setParameter('startDateMax', (clone $offer->getStartDate())->modify('+7 day'))
+            ->setParameter('durationMin', $duration - 7)
+            ->setParameter('durationMax', $duration + 7)
+            ->setParameter('now', new \DateTime())
+            ->setParameter('distance', 100)
+            ->setMaxResults(8)
+        ;
+
+        if (!empty($tagIds)) {
+            $qb->andWhere('t.id IN (:tagIds)')
+                ->setParameter('tagIds', $tagIds);
+        }
+
+        return $qb->getQuery()->execute();
+    }
 }

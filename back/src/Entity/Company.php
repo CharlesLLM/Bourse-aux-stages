@@ -49,11 +49,11 @@ class Company
     private ?string $siret = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['companies', 'company'])]
+    #[Groups(['companies', 'company', 'offer'])]
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['company'])]
+    #[Groups(['company', 'offer'])]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -91,6 +91,10 @@ class Company
     #[ORM\Column(nullable: true)]
     #[Groups(['companies', 'company', 'offer'])]
     private ?string $logo = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['company', 'offer'])]
+    private ?string $bigLogo = null;
 
     #[ORM\ManyToOne(targetEntity: CompanyCategory::class)]
     #[ORM\JoinColumn(nullable: false)]
@@ -302,6 +306,18 @@ class Company
     public function setLogo(?string $logo): static
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getBigLogo(): ?string
+    {
+        return $this->bigLogo;
+    }
+
+    public function setBigLogo(?string $bigLogo): static
+    {
+        $this->bigLogo = $bigLogo;
 
         return $this;
     }

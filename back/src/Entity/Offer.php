@@ -137,12 +137,12 @@ class Offer
         return $this;
     }
 
-    public function isPromoteStatus(): PromoteStatusEnum
+    public function isPromoteStatus(): ?PromoteStatusEnum
     {
         return $this->promoteStatus;
     }
 
-    public function setPromoteStatus(PromoteStatusEnum $promoteStatus): static
+    public function setPromoteStatus(?PromoteStatusEnum $promoteStatus): static
     {
         $this->promoteStatus = $promoteStatus;
 
