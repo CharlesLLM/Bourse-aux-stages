@@ -1,10 +1,5 @@
 import './App.css'
-
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import CompanyIndex from "./pages/companyIndex";
 import CompanyView from "./pages/companyView";
 import Home from "../../front/src/pages/home";
@@ -13,36 +8,38 @@ import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/entreprises",
-    element: <CompanyIndex />,
-  },
-  {
-    path: "/entreprise/:slug",
-    element: <CompanyView />,
-  },
-  {
-    path: "/offres/:type",
-    element: <CompanyOffers />,
-  },
-  {
-    path: '/offre/:id',
-    element: <OfferView />,
-  },
-  {
-    path: '/offre/:id/postuler',
-    element: <Application />
-  }
-]);
-
 function App() {
   return (
-    <Layout children={<RouterProvider router={router}/>}/>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route
+            path="/"
+            element={<Home />}
+          />
+          <Route
+            path="entreprises"
+            element={<CompanyIndex />}
+          />
+          <Route
+            path="entreprise/:slug"
+            element={<CompanyView />}
+          />
+          <Route
+            path="offres/:type"
+            element={<CompanyOffers />}
+          />
+          <Route
+            path="/offre/:id"
+            element={<OfferView />}
+          />
+          <Route
+            path="/offre/:id/postuler"
+            element={<Application />}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

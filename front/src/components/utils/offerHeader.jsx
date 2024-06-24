@@ -1,12 +1,10 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Breadcrumb from '../utils/breadcrumb.jsx';
 import Badge from '../utils/badge.jsx';
 import PrimaryTag from '../utils/primaryTag.jsx';
 import PropTypes from "prop-types";
 
 function OfferHeader({ offer, enableApplyButton = false }) {
-  const navigate = useNavigate();
-
   const duration = Math.floor((new Date(offer.endDate) - new Date(offer.startDate)) / (1000 * 60 * 60 * 24));
   let durationString = `${duration} jours`;
   if (duration > 365) {
@@ -27,13 +25,13 @@ function OfferHeader({ offer, enableApplyButton = false }) {
         {offer.company && (
           <div className="flex items-center justify-between bg-white p-6">
             <div className="flex items-center gap-4 xl:gap-8">
-              <div className="flex items-center py-1 cursor-pointer" onClick={() => navigate(`/entreprise/${offer.company.slug}`)}>
+              <Link to={`/entreprise/${offer.company.slug}`} className="flex items-center py-1 cursor-pointer">
                 <img
                   src={`${import.meta.env.VITE_BACK_ENDPOINT}uploads/company/${offer.company.logo}`}
                   alt={offer.company.name}
                   className="max-w-20 max-h-20 object-contain"
                 />
-              </div>
+              </Link>
               <div className="flex flex-col gap-2">
                 <h1 className="text-3xl font-semibold">{offer.name}</h1>
                 <div className="flex flex-col xl:flex-row xl:items-center xl:gap-2">
@@ -62,7 +60,7 @@ function OfferHeader({ offer, enableApplyButton = false }) {
               <div className="flex items-center gap-4">
                 <img src="/share.svg" className="w-8 h-8" alt="Partager" />
                 <span className="h-[50px] w-[1px] bg-borderGrey"></span>
-                <button className="flex justify-center items-center px-14 py-3 w-48 h-[50px] leading-none text-white bg-primary" onClick={() => navigate(`/offre/${offer.id}/postuler`)}>Postuler</button>
+                <Link to={`/offre/${offer.id}/postuler`} className="flex justify-center items-center px-14 py-3 w-48 h-[50px] leading-none text-white bg-primary">Postuler</Link>
               </div>
             )}
           </div>

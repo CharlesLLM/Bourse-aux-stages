@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Container from "../layout/container.jsx";
 import Breadcrumb from "../components/utils/breadcrumb.jsx";
 import OfferCard from "../components/utils/offerCard.jsx";
-import { useNavigate } from "react-router-dom";
 
 function CompanyView() {
-  const navigate = useNavigate();
   const { slug } = useParams();
   const [company, setCompany] = useState([]);
   const [intershipOffers, setInternshipOffers] = useState([]);
@@ -140,12 +138,12 @@ function CompanyView() {
               <p className="font-normal text-textGrey">{company.postalCode} {company.city}</p>
             </div>
             <div>
-              <div onClick={() => navigate('/')} className="bg-white text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
+              <Link to={`/entreprise/${slug}`} className="bg-white text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
                 Voir sur une carte
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="fill-primary size-4">
                   <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
                 </svg>
-              </div>
+              </Link>
               {/* TODO: Add map */}
             </div>
             <hr className="w-96" />
@@ -158,12 +156,12 @@ function CompanyView() {
               <p className="font-normal text-textGrey">Du lundi au vendredi de 8h30 à 18h30</p>
             </div>
             <div>
-              <div onClick={() => navigate('/')} className="bg-white text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
+              <Link to={`/entreprise/${slug}`} className="bg-white text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
                 Nous envoyer un message
                 <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="fill-primary size-4">
                   <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
                 </svg>
-              </div>
+              </Link>
             </div>
             <hr className="w-96" />
           </div>

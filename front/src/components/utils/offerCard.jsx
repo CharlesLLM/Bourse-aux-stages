@@ -1,13 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Badge from './badge';
 import PropTypes from "prop-types";
 import PrimaryTag from './primaryTag';
 
 function OfferCard({ offer, displayHeader = true }) {
-  const navigate = useNavigate();
-
   return (
-    <div className="p-6 border border-borderGrey bg-white w-72 min-h-56 space-y-4 cursor-pointer" onClick={() => navigate(`/offre/${offer.id}`)}>
+    <Link to={`/offre/${offer.id}`} className="p-6 border border-borderGrey bg-white w-72 min-h-56 space-y-4 cursor-pointer">
       {displayHeader && (
         <div className="flex justify-between items-center">
           <img
@@ -30,7 +28,7 @@ function OfferCard({ offer, displayHeader = true }) {
           ))}
         </div>
       )}
-    </div>
+    </Link>
   );
 }
 

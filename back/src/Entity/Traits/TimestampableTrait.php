@@ -58,7 +58,7 @@ trait TimestampableTrait
     #[PrePersist]
     public function prePersist()
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = $this->createdAt ?? new \DateTime();
         $this->updatedAt = new \DateTime();
     }
 

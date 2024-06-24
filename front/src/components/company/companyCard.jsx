@@ -1,14 +1,13 @@
 import Badge from "../utils/badge";
 import PropTypes from 'prop-types';
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function CompanyCard({ company }) {
-  const navigate = useNavigate();
   const stagesNumber = company.offers.filter(offer => offer.type === "stage").length;
   const apprenticeshipsNumber = company.offers.length - stagesNumber;
 
   return (
-    <div className="bg-white shadow-md p-6 w-full max-w-[440px] cursor-pointer" onClick={() => navigate(`/entreprise/${company.slug}`)}>
+    <Link to={`/entreprise/${company.slug}`} className="bg-white shadow-md p-6 w-full max-w-[440px] cursor-pointer">
       <div className="flex justify-between mb-6">
         <img
           src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${company.logo}`}
@@ -30,7 +29,7 @@ function CompanyCard({ company }) {
           <Badge key={`${company.id}-${tag.id}`} variant="companyTag" tag={tag} />
         ))}
       </div>
-    </div>
+    </Link>
   );
 }
 

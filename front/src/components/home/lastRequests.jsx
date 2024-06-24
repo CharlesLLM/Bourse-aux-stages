@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
 import LinkTo from "../utils/linkTo.jsx";
-import {useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {differenceInDays, differenceInMonths, differenceInYears, format, parseISO} from 'date-fns';
 // import {fr} from "date-fns/locale/fr";
 import PrimaryTag from "../utils/primaryTag.jsx";
 
 function LastRequests() {
-  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
 
   useEffect( () => {
@@ -54,7 +53,7 @@ function LastRequests() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8">
           {requests.map((request) => (
-            <div key={request.id} onClick={() => navigate("/")} className="group flex flex-col md:flex-row gap-6 bg-white px-6 lg:px-8 xl:px-10 py-6 cursor-pointer">
+            <Link to="/" key={request.id} className="group flex flex-col md:flex-row gap-6 bg-white px-6 lg:px-8 xl:px-10 py-6 cursor-pointer">
               <div className="w-12 h-12 rounded-full bg-third"></div>
               <div className={`flex flex-col gap-2`}>
                 <p className="text-xl font-semibold">{request.name}</p>
@@ -69,7 +68,7 @@ function LastRequests() {
                   <p className={`font-normal text-textGrey`}>Du {format(parseISO(request.startDate), 'dd/MM/yyyy')} au {format(parseISO(request.endDate), 'dd/MM/yyyy')} ({calculateDuration(request.startDate, request.endDate)})</p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

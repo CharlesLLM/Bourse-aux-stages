@@ -27,7 +27,6 @@ function CompanyOffers() {
             url += `?type=${type}`;
             url += `&tags=${selectedFilters.profiles}`;
             url += `&levels=${selectedFilters.levels}`;
-            // TODO : improve durations url parameter
             url += `&durations=[${selectedFilters.durations}]`;
             url += `&distance=${selectedFilters.distance ? selectedFilters.distance : 0}`;
             try {

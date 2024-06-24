@@ -3,13 +3,12 @@ import Badge from "../utils/badge";
 import Container from "../../layout/container.jsx";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import OfferCard from "../utils/offerCard";
 import PrimaryTag from "./primaryTag.jsx";
 
 function OfferBody({ offer }) {
-  const navigate = useNavigate();
   const [similarOffers, setSimilarOffers] = useState([]);
 
   useEffect(() => {
@@ -38,7 +37,7 @@ function OfferBody({ offer }) {
             <h2 className="text-3xl my-5">À propos de ce stage</h2>
             <p className="font-normal">{offer.description}</p>
           </div>
-          <button className="px-14 py-3 w-48 h-[50px] leading-none text-white bg-primary" onClick={() => navigate(`/offre/${offer.id}/postuler`)}>Postuler</button>
+          <Link to={`/offre/${offer.id}/postuler`} className="px-14 py-3 w-48 h-[50px] leading-none text-white bg-primary flex items-center">Postuler</Link>
         </div>
 
         {/* Right content */}
@@ -111,7 +110,7 @@ function OfferBody({ offer }) {
               <a className="text-primary flex gap-3 items-center cursor-pointer" href={offer.company.linkedinlink}> En savoir plus sur {offer.company.name} <FaArrowRightLong /></a>
             )}
           </div>
-          <div className="w-1/2 flex gap-4">
+          <div className="w-1/2 h-[420px] flex gap-4">
             {offer.company.images && offer.company.images.length > 0 && (
               <div className="flex flex-col justify-between gap-4 w-40 h-full">
                 <img
@@ -144,12 +143,12 @@ function OfferBody({ offer }) {
         >
           <div className="flex justify-between">
             <h2 className="text-3xl font-semibold">Offres {offer.type === 'stage' ? "de stage" : "d'alternance"} similaires</h2>
-            <div onClick={() => navigate(`/offres/${offer.type}`)} className="text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
+            <Link to={`/offres/${offer.type}`} className="text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
               Toutes les offres
               <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="fill-primary size-4">
                 <path d="M12.1716 6.9999L6.8076 1.63589L8.2218 0.22168L16 7.9999L8.2218 15.778L6.8076 14.3638L12.1716 8.9999H0V6.9999H12.1716Z"/>
               </svg>
-            </div>
+            </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {similarOffers.map((offer) => (

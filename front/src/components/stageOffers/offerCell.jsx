@@ -1,12 +1,10 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Badge from "../utils/badge";
 import PrimaryTag from "../utils/primaryTag";
 import PropTypes from "prop-types";
 import ProgressBar from "../utils/progressBar";
 
 const OfferCell = ({ offer }) => {
-  const navigate = useNavigate();
-
   const offerDuration = Math.floor((new Date(offer.endDate) - new Date(offer.startDate)) / (1000 * 60 * 60 * 24));
   let offerDurationString = `${offerDuration} jours`;
   if (offerDuration > 365) {
@@ -47,10 +45,10 @@ const OfferCell = ({ offer }) => {
         </div>
       </div>
       <div className="flex flex-col w-44">
-        <button 
+        <Link 
+          to={`/offre/${offer.id}`}
           className="bg-primary py-3 px-6 text-white font-semibold w-full"
-          onClick={() => navigate(`/offre/${offer.id}`)}
-        >En savoir plus</button>
+        >En savoir plus</Link>
         <ProgressBar offer={offer} />
       </div>
     </div>
