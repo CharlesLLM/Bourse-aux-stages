@@ -213,7 +213,7 @@ function CompanyView() {
                 <h2 className="text-3xl font-semibold">Offres de stages proposées</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                   {intershipOffers.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} />
+                    <OfferCard key={offer.id} offer={offer} displayHeader={false} />
                   ))}
                 </div>
               </div>
@@ -223,7 +223,7 @@ function CompanyView() {
                 <h2 className="text-3xl font-semibold">Offres en alternance proposées</h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                   {apprenticeshipOffers.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} />
+                    <OfferCard key={offer.id} offer={offer} displayHeader={false} />
                   ))}
                 </div>
               </div>

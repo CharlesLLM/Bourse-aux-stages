@@ -111,8 +111,29 @@ function OfferBody({ offer }) {
               <a className="text-primary flex gap-3 items-center cursor-pointer" href={offer.company.linkedinlink}> En savoir plus sur {offer.company.name} <FaArrowRightLong /></a>
             )}
           </div>
-          <div className="w-1/2">
-            {/* TODO : map */}
+          <div className="w-1/2 flex gap-4">
+            {offer.company.images && offer.company.images.length > 0 && (
+              <div className="flex flex-col justify-between gap-4 w-40 h-full">
+                <img
+                  src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${offer.company.images[0]}`}
+                  alt={offer.company.name}
+                  className="max-w-40 max-h-32"
+                />
+                <img
+                  src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${offer.company.images[1]}`}
+                  alt={offer.company.name}
+                  className="max-w-40 max-h-32"
+                />
+                <img
+                  src={`${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${offer.company.images[2]}`}
+                  alt={offer.company.name}
+                  className="max-w-40 max-h-32"
+                />
+              </div>
+            )}
+            <div className="w-full h-full bg-lightGrey flex justify-center items-center">
+              MAP
+            </div>
           </div>
         </Container>
       )}
@@ -158,6 +179,7 @@ OfferBody.propTypes = {
       logo: PropTypes.string,
       bigLogo: PropTypes.string,
       linkedinlink: PropTypes.string,
+      images: PropTypes.arrayOf(PropTypes.string),
     }),
     tags: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,

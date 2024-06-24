@@ -117,7 +117,7 @@ class Company
     private Collection $tags;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['company', 'offer'])]
     private ?array $images = null;
 
     public function __construct()
