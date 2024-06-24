@@ -7,13 +7,19 @@ use App\Entity\Company;
 use App\Entity\Student;
 use App\Entity\User;
 use App\Enum\GenderEnum;
+use App\Repository\AdminRepository;
 use App\Repository\LanguageRepository;
+use App\Repository\StudentRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class UserController extends AbstractController
 {
@@ -33,7 +39,8 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/user/check-email/{email}', name: 'check-email', methods: ['GET'])]
-    public function checkEmail(UserRepository $userRepository, string $email = ''): JsonResponse {
+    public function checkEmail(UserRepository $userRepository, string $email = ''): JsonResponse
+    {
         if ($email) {
             $emailExists = $userRepository->findOneBy(['email' => $email]) !== null;
             if ($emailExists) {
@@ -44,7 +51,7 @@ class UserController extends AbstractController
     }
 
     #[Route(path: '/user/register', name: 'register', methods: ['POST'])]
-    public function register(Request $request, LanguageRepository $languageRepository, EntityManagerInterface $em): JsonResponse
+    public function register(Request $request, LanguageRepository $languageRepository, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         try {
             $data = json_decode($request->getContent(), true);
@@ -74,6 +81,7 @@ class UserController extends AbstractController
                 if ($data['role'] === 'admin') {
                     $admin = new Admin();
                     $company = new Company();
+                    $user->setRoles(['ROLE_ADMIN']);
                     if (isset($data['admin']['company_position'])) {
                         $admin->setPosition($data['admin']['company_position']);
                     }
@@ -105,6 +113,7 @@ class UserController extends AbstractController
                     $user->setCompanyAdmin($admin);
                 } elseif ($data['role'] === 'student') {
                     $student = new Student();
+                    $user->setRoles(['ROLE_STUDENT']);
                     if (isset($data['student']['address'])) {
                         $student->setAddress($data['student']['address']);
                     }
@@ -122,7 +131,8 @@ class UserController extends AbstractController
             }
 
             if (isset($data['password']) && isset($data['confirm_password']) && $data['password'] === $data['confirm_password']) {
-                $user->setPassword(password_hash($data['password'], PASSWORD_DEFAULT));
+                $hashedPassword = $passwordHasher->hashPassword($user, $data['password']);
+                $user->setPassword($hashedPassword);
             }
 
             $em->persist($user);
@@ -132,6 +142,39 @@ class UserController extends AbstractController
 
         } catch (\Exception $e) {
             return $this->json($e->getMessage(), 400);
+        }
+    }
+
+    #[Route(path: '/user/login', name: 'login', methods: ['POST'])]
+    public function login(Request $request, UserRepository $userRepository, JWTTokenManagerInterface $jwtManager, UserPasswordHasherInterface $passwordHasher, tokenStorageInterface $storage): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $email = $data['email'] ?? null;
+        $password = $data['password'] ?? null;
+
+        if (!$email || !$password) {
+            return new JsonResponse(['error' => 'Les identifiants sont incorrects'], JsonResponse::HTTP_BAD_REQUEST);
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+        if (!$user || !$passwordHasher->isPasswordValid($user, $password)) {
+            return new JsonResponse(['error' => 'Les identifiants sont incorrects'], JsonResponse::HTTP_UNAUTHORIZED);
+        }
+
+        $token = $jwtManager->create($user);
+
+        return new JsonResponse(['token' => $token], JsonResponse::HTTP_OK);
+    }
+
+    #[Route(path: 'api/user/get', name: 'get_user', methods: ['POST'])]
+    public function getUserAction(SerializerInterface $serializer, StudentRepository $studentRepository, AdminRepository $adminRepository): JsonResponse
+    {
+        try {
+            $user = $this->getUser();
+            return new JsonResponse($serializer->serialize($user, 'json', ['groups' => ['admin']]), JsonResponse::HTTP_OK, [], true);
+        } catch (\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_UNAUTHORIZED);
         }
     }
 }

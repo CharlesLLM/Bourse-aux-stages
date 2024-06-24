@@ -8,33 +8,7 @@ import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
 import Register from "./pages/register.jsx";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/entreprises",
-    element: <CompanyIndex />,
-  },
-  {
-    path: "/entreprise/:slug",
-    element: <CompanyView />,
-  },
-  {
-    path: "/offres/:type",
-    element: <CompanyOffers />,
-  },
-  {
-    path: '/offre/:id',
-    element: <OfferView />,
-  },
-  {
-    path: '/offre/:id/postuler',
-    element: <Application />
-  }
-]);
+import Login from "./pages/login.jsx";
 
 function App() {
   return (
@@ -68,6 +42,10 @@ function App() {
           <Route
             path="/inscription"
             element={<Register />}
+          />
+          <Route
+            path="/connexion"
+            element={<Login />}
           />
         </Route>
       </Routes>
