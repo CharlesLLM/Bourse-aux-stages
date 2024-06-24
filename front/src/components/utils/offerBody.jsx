@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import OfferCard from "../utils/offerCard";
+import PrimaryTag from "./primaryTag.jsx";
 
 function OfferBody({ offer }) {
   const navigate = useNavigate();
@@ -80,10 +81,16 @@ function OfferBody({ offer }) {
 
           <hr className="h-px bg-borderGrey" />
 
-          <div>
-            <h2 className="text-primary text-2xl font-semibold">Compétences recherchées</h2>
-            <div> - </div>
-          </div>
+          {offer.skills && (
+            <div className="space-y-6">
+              <h2 className="text-primary text-2xl font-semibold">Compétences recherchées</h2>
+              <ul className="flex flex-wrap gap-2.5">
+                {offer.skills.map((skill) => (
+                  <PrimaryTag key={skill.id} text={skill.name} />
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </Container>
 
@@ -111,7 +118,9 @@ function OfferBody({ offer }) {
       )}
 
       {similarOffers.length > 0 && (
-        <Container className="bg-lightGrey flex-col" >
+        <div className="bg-lightGrey flex flex-col md:px-32 md:py-[72px] gap-16 w-full"
+          style={{clipPath: "polygon(7.5% 0, 100% 0, 100% 100%, 100% 100%, 0 100%, 0 13%)"}}
+        >
           <div className="flex justify-between">
             <h2 className="text-3xl font-semibold">Offres {offer.type === 'stage' ? "de stage" : "d'alternance"} similaires</h2>
             <div onClick={() => navigate(`/offres/${offer.type}`)} className="text-primary font-semibold w-fit flex gap-4 items-center cursor-pointer">
@@ -126,7 +135,7 @@ function OfferBody({ offer }) {
               <OfferCard key={offer.id} offer={offer} />
             ))}
           </div>
-        </Container>
+        </div>
       )}
     </div>
   )
@@ -151,6 +160,10 @@ OfferBody.propTypes = {
       linkedinlink: PropTypes.string,
     }),
     tags: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })),
+    skills: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     })),

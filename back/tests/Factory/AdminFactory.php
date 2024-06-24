@@ -36,11 +36,24 @@ final class AdminFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $positions = [
+            'PDG',
+            'Directeur',
+            'Manager',
+            'Chef de projet',
+            'Développeur',
+            'Designer',
+            'Commercial',
+            'RH',
+            'Comptable',
+            'Assistant',
+        ];
+
         return [
             'email' => self::faker()->email(),
             'enabled' => self::faker()->boolean(),
             'linkedinLink' => 'https://www.linkedin.com/in/',
-            'position' => self::faker()->text(20),
+            'position' => self::faker()->randomElement($positions),
             'user' => UserFactory::new(),
             'company' => CompanyFactory::new(),
         ];

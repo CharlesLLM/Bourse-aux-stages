@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Badge from "../utils/badge";
-import PrimaryTag from "../utils/offerTypeTag";
+import PrimaryTag from "../utils/primaryTag";
 import PropTypes from "prop-types";
 import ProgressBar from "../utils/progressBar";
 

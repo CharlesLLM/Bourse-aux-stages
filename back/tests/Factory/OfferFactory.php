@@ -7,6 +7,7 @@ use App\Enum\LevelEnum;
 use App\Enum\OfferNameEnum;
 use App\Enum\OfferTypeEnum;
 use App\Enum\PromoteStatusEnum;
+use Faker\Factory;
 use Zenstruck\Foundry\ModelFactory;
 
 final class OfferFactory extends ModelFactory
@@ -18,21 +19,24 @@ final class OfferFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $faker = Factory::create('fr_FR');
+
         return [
-            'availablePlaces' => self::faker()->numberBetween(0, 100),
+            'availablePlaces' => $faker->numberBetween(0, 30),
             'company' => CompanyFactory::new(),
-            'description' => self::faker()->text(),
-            'distance' => self::faker()->numberBetween(0, 100),
-            'endDate' => self::faker()->dateTimeBetween('+4 months', '+16 months'),
-            'endPublicationDate' => self::faker()->dateTimeBetween('+3 days', '+2 month'),
-            'name' => self::faker()->randomElement(OfferNameEnum::cases())->value,
-            'promoteStatus' => self::faker()->randomElement(PromoteStatusEnum::cases()),
-            'remote' => self::faker()->boolean(),
-            'requiredLevel' => self::faker()->randomElement(LevelEnum::cases()),
-            'revenue' => self::faker()->randomFloat(),
+            'description' => $faker->sentences(5, true),
+            // TODO : Remove
+            'distance' => $faker->numberBetween(0, 100),
+            'endDate' => $faker->dateTimeBetween('+4 months', '+16 months'),
+            'endPublicationDate' => $faker->dateTimeBetween('+3 days', '+2 month'),
+            'name' => $faker->randomElement(OfferNameEnum::cases())->value,
+            'promoteStatus' => $faker->randomElement(PromoteStatusEnum::cases()),
+            'remote' => $faker->boolean(),
+            'requiredLevel' => $faker->randomElement(LevelEnum::cases()),
+            'revenue' => $faker->randomFloat(),
             'skills' => SkillFactory::new()->many(5),
-            'startDate' => self::faker()->dateTimeBetween('+2 months', '+4 months'),
-            'type' => self::faker()->randomElement(OfferTypeEnum::cases()),
+            'startDate' => $faker->dateTimeBetween('+2 months', '+4 months'),
+            'type' => $faker->randomElement(OfferTypeEnum::cases()),
         ];
     }
 
@@ -43,6 +47,9 @@ final class OfferFactory extends ModelFactory
             if ($offer->getType() === OfferTypeEnum::INTERNSHIP) {
                 $offer->setEndDate(self::faker()->dateTimeBetween('+4 months', '+5 months'));
             }
+
+            // Change createdAt to have previously created offers
+            $offer->setCreatedAt(self::faker()->dateTimeBetween('-2 months', 'now'));
         });
     }
 

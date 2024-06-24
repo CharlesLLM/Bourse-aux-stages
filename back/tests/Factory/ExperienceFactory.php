@@ -14,10 +14,20 @@ final class ExperienceFactory extends ModelFactory
 
     protected function getDefaults(): array
     {
+        $faker = Factory::create('fr_FR');
+        $positions = [
+            'Assistant',
+            'Développeur',
+            'Designer',
+            'Commercial',
+            'RH',
+            'Comptable',
+        ];
+
         return [
-            'companyName' => self::faker()->text(255),
-            'description' => self::faker()->text(),
-            'position' => self::faker()->text(100),
+            'companyName' => $faker->company(),
+            'description' => $faker->sentences(5, true),
+            'position' => $faker->randomElement($positions),
             'student' => StudentFactory::new(),
         ];
     }

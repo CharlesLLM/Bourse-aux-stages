@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import LinkTo from "../utils/linkTo.jsx";
 import Badge from "../utils/badge.jsx";
-import PrimaryTag from "../utils/offerTypeTag.jsx";
+import PrimaryTag from "../utils/primaryTag.jsx";
 
 function LastOffers() {
   const navigate = useNavigate();

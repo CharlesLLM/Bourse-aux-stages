@@ -3,7 +3,7 @@ import LinkTo from "../utils/linkTo.jsx";
 import {useNavigate} from "react-router-dom";
 import {differenceInDays, differenceInMonths, differenceInYears, format, parseISO} from 'date-fns';
 // import {fr} from "date-fns/locale/fr";
-import PrimaryTag from "../utils/offerTypeTag.jsx";
+import PrimaryTag from "../utils/primaryTag.jsx";
 
 function LastRequests() {
   const navigate = useNavigate();

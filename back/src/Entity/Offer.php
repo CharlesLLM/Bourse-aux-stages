@@ -95,12 +95,13 @@ class Offer
     private Collection $applications;
 
     #[ORM\ManyToMany(targetEntity: Skill::class, mappedBy: 'offers')]
+    #[Groups(['offer'])]
     private Collection $skills;
 
     public function __construct()
     {
-        $this->applications = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->applications = new ArrayCollection();
         $this->skills = new ArrayCollection();
     }
 

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../utils/breadcrumb.jsx';
 import Badge from '../utils/badge.jsx';
-import PrimaryTag from '../utils/offerTypeTag.jsx';
+import PrimaryTag from '../utils/primaryTag.jsx';
 import PropTypes from "prop-types";
 
 function OfferHeader({ offer, enableApplyButton = false }) {
