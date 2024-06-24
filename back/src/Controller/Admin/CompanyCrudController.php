@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
@@ -31,7 +32,9 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('name', 'common.name'),
             SlugField::new('slug', 'common.slug')->setTargetFieldName('name')->hideOnIndex(),
             TextField::new('siret', 'company.siret')->hideOnIndex(),
+            DateField::new('creationDate', 'company.creation_date')->hideOnIndex(),
             IntegerField::new('size', 'company.size')->hideOnIndex(),
+            IntegerField::new('revenue', 'company.revenue')->hideOnIndex(),
             TextField::new('summary', 'company.summary')->hideOnIndex(),
             TextareaField::new('description', 'common.description')->hideOnIndex(),
             TextField::new('address', 'common.address')->hideOnIndex(),

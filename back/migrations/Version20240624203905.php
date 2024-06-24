@@ -11,16 +11,16 @@ final class Version20240624203905 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Add company distance';
+        return 'Add company creation date, revenue and distance';
     }
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE company ADD distance INT NOT NULL');
+        $this->addSql('ALTER TABLE company ADD creation_date DATETIME NOT NULL, ADD revenue INT NOT NULL, ADD distance INT NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE company DROP distance');
+        $this->addSql('ALTER TABLE company DROP creation_date, DROP revenue, DROP distance');
     }
 }

@@ -3,6 +3,10 @@ import { Link, useParams } from "react-router-dom";
 import Container from "../layout/container.jsx";
 import Breadcrumb from "../components/utils/breadcrumb.jsx";
 import OfferCard from "../components/utils/offerCard.jsx";
+import { IoIosCheckmarkCircleOutline, IoMdPeople } from "react-icons/io";
+import { IoLocationOutline } from "react-icons/io5";
+import { PiMoney } from "react-icons/pi";
+import { RiFireLine } from "react-icons/ri";
 
 function CompanyView() {
   const { slug } = useParams();
@@ -49,6 +53,72 @@ function CompanyView() {
               </svg>
             </a>
           )}
+          <div className="flex items-center gap-10 font-normal">
+            {/* Activity */}
+            <div className="flex items-center gap-4 font-normal">
+              <div className="size-11 p-2.5 bg-white rounded-full">
+                <IoIosCheckmarkCircleOutline size={24} className="text-secondary stroke-[12]" />
+              </div>
+              {company.tags && company.tags.length > 0 && (
+                <div>
+                  <p className="text-textGrey">Activité</p>
+                  <p className="text-darkGrey font-semibold">{company.tags[0].name}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Age */}
+            <div className="flex items-center gap-4 font-normal">
+              <div className="size-11 p-2.5 bg-white rounded-full">
+                <RiFireLine size={24} className="text-secondary" />
+              </div>
+              {company.creationDate && (
+                <div>
+                  <p className="text-textGrey">Ancienneté</p>
+                  <p className="text-darkGrey font-semibold">{new Date().getFullYear() - new Date(company.creationDate).getFullYear()} ans</p>
+                </div>
+              )}
+            </div>
+
+            {/* Size */}
+            <div className="flex items-center gap-4 font-normal">
+              <div className="size-11 p-2.5 bg-white rounded-full">
+                <IoMdPeople size={24} className="fill-none stroke-secondary stroke-[30]" />
+              </div>
+              {company.size && (
+                <div>
+                  <p className="text-textGrey">Effectifs</p>
+                  <p className="text-darkGrey font-semibold">{company.size}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Revenue figure */}
+            <div className="flex items-center gap-4 font-normal">
+              <div className="size-11 p-2.5 bg-white rounded-full">
+                <PiMoney size={24} className="text-secondary" />
+              </div>
+              {company.revenue && (
+                <div>
+                  <p className="text-textGrey">Chiffre d&apos;affaires</p>
+                  <p className="text-darkGrey font-semibold">{company.revenue > 1000 ? company.revenue > 1000000 ? `${company.revenue / 1000000} M€` : `${company.revenue / 1000} k€` : `${company.revenue} €`}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Location */}
+            <div className="flex items-center gap-4 font-normal">
+              <div className="size-11 p-2.5 bg-white rounded-full">
+                <IoLocationOutline size={24} className="text-secondary" />
+              </div>
+              {company.city && company.postalCode && (
+                <div>
+                  <p className="text-textGrey">Situation</p>
+                  <p className="text-darkGrey font-semibold">{company.city} ({company.postalCode})</p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

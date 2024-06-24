@@ -16,9 +16,11 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         [
             'name' => 'MentalWorks',
             'siret' => '123 456 789 01234',
+            'creation_date' => '2000-01-01',
             'summary' => 'Mentalworks est à la fois une agence web et webmarketing mais aussi une SSII/ESN spécialisée dans le développement et la maintenance d’applications sur-mesure.',
             'description' => 'Mentalworks représente une nouvelle génération : celle des agences digitales technologiques. Notre particularité est d\'intégrer à la fois une agence web et e-marketing (conseil stratégique, SEO/SEA/CM) mais aussi une SSII/ESN composée de développeurs spécialisés pour couvrir toutes les technologies et répondre à tous les besoins: créer ou développer des applications métiers ou applis mobiles/tablettes, relier ou synchroniser un site e-commerce avec un ERP/CRM existant ou avec tout autre système d\'information, etc.',
             'size' => 22,
+            'revenue' => 1200000,
             'address' => '41 Rue Irene Joliot Curie',
             'additionalAddress' => 'Bâtiment Millenium',
             'postalCode' => '60610',
@@ -40,9 +42,11 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         [
             'name' => 'Truebill',
             'siret' => '000 000 000 00000',
+            'creation_date' => '2015-01-01',
             'summary' => 'Prenez le contrôle de votre argent. Truebill développe une application mobile qui aide les consommateurs à prendre le contrôle de leurs finances...',
             'description' => 'Truebill est une application mobile qui aide les consommateurs à prendre le contrôle de leurs finances. L\'application permet aux utilisateurs de suivre leurs abonnements, de gérer leurs factures et de trouver des économies potentielles.',
             'size' => 50,
+            'revenue' => 500000,
             'address' => '1 Place de la Comédie',
             'postalCode' => '69001',
             'city' => 'Lyon',
@@ -56,9 +60,11 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         [
             'name' => 'Coinbase',
             'siret' => '987 654 321 09876',
+            'creation_date' => '2012-01-01',
             'summary' => 'Coinbase est un porte-monnaie numérique et une plateforme où les commerçants et les consommateurs peuvent effectuer des transactions avec des cryptomonnaies...',
             'description' => 'Coinbase est un porte-monnaie numérique et une plateforme où les commerçants et les consommateurs peuvent effectuer des transactions avec des cryptomonnaies telles que le Bitcoin, l\'Ethereum et le Litecoin.',
             'size' => 100,
+            'revenue' => 10000000,
             'address' => '3 Boulevard Michelet',
             'postalCode' => '13008',
             'city' => 'Marseille',
@@ -103,9 +109,11 @@ class CompanyFixtures extends Fixture implements DependentFixtureInterface
         $company = new Company();
         $company->setName($data['name'])
             ->setSiret($data['siret'])
+            ->setCreationDate(new \DateTime($data['creation_date']))
             ->setSummary($data['summary'] ?? null)
             ->setDescription($data['description'] ?? null)
             ->setSize($data['size'])
+            ->setRevenue($data['revenue'])
             ->setAddress($data['address'])
             ->setAdditionalAddress($data['additionalAddress'] ?? null)
             ->setPostalCode($data['postalCode'])
