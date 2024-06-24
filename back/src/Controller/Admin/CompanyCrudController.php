@@ -43,6 +43,8 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('websiteLinkLabel', 'company.website_label')->hideOnIndex(),
             TextField::new('xLink', 'company.x_link')->hideOnIndex(),
             TextField::new('linkedinLink', 'company.linkedin_link')->hideOnIndex(),
+            // TODO : Remove
+            NumberField::new('distance', 'offer.distance')->hideOnIndex(),
             AssociationField::new('category', 'common.category'),
             AssociationField::new('tags', 'common.tags')->hideOnIndex(),
             AssociationField::new('offers', 'company.offers')->hideOnForm(),

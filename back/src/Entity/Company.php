@@ -88,6 +88,10 @@ class Company
     #[Groups(['companies', 'company'])]
     private ?float $longitude = null;
 
+    #[ORM\Column]
+    #[Groups(['companies'])]
+    private ?int $distance = null;
+
     #[ORM\Column(nullable: true)]
     #[Groups(['companies', 'company', 'offer'])]
     private ?string $logo = null;
@@ -290,6 +294,18 @@ class Company
     public function setLongitude(?float $longitude): static
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getDistance(): ?int
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?int $distance): static
+    {
+        $this->distance = $distance;
 
         return $this;
     }

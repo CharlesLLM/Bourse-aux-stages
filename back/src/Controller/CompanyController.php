@@ -19,8 +19,9 @@ class CompanyController extends AbstractController
         $tags = $request->query->get('tags') ? explode(',', $request->query->get('tags')) : [];
         $categories = $request->query->get('categories') ? explode(',', $request->query->get('categories')) : [];
         $sizes = $request->query->get('sizes') ? json_decode($request->query->get('sizes'), true) : [];
+        $distance = $request->query->get('distance') ?? null;
 
-        $companies = $companyRepository->findByFilters($tags, $categories, $sizes);
+        $companies = $companyRepository->findByFilters($tags, $categories, $sizes, $distance);
         $jsonContent = $serializer->serialize($companies, 'json', ['groups' => ['companies']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
