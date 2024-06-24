@@ -21,6 +21,7 @@ export default {
       textGrey: '#515B6F',
       borderGrey: '#D6DDEB',
       fourth: '#EAEAFF',
+      alertRed: '#FF007A',
       ...defaultColors
     },
     screens: {

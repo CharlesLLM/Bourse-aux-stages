@@ -24,7 +24,7 @@ final class CompanyFactory extends ModelFactory
             'country' => 'FR',
             'description' => $faker->text(),
             'enabled' => $faker->boolean(),
-            'name' => $faker->company(),
+            'name' => $faker->unique()->company(),
             'postalCode' => $faker->postcode(),
             'siret' => $faker->siret(),
             'size' => $faker->numberBetween(1, 1200),

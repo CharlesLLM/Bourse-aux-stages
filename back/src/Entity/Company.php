@@ -109,9 +109,6 @@ class Company
     #[Groups(['companies', 'company'])]
     private Collection $offers;
 
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Application::class, orphanRemoval: true)]
-    private Collection $applications;
-
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: SpontaneousApplication::class, orphanRemoval: true)]
     private Collection $spontaneousApplications;
 
@@ -127,7 +124,6 @@ class Company
     {
         $this->admins = new ArrayCollection();
         $this->offers = new ArrayCollection();
-        $this->applications = new ArrayCollection();
         $this->spontaneousApplications = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
@@ -380,32 +376,6 @@ class Company
         if ($this->offers->removeElement($offer)) {
             if ($offer->getCompany() === $this) {
                 $offer->setCompany(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getApplications(): Collection
-    {
-        return $this->applications;
-    }
-
-    public function addApplication(Application $application): static
-    {
-        if (!$this->applications->contains($application)) {
-            $this->applications->add($application);
-            $application->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    public function removeApplication(Application $application): static
-    {
-        if ($this->applications->removeElement($application)) {
-            if ($application->getCompany() === $this) {
-                $application->setCompany(null);
             }
         }
 

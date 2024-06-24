@@ -91,8 +91,12 @@ class Offer
     #[Groups(['offer', 'company'])]
     private Collection $tags;
 
+    #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Application::class, orphanRemoval: true)]
+    private Collection $applications;
+
     public function __construct()
     {
+        $this->applications = new ArrayCollection();
         $this->tags = new ArrayCollection();
     }
 
@@ -281,6 +285,32 @@ class Offer
     public function removeTag(Tag $tag): static
     {
         $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    public function getApplications(): Collection
+    {
+        return $this->applications;
+    }
+
+    public function addApplication(Application $application): static
+    {
+        if (!$this->applications->contains($application)) {
+            $this->applications->add($application);
+            $application->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    public function removeApplication(Application $application): static
+    {
+        if ($this->applications->removeElement($application)) {
+            if ($application->getCompany() === $this) {
+                $application->setCompany(null);
+            }
+        }
 
         return $this;
     }

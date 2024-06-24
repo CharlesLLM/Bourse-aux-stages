@@ -41,10 +41,11 @@ function OfferHeader({ offer, enableApplyButton = false }) {
                   <span className="hidden xl:block h-1 w-1 bg-grey"></span>
                   <p className="text-lg font-normal">{offer.company.city}</p>
                   {offer.startDate && offer.endDate && (
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 text-lg">
                       <span className="hidden xl:block">-</span>
-                      <p className="text-lg font-normal">Du {new Date(offer.startDate).toLocaleDateString()} au {new Date(offer.endDate).toLocaleDateString()}</p>
-                      <p className="text-lg font-normal">({durationString})</p>
+                      <p className="font-normal">Du {new Date(offer.startDate).toLocaleDateString()} au {new Date(offer.endDate).toLocaleDateString()}</p>
+                      <p className="font-normal">({durationString})</p>
+                      {offer.type === 'stage' && duration >= 44 && <span className="text-alertRed before:bg-alertRed before:inline-block before:w-2 before:h-2 before:relative before:rounded-full before:mr-2">Rémunéré</span>}
                     </div>
                   )}
                 </div>

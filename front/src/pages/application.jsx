@@ -456,7 +456,7 @@ function Application() {
           <div>
             <h4 className="text-primary text-2xl ">Vos Expériences pro</h4>
             {/* eslint-disable-next-line react/no-unescaped-entities */}
-            <p>Stages, emploies d'été, projets personnels :</p>
+            <p>Stages, emplois d'été, projets personnels :</p>
             <div className="w-full flex flex-wrap gap-3">
               {experiences.map((experience) => (
                 <div key={experience.id} className="flex items-center p-1 w-fit bg-primary text-white">

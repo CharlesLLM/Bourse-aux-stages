@@ -4,7 +4,7 @@ namespace App\Tests\Factory;
 
 use App\Entity\Offer;
 use App\Enum\LevelEnum;
-use App\Enum\OffersNameEnum;
+use App\Enum\OfferNameEnum;
 use App\Enum\OfferTypeEnum;
 use App\Enum\PromoteStatusEnum;
 use Zenstruck\Foundry\ModelFactory;
@@ -25,7 +25,7 @@ final class OfferFactory extends ModelFactory
             'distance' => self::faker()->numberBetween(0, 100),
             'endDate' => self::faker()->dateTimeBetween('+4 months', '+16 months'),
             'endPublicationDate' => self::faker()->dateTimeBetween('+3 days', '+2 month'),
-            'name' => self::faker()->randomElement(OffersNameEnum::cases())->value,
+            'name' => self::faker()->randomElement(OfferNameEnum::cases())->value,
             'promoteStatus' => self::faker()->randomElement(PromoteStatusEnum::cases()),
             'remote' => self::faker()->boolean(),
             'requiredLevel' => self::faker()->randomElement(LevelEnum::cases()),
@@ -37,7 +37,12 @@ final class OfferFactory extends ModelFactory
 
     protected function initialize(): self
     {
-        return $this;
+        return $this->afterInstantiate(function(Offer $offer): void {
+            // If the offer is an internship, then we set a shorter duration
+            if ($offer->getType() === OfferTypeEnum::INTERNSHIP) {
+                $offer->setEndDate(self::faker()->dateTimeBetween('+4 months', '+5 months'));
+            }
+        });
     }
 
     protected static function getClass(): string

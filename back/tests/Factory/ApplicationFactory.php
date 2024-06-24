@@ -16,7 +16,7 @@ final class ApplicationFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'company' => CompanyFactory::new(),
+            'offer' => OfferFactory::new(),
             'status' => self::faker()->randomElement(ApplicationStatusEnum::cases()),
             'student' => StudentFactory::new(),
         ];

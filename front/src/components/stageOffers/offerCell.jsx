@@ -33,6 +33,7 @@ const OfferCell = ({ offer }) => {
               <div className="flex items-center gap-2">
                 <span className="h-1 w-1 bg-darkGrey rounded-full"></span>
                 <p className="font-normal">Du {new Date(offer.startDate).toLocaleDateString()} au {new Date(offer.endDate).toLocaleDateString()} ({offerDurationString})</p>
+                {offer.type === 'stage' && offerDuration >= 44 && <span className="text-alertRed before:bg-alertRed before:inline-block before:w-2 before:h-2 before:relative before:rounded-full before:mr-2">Rémunéré</span>}
               </div>
             )}
           </div>
@@ -42,7 +43,6 @@ const OfferCell = ({ offer }) => {
             {offer.tags && offer.tags.map((tag) => (
               <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />
             ))}
-            {offer.type === 'Stage' && offerDuration >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
           </div>
         </div>
       </div>

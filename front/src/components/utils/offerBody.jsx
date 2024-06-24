@@ -63,9 +63,7 @@ function OfferBody({ offer }) {
             </div>
             <div className="flex justify-between">
               <p>Candidatures déposées</p>
-              <p className="text-primary font-semibold">
-                {/* TODO : Set actual value */}
-              </p>
+              <p className="text-primary font-semibold">{offer.applicationsCount}</p>
             </div>
           </div>
 
@@ -77,7 +75,6 @@ function OfferBody({ offer }) {
               {offer.tags && offer.tags.map((tag) => (
                 <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />
               ))}
-              {offer.type === 'Stage' && offer.durations >= 44 && <span className="text-[#FF007A] before:bg-[#FF007A] before:inline-block before:w-2 before:h-2 before:relative before:rounded-full"> Rémunéré </span>}
             </div>
           </div>
 
@@ -157,6 +154,7 @@ OfferBody.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     })),
+    applicationsCount: PropTypes.number.isRequired,
   }).isRequired,
 };
 

@@ -55,7 +55,9 @@ class OfferController extends AbstractController
     #[Route('/offer/{id}', name: 'app_offer_detail')]
     public function getOfferDetail(Offer $offer): JsonResponse
     {
-        $jsonContent = $this->serializer->serialize($offer, 'json', ['groups' => ['offer']]);
+        $offerArray = $this->serializer->normalize($offer, null, ['groups' => ['offer']]);
+        $offerArray['applicationsCount'] = \count($offer->getApplications());
+        $jsonContent = json_encode($offerArray);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
