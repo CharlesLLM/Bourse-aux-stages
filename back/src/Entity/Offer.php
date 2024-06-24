@@ -94,10 +94,14 @@ class Offer
     #[ORM\OneToMany(mappedBy: 'offer', targetEntity: Application::class, orphanRemoval: true)]
     private Collection $applications;
 
+    #[ORM\ManyToMany(targetEntity: Skill::class, mappedBy: 'offers')]
+    private Collection $skills;
+
     public function __construct()
     {
         $this->applications = new ArrayCollection();
         $this->tags = new ArrayCollection();
+        $this->skills = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -310,6 +314,30 @@ class Offer
             if ($application->getCompany() === $this) {
                 $application->setCompany(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getSkills(): Collection
+    {
+        return $this->skills;
+    }
+
+    public function addSkill(Skill $skill): static
+    {
+        if (!$this->skills->contains($skill)) {
+            $this->skills->add($skill);
+            $skill->addOffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSkill(Skill $skill): static
+    {
+        if ($this->skills->removeElement($skill)) {
+            $skill->removeOffer($this);
         }
 
         return $this;

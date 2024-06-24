@@ -22,6 +22,7 @@ final class StudentFactory extends ModelFactory
             'city' => $faker->city(),
             'country' => $faker->country(),
             'postalCode' => $faker->postcode(),
+            'skills' => SkillFactory::new()->many(5),
             'user' => UserFactory::new(),
         ];
     }

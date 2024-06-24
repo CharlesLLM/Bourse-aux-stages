@@ -33,7 +33,7 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Experience::class, orphanRemoval: true)]
     private Collection $experiences;
 
-    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Skill::class, orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Skill::class, mappedBy: 'students')]
     private Collection $skills;
 
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Hobby::class, orphanRemoval: true)]
@@ -48,9 +48,6 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: SpontaneousApplication::class)]
     private Collection $spontaneousApplications;
 
-    /**
-     * @var Collection<int, Request>
-     */
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Request::class)]
     private Collection $requests;
 
@@ -117,7 +114,7 @@ class Student
     {
         if (!$this->skills->contains($skill)) {
             $this->skills->add($skill);
-            $skill->setStudent($this);
+            $skill->addStudent($this);
         }
 
         return $this;
@@ -126,9 +123,7 @@ class Student
     public function removeSkill(Skill $skill): static
     {
         if ($this->skills->removeElement($skill)) {
-            if ($skill->getStudent() === $this) {
-                $skill->setStudent(null);
-            }
+            $skill->removeStudent($this);
         }
 
         return $this;

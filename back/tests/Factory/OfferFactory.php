@@ -30,6 +30,7 @@ final class OfferFactory extends ModelFactory
             'remote' => self::faker()->boolean(),
             'requiredLevel' => self::faker()->randomElement(LevelEnum::cases()),
             'revenue' => self::faker()->randomFloat(),
+            'skills' => SkillFactory::new()->many(5),
             'startDate' => self::faker()->dateTimeBetween('+2 months', '+4 months'),
             'type' => self::faker()->randomElement(OfferTypeEnum::cases()),
         ];

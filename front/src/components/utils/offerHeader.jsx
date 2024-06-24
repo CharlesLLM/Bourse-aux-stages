@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Breadcrumb from '../utils/breadcrumb.jsx';
 import Badge from '../utils/badge.jsx';
-import OfferTypeTag from '../utils/offerTypeTag.jsx';
+import PrimaryTag from '../utils/offerTypeTag.jsx';
 import PropTypes from "prop-types";
 
 function OfferHeader({ offer, enableApplyButton = false }) {
@@ -50,7 +50,7 @@ function OfferHeader({ offer, enableApplyButton = false }) {
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <OfferTypeTag text={offer.type} />
+                  <PrimaryTag text={offer.type} />
                   <span className="w-[1px] bg-borderGrey"></span>
                   {offer.tags && offer.tags.map((tag) => (
                     <Badge key={tag.id} tag={tag} variant="offerTag" />

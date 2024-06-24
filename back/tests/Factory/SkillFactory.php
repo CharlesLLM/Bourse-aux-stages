@@ -16,7 +16,6 @@ final class SkillFactory extends ModelFactory
     {
         return [
             'name' => self::faker()->text(255),
-            'student' => StudentFactory::new(),
         ];
     }
 

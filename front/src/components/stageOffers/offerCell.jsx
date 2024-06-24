@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Badge from "../utils/badge";
-import OfferTypeTag from "../utils/offerTypeTag";
+import PrimaryTag from "../utils/offerTypeTag";
 import PropTypes from "prop-types";
 import ProgressBar from "../utils/progressBar";
 
@@ -38,7 +38,7 @@ const OfferCell = ({ offer }) => {
             )}
           </div>
           <div className="flex gap-2 items-center flex-wrap ">
-            <OfferTypeTag text={offer.type} />
+            <PrimaryTag text={offer.type} />
             <span className={`h-6 w-[1px] bg-borderGrey`}></span>
             {offer.tags && offer.tags.map((tag) => (
               <Badge key={`${offer.id}-${tag.id}`} tag={tag} variant="offerTag" />

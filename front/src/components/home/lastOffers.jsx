@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import LinkTo from "../utils/linkTo.jsx";
 import Badge from "../utils/badge.jsx";
-import OfferTypeTag from "../utils/offerTypeTag.jsx";
+import PrimaryTag from "../utils/offerTypeTag.jsx";
 
 function LastOffers() {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ function LastOffers() {
                     className="w-full h-full object-contain rounded-full"
                   />
                 </div>
-                <OfferTypeTag text={offer.type} />
+                <PrimaryTag text={offer.type} />
               </div>
               <p className="text-lg font-semibold line-clamp-2">{offer.name}</p>
               <div className={`text-grey flex flex-row items-center justify-center xs:justify-start w-full space-x-2`}>

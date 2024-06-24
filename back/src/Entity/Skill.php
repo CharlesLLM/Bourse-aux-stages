@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Entity\Traits\DateableTrait;
 use App\Entity\Traits\TimestampableTrait;
 use App\Repository\SkillRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -28,9 +30,17 @@ class Skill
     #[Assert\NotNull]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'skills')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Student $student = null;
+    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'skills')]
+    private Collection $students;
+
+    #[ORM\ManyToMany(targetEntity: Offer::class, inversedBy: 'skills')]
+    private Collection $offers;
+
+    public function __construct()
+    {
+        $this->students = new ArrayCollection();
+        $this->offers = new ArrayCollection();
+    }
 
     public function getId(): ?Uuid
     {
@@ -49,14 +59,44 @@ class Skill
         return $this;
     }
 
-    public function getStudent(): ?Student
+    public function getStudents(): Collection
     {
-        return $this->student;
+        return $this->students;
     }
 
-    public function setStudent(?Student $student): static
+    public function addStudent(Student $student): static
     {
-        $this->student = $student;
+        if (!$this->students->contains($student)) {
+            $this->students->add($student);
+        }
+
+        return $this;
+    }
+
+    public function removeStudent(Student $student): static
+    {
+        $this->students->removeElement($student);
+
+        return $this;
+    }
+
+    public function getOffers(): Collection
+    {
+        return $this->offers;
+    }
+
+    public function addOffer(Offer $offer): static
+    {
+        if (!$this->offers->contains($offer)) {
+            $this->offers->add($offer);
+        }
+
+        return $this;
+    }
+
+    public function removeOffer(Offer $offer): static
+    {
+        $this->offers->removeElement($offer);
 
         return $this;
     }
