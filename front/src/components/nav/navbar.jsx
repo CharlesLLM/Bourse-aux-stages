@@ -33,7 +33,7 @@ function Navbar() {
         </li>
       </ul>
       <div className="flex items-center gap-4">
-        <Link to="/login" className="flex justify-center items-center px-6 py-3 w-40 h-[50px] leading-none text-primary">Se connecter</Link>
+        <Link to="/connexion" className="flex justify-center items-center px-6 py-3 w-40 h-[50px] leading-none text-primary">Se connecter</Link>
         <div className="h-10 w-[1px] bg-slate-200"></div>
         <Link to="/inscription" className="flex justify-center items-center px-6 py-3 w-48 h-[50px] leading-none text-white bg-primary">Créer un compte</Link>
       </div>

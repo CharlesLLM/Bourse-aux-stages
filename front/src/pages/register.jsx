@@ -1,9 +1,10 @@
-import React, {useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Input from "../components/utils/input.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
 import Radio from "../components/utils/radio.jsx";
 import Loader from "../components/utils/loader.jsx";
 import {Combobox} from "react-widgets/cjs";
+import Success from "../components/register/Success.jsx";
 
 function Register() {
   const [criteria, setCriteria] = useState({
@@ -20,6 +21,7 @@ function Register() {
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false);
   const [role, setRole] = useState('');
+  const [userCreated, setUserCreated] = useState(false);
 
   const genders = ['Homme', 'Femme', 'Autre'];
   const firstnameRef = useRef();
@@ -75,10 +77,6 @@ function Register() {
           }
           return response.json();
         })
-        .then(data => {
-          console.info(data);
-          setError({email: ''});
-        })
         .catch(error => {
           console.log(error)
           setError({email: 'l\’adresse email est déjà utilisé'});
@@ -95,10 +93,6 @@ function Register() {
           }
           return response.json();
         })
-        .then(data => {
-          console.info(data);
-          setError({siret: ''});
-        })
         .catch(error => {
           console.error(error);
           setError({companySiret: 'Le siret est déjà utilisée'});
@@ -112,7 +106,6 @@ function Register() {
     if (cleanedSiret.length !== 14 || isNaN(cleanedSiret)) {
       setError({companySiret: 'Le SIRET doit contenir exactement 14 chiffres.'});
     }
-
     return cleanedSiret.replace(/(\d{3})(\d{3})(\d{2})(\d{6})/, '$1 $2 $3 $4');
   }
 
@@ -143,7 +136,6 @@ function Register() {
       ...criteria,
       passwordsMatch: passwordsMatch
     });
-    console.log(criteria.passwordsMatch)
   }
 
   const handleRoleChange = (role) => {
@@ -225,6 +217,7 @@ function Register() {
     }
     checkEmail();
     setError(errors);
+    console.log(errors)
     if (Object.keys(errors).length === 0 && criteria.passwordsMatch) {
       const userData = {
         firstname: firstnameRef.current?.value,
@@ -237,25 +230,29 @@ function Register() {
         birth_date: birthDateRef.current?.value,
         role: role,
         language: selectedLanguage,
-        student: {
-          address: addressRef.current?.value,
-          city: cityRef.current?.value,
-          country: countryRef.current?.value,
-          postal_code: postalCodeRef.current?.value,
-        },
-        admin: {
-          company_position: companyPositionRef.current?.value,
-          company: {
-            address: companyAddressRef.current?.value,
-            city: companyCityRef.current?.value,
-            country: companyCountryRef.current?.value,
-            postal_code: companyPostalCodeRef.current?.value,
-            second_address: companySecondAddressRef.current?.value,
-            name: companyNameRef.current?.value,
-            siret: validateSiret(companySiretRef.current?.value),
-            phone: companyPhoneRef.current?.value,
+        ...(role === 'student' && {
+          student: {
+            address: addressRef.current?.value,
+            city: cityRef.current?.value,
+            country: countryRef.current?.value,
+            postal_code: postalCodeRef.current?.value,
           }
-        }
+        }),
+        ...(role === 'admin' && {
+          admin: {
+            company_position: companyPositionRef.current?.value,
+            company: {
+              address: companyAddressRef.current?.value,
+              city: companyCityRef.current?.value,
+              country: companyCountryRef.current?.value,
+              postal_code: companyPostalCodeRef.current?.value,
+              second_address: companySecondAddressRef.current?.value,
+              name: companyNameRef.current?.value,
+              siret: validateSiret(companySiretRef.current?.value),
+              phone: companyPhoneRef.current?.value,
+            }
+          }
+        })
       };
       fetch(`${import.meta.env.VITE_BACK_ENDPOINT}user/register`, {
         method: 'POST',
@@ -265,8 +262,12 @@ function Register() {
         body: JSON.stringify(userData),
       })
         .then(response => response.json())
-        .then(data => {
-          console.log(data);
+        .then(() => {
+          setUserCreated(true);
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         })
         .catch(error => {
           console.error('Error:', error);
@@ -281,117 +282,126 @@ function Register() {
     )
   }
 
+
   return (
-    <div className="px-12 py-20">
-      <div className="grid grid-cols-2 gap-6">
+    <div>
+      {userCreated && (
         <div>
-          <Input name="firstname" label="Prénom" type="text" required={true} inputRef={firstnameRef} />
-          <p className="text-red-700">{errors?.firstname}</p>
+          <Success />
         </div>
-        <div>
-          <Input name="name" label="Nom" type="text" required={true} inputRef={nameRef} />
-          <p className="text-red-700">{errors?.name}</p>
-        </div>
-        <div>
-          <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} />
-          <p className="text-red-700">{errors?.gender}</p>
-        </div>
-        <div>
-          <Input name="mail" label="Email" type="email" onBlur={checkEmail} required={true} inputRef={emailRef} />
-          <p className="text-red-700">{errors?.email}</p>
-        </div>
-        <div>
-          <Input name="birthDate" label="Date de naissance" type="date" required={true} inputRef={birthDateRef} />
-          <p className="text-red-700">{errors?.birthDay}</p>
-        </div>
-        <div>
-          <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
-          <p className="text-red-700">{errors?.phone}</p>
-        </div>
-        <div className="flex flex-col">
-          <Input
-            type="password"
-            name="password"
-            label="Mot de passe"
-            required={true}
-            onChange={handlePasswordChange}
-            onFocus={() => setShowPasswordCriteria(true)}
-            inputRef={passwordRef}
-          />
-          {showPasswordCriteria && (
-            <div className="grid grid-cols-2 gap-4">
-              <ul>
-                <li className={criteria.length ? 'text-green-600' : 'text-red-700'}>8 caractères (minimum)</li>
-                <li className={criteria.specialChar ? 'text-green-600' : 'text-red-700'}>Caractères spécial</li>
-                <li className={criteria.uppercase ? 'text-green-600' : 'text-red-700'}>Majuscule</li>
-                <li className={criteria.number ? 'text-green-600' : 'text-red-700'}>Chiffre</li>
-              </ul>
-              <p className="text-red-700">{errors?.password}</p>
+      )}
+      {!userCreated && (
+        <div className="px-12 py-20">
+          <div className="grid grid-cols-2 gap-6">
+            <div>
+              <Input name="firstname" label="Prénom" type="text" required={true} inputRef={firstnameRef} />
+              <p className="text-red-700">{errors?.firstname}</p>
+            </div>
+            <div>
+              <Input name="name" label="Nom" type="text" required={true} inputRef={nameRef} />
+              <p className="text-red-700">{errors?.name}</p>
+            </div>
+            <div>
+              <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} />
+              <p className="text-red-700">{errors?.gender}</p>
+            </div>
+            <div>
+              <Input name="mail" label="Email" type="email" onBlur={checkEmail} required={true} inputRef={emailRef} />
+              <p className="text-red-700">{errors?.email}</p>
+            </div>
+            <div>
+              <Input name="birthDate" label="Date de naissance" type="date" required={true} inputRef={birthDateRef} />
+              <p className="text-red-700">{errors?.birthDay}</p>
+            </div>
+            <div>
+              <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
+              <p className="text-red-700">{errors?.phone}</p>
+            </div>
+            <div className="flex flex-col">
+              <Input
+                type="password"
+                name="password"
+                label="Mot de passe"
+                required={true}
+                onChange={handlePasswordChange}
+                onFocus={() => setShowPasswordCriteria(true)}
+                inputRef={passwordRef}
+              />
+              {showPasswordCriteria && (
+                <div className="grid grid-cols-2 gap-4">
+                  <ul>
+                    <li className={criteria.length ? 'text-green-600' : 'text-red-700'}>8 caractères (minimum)</li>
+                    <li className={criteria.specialChar ? 'text-green-600' : 'text-red-700'}>Caractères spécial</li>
+                    <li className={criteria.uppercase ? 'text-green-600' : 'text-red-700'}>Majuscule</li>
+                    <li className={criteria.number ? 'text-green-600' : 'text-red-700'}>Chiffre</li>
+                  </ul>
+                  <p className="text-red-700">{errors?.password}</p>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <Input
+                type="password"
+                name="confirmPassword"
+                label="Confirmez le mot de passe"
+                required={true}
+                inputRef={confirmPasswordRef}
+                onChange={handleConfirmPasswordChange}
+                onBlur={() => setShowConfirmPasswordError(true)}
+              />
+              {showConfirmPasswordError && !criteria.passwordsMatch && (
+                <p className="text-red-700">Les mots de passe ne correspondent pas</p>
+              )}
+              <p className="text-red-700">{errors?.confirmPassword}</p>
+            </div>
+            <div className="space-y-2">
+              <label>Langue</label>
+              <Combobox data={languages} dataKey='code' textField='name' defaultValue='fr' onChange={handleLanguageChange} />
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row justify-start mt-6 space-x-12">
+            <Radio name="loginRole" label="Je m'inscris en tant qu'étudiant" inputRef={studentRoleRef} onChange={() => handleRoleChange('student')} />
+            <Radio name="loginRole" label="Je m'inscris en tant qu'organisation" inputRef={adminRoleRef} onChange={() => handleRoleChange('admin')} />
+          </div>
+          {role === 'student' && (
+            <div className="mt-6 space-y-6">
+              <Input name="address" label="Adresse postale" type="text" required={true} inputRef={addressRef} />
+              <p className="text-red-700">{errors?.address}</p>
+              <Input name="city" label="Ville" type="text" required={true} inputRef={cityRef} />
+              <p className="text-red-700">{errors?.city}</p>
+              <Input name="country" label="Pays" type="text" required={true} inputRef={countryRef} />
+              <p className="text-red-700">{errors?.country}</p>
+              <Input name="postalCode" label="Code Postal" type="number" max={5} required={true} inputRef={postalCodeRef} />
+              <p className="text-red-700">{errors?.postalCode}</p>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>S'inscrire</button>
+            </div>
+          )}
+          {role === 'admin' && (
+            <div className="mt-6 space-y-6">
+              <Input name="companyName" label="Nom de l'entreprise" type="text" required={true} inputRef={companyNameRef} />
+              <p className="text-red-700">{errors?.companyName}</p>
+              <Input name="companyPosition" label="Position dans l'entreprise" type="text" required={true} inputRef={companyPositionRef} />
+              <p className="text-red-700">{errors?.companyPosition}</p>
+              <Input name="companySiret" label="Siret de l'entreprise" type="text" onChange={checkSiret} required={true} inputRef={companySiretRef} />
+              <p className="text-red-700">{errors?.companySiret}</p>
+              <p className="text-red-700">{errors?.companySiretFormat}</p>
+              <Input name="companyAddress" label="Adresse de l'entreprise" type="text" required={true} inputRef={companyAddressRef} />
+              <p className="text-red-700">{errors?.companyAddress}</p>
+              <Input name="companySecondAddress" label="Complément d'adresse" type="text" required={false} inputRef={companySecondAddressRef} />
+              <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
+              <p className="text-red-700">{errors?.companyPostalCode}</p>
+              <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />
+              <p className="text-red-700">{errors?.companyCity}</p>
+              <Input name="companyCountry" label="Pays" type="text" required={true} inputRef={companyCountryRef} />
+              <p className="text-red-700">{errors?.companyCountry}</p>
+              <Input name="companyPhone" label="Téléphone" type="tel" max={10} required={true} inputRef={companyPhoneRef} />
+              <p className="text-red-700">{errors?.companyPhone}</p>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>S'inscrire</button>
             </div>
           )}
         </div>
-        <div className="flex flex-col">
-          <Input
-            type="password"
-            name="confirmPassword"
-            label="Confirmez le mot de passe"
-            required={true}
-            inputRef={confirmPasswordRef}
-            onChange={handleConfirmPasswordChange}
-            onBlur={() => setShowConfirmPasswordError(true)}
-          />
-          {showConfirmPasswordError && !criteria.passwordsMatch && (
-            <p className="text-red-700">Les mots de passe ne correspondent pas</p>
-          )}
-          <p className="text-red-700">{errors?.confirmPassword}</p>
-        </div>
-        <div className="space-y-2">
-          <label>Langue</label>
-          <Combobox data={languages} dataKey='code' textField='name' defaultValue='fr' onChange={handleLanguageChange} />
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row justify-start mt-6 space-x-12">
-        <Radio name="loginRole" label="Je m'inscris en tant qu'étudiant" inputRef={studentRoleRef} onChange={() => handleRoleChange('student')} />
-        <Radio name="loginRole" label="Je m'inscris en tant qu'organisation" inputRef={adminRoleRef} onChange={() => handleRoleChange('admin')} />
-      </div>
-      {role === 'student' && (
-        <div className="mt-6 space-y-6">
-          <Input name="address" label="Adresse postale" type="text" required={true} inputRef={addressRef} />
-          <p className="text-red-700">{errors?.address}</p>
-          <Input name="city" label="Ville" type="text" required={true} inputRef={cityRef} />
-          <p className="text-red-700">{errors?.city}</p>
-          <Input name="country" label="Pays" type="text" required={true} inputRef={countryRef} />
-          <p className="text-red-700">{errors?.country}</p>
-          <Input name="postalCode" label="Code Postal" type="number" max={5} required={true} inputRef={postalCodeRef} />
-          <p className="text-red-700">{errors?.postalCode}</p>
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>S'inscrire</button>
-        </div>
-      )}
-      {role === 'admin' && (
-        <div className="mt-6 space-y-6">
-          <Input name="companyName" label="Nom de l'entreprise" type="text" required={true} inputRef={companyNameRef} />
-          <p className="text-red-700">{errors?.companyName}</p>
-          <Input name="companyPosition" label="Position dans l'entreprise" type="text" required={true} inputRef={companyPositionRef} />
-          <p className="text-red-700">{errors?.companyPosition}</p>
-          <Input name="companySiret" label="Siret de l'entreprise" type="text" onChange={checkSiret} required={true} inputRef={companySiretRef} />
-          <p className="text-red-700">{errors?.companySiret}</p>
-          <p className="text-red-700">{errors?.companySiretFormat}</p>
-          <Input name="companyAddress" label="Adresse de l'entreprise" type="text" required={true} inputRef={companyAddressRef} />
-          <p className="text-red-700">{errors?.companyAddress}</p>
-          <Input name="companySecondAddress" label="Complément d'adresse" type="text" required={false} inputRef={companySecondAddressRef} />
-          <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
-          <p className="text-red-700">{errors?.companyPostalCode}</p>
-          <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />
-          <p className="text-red-700">{errors?.companyCity}</p>
-          <Input name="companyCountry" label="Pays" type="text" required={true} inputRef={companyCountryRef} />
-          <p className="text-red-700">{errors?.companyCountry}</p>
-          <Input name="companyPhone" label="Téléphone" type="tel" max={10} required={true} inputRef={companyPhoneRef} />
-          <p className="text-red-700">{errors?.companyPhone}</p>
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>S'inscrire</button>
-        </div>
-
       )}
     </div>
   );

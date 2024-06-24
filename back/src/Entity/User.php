@@ -31,39 +31,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'admin', 'user'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request', 'company'])]
+    #[Groups(['student', 'request', 'company', 'admin', 'user'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request', 'company'])]
+    #[Groups(['student', 'request', 'company', 'admin', 'user'])]
     private ?string $lastName = null;
 
     #[ORM\Column(enumType: GenderEnum::class, length: 10)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'admin', 'user'])]
     private ?GenderEnum $gender = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotNull]
     #[Assert\Email]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'admin', 'user'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'admin', 'user'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(type: 'json')]
+    #[Groups(['student', 'admin', 'user'])]
     private array $roles = [];
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
@@ -77,11 +78,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Language::class)]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['student'])]
     private ?Language $language = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['student', 'request'])]
+    #[Groups(['student', 'request', 'admin'])]
     private ?\DateTimeInterface $birthDate = null;
     #[ORM\Column(nullable: true)]
     private ?string $pic = null;
