@@ -34,7 +34,7 @@ function Application() {
   const emailRef = useRef(null);
   const confirmEmailRef = useRef(null);
   const addressRef = useRef(null);
-  const secondAddressRef = useRef(null);
+  const additionalAddressRef = useRef(null);
   const postalCodeRef = useRef(null);
   const cityRef = useRef(null);
   const personalWebsiteRef = useRef(null);
@@ -243,7 +243,7 @@ function Application() {
         email: emailRef.current.value,
         confirmEmail: confirmEmailRef.current.value,
         address: addressRef.current.value,
-        secondAddress: secondAddressRef.current.value,
+        additionalAddress: additionalAddressRef.current.value,
         postalCode: postalCodeRef.current.value,
         city: cityRef.current.value,
         personalWebsite: personalWebsiteRef.current.value,
@@ -298,7 +298,7 @@ function Application() {
               <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} />
               <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} />
               <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} />
-              <Input type="text" name="secondAddress" label="Complement d'adresse" required={false} inputRef={secondAddressRef} />
+              <Input type="text" name="additionalAddress" label="Complement d'adresse" required={false} inputRef={additionalAddressRef} />
               <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} />
               <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} />
             </div>

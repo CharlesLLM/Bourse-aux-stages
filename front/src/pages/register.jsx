@@ -44,7 +44,7 @@ function Register() {
   const companyPhoneRef = useRef();
   const companySiretRef = useRef();
   const companyPostalCodeRef = useRef();
-  const companySecondAddressRef = useRef();
+  const companyAdditionalAddressRef = useRef();
   const companyPositionRef = useRef();
   const companyCountryRef = useRef();
 
@@ -250,7 +250,7 @@ function Register() {
               city: companyCityRef.current?.value,
               country: companyCountryRef.current?.value,
               postal_code: companyPostalCodeRef.current?.value,
-              second_address: companySecondAddressRef.current?.value,
+              additional_address: companyAdditionalAddressRef.current?.value,
               name: companyNameRef.current?.value,
               siret: validateSiret(companySiretRef.current?.value),
               phone: companyPhoneRef.current?.value,
@@ -392,7 +392,7 @@ function Register() {
               <p className="text-red-700">{errors?.companySiretFormat}</p>
               <Input name="companyAddress" label="Adresse de l'entreprise" type="text" required={true} inputRef={companyAddressRef} />
               <p className="text-red-700">{errors?.companyAddress}</p>
-              <Input name="companySecondAddress" label="Complément d'adresse" type="text" required={false} inputRef={companySecondAddressRef} />
+              <Input name="companyAdditionalAddress" label="Complément d'adresse" type="text" required={false} inputRef={companyAdditionalAddressRef} />
               <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
               <p className="text-red-700">{errors?.companyPostalCode}</p>
               <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />

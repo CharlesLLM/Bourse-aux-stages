@@ -1,11 +1,20 @@
-import React from "react";
+import PropTypes from 'prop-types';
 
-export function Radio({name, label, inputRef, value, onChange}) {
+function Radio({name, label, inputRef, value, onChange}) {
   return (
-    <div className="flex items-center space-x-2">
-      <input onChange={onChange} type="radio" value={value} ref={inputRef} className="checked:bg-primary w-5 h-5 rounded-full" name={name}/>
-      <label htmlFor={name}>{label}</label>
-    </div>
+    <label htmlFor={value} className="flex items-center space-x-2">
+      <input id={value} onChange={onChange} type="radio" value={value} ref={inputRef} className="checked:bg-primary w-5 h-5 rounded-full" name={name}/>
+      <p>{label}</p>
+    </label>
   )
 }
-export default Radio
+
+Radio.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  inputRef: PropTypes.object.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+}
+
+export default Radio;

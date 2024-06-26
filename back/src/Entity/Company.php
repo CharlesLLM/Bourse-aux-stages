@@ -48,7 +48,7 @@ class Company
     #[Groups(['offer'])]
     private ?string $siret = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     #[Groups(['companies', 'company'])]
     private ?\DateTimeInterface $creationDate = null;
 
@@ -56,7 +56,7 @@ class Company
     #[Groups(['companies', 'company', 'offer'])]
     private ?string $summary = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['company', 'offer'])]
     private ?string $description = null;
 
@@ -64,7 +64,7 @@ class Company
     #[Groups(['companies', 'company'])]
     private ?int $size = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups(['company'])]
     private ?int $revenue = null;
 
@@ -96,7 +96,7 @@ class Company
     #[Groups(['companies', 'company'])]
     private ?float $longitude = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups(['companies'])]
     private ?int $distance = null;
 
@@ -131,9 +131,6 @@ class Company
     #[ORM\Column(nullable: true)]
     #[Groups(['company', 'offer'])]
     private ?array $images = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $secondAddress = null;
 
     public function __construct()
     {
@@ -509,18 +506,6 @@ class Company
     public function setImages(?array $images): static
     {
         $this->images = $images;
-
-        return $this;
-    }
-
-    public function getSecondAddress(): ?string
-    {
-        return $this->secondAddress;
-    }
-
-    public function setSecondAddress(?string $secondAddress): static
-    {
-        $this->secondAddress = $secondAddress;
 
         return $this;
     }

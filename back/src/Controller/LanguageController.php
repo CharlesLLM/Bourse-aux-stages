@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Request;
 use App\Repository\LanguageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,7 +11,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class LanguageController extends AbstractController
 {
-    #[Route('/languages', name: 'language')]
+    #[Route('/languages', name: 'language_index')]
     public function index(LanguageRepository $languageRepository, SerializerInterface $serializer): Response
     {
         $languages = $languageRepository->findBy([], ['name' => 'ASC']);

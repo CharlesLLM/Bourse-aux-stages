@@ -28,7 +28,7 @@ class UserController extends AbstractController
     {
         $uploadedFile = $request->files->get('file');
         $userId = $request->request->get('userId');
-        $userDirectory = $this->getParameter('upload_directory') . '/' . $userId;
+        $userDirectory = $this->getParameter('upload_directory').'/'.$userId;
         if (!file_exists($userDirectory)) {
             mkdir($userDirectory, 0777, true);
         }
@@ -42,11 +42,12 @@ class UserController extends AbstractController
     public function checkEmail(UserRepository $userRepository, string $email = ''): JsonResponse
     {
         if ($email) {
-            $emailExists = $userRepository->findOneBy(['email' => $email]) !== null;
+            $emailExists = null !== $userRepository->findOneBy(['email' => $email]);
             if ($emailExists) {
                 return $this->json(['error' => 'L\'adresse email est déjà utilisée'], JsonResponse::HTTP_CONFLICT);
             }
         }
+
         return $this->json('');
     }
 
@@ -56,7 +57,7 @@ class UserController extends AbstractController
         try {
             $data = json_decode($request->getContent(), true);
 
-            if (json_last_error() !== JSON_ERROR_NONE) {
+            if (\JSON_ERROR_NONE !== json_last_error()) {
                 return new JsonResponse(['error' => 'Invalid JSON'], JsonResponse::HTTP_BAD_REQUEST);
             }
             $language = $languageRepository->findOneBy(['code' => $data['language']]);
@@ -78,7 +79,7 @@ class UserController extends AbstractController
             $user->setPhone($data['phone'] ?? '');
 
             if (isset($data['role'])) {
-                if ($data['role'] === 'admin') {
+                if ('admin' === $data['role']) {
                     $admin = new Admin();
                     $company = new Company();
                     $user->setRoles(['ROLE_ADMIN']);
@@ -106,12 +107,12 @@ class UserController extends AbstractController
                     if (isset($data['admin']['company']['siret'])) {
                         $company->setSiret($data['admin']['company']['siret']);
                     }
-                    if (isset($data['admin']['company']['second_address'])) {
-                        $company->setSecondAddress($data['admin']['company']['second_address']);
+                    if (isset($data['admin']['company']['additional_address'])) {
+                        $company->setAdditionalAddress($data['admin']['company']['additional_address']);
                     }
                     $admin->setCompany($company);
                     $user->setCompanyAdmin($admin);
-                } elseif ($data['role'] === 'student') {
+                } elseif ('student' === $data['role']) {
                     $student = new Student();
                     $user->setRoles(['ROLE_STUDENT']);
                     if (isset($data['student']['address'])) {
@@ -139,14 +140,13 @@ class UserController extends AbstractController
             $em->flush();
 
             return $this->json(['message' => 'User registered successfully', 200]);
-
         } catch (\Exception $e) {
             return $this->json($e->getMessage(), 400);
         }
     }
 
     #[Route(path: '/user/login', name: 'login', methods: ['POST'])]
-    public function login(Request $request, UserRepository $userRepository, JWTTokenManagerInterface $jwtManager, UserPasswordHasherInterface $passwordHasher, tokenStorageInterface $storage): JsonResponse
+    public function login(Request $request, UserRepository $userRepository, JWTTokenManagerInterface $jwtManager, UserPasswordHasherInterface $passwordHasher, TokenStorageInterface $storage): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -172,6 +172,7 @@ class UserController extends AbstractController
     {
         try {
             $user = $this->getUser();
+
             return new JsonResponse($serializer->serialize($user, 'json', ['groups' => ['admin']]), JsonResponse::HTTP_OK, [], true);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_UNAUTHORIZED);

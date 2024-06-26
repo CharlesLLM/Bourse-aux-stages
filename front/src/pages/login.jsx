@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import Input from "../components/utils/input.jsx";
 import {useNavigate} from "react-router-dom";
+import PropTypes from 'prop-types';
 
 function Login({redirect = "/"}) {
   const emailRef = useRef();
@@ -71,7 +72,7 @@ function Login({redirect = "/"}) {
   return (
     <form className="h-[calc(100vh-100px)] px-64 flex flex-col item justify-center w-full space-y-8">
       <div className="space-y-2">
-        <Input name="email" label="identifiants" type="email" required={true} inputRef={emailRef} onKeyDown={handleKeyDown}/>
+        <Input name="email" label="Adresse mail" type="email" required={true} inputRef={emailRef} onKeyDown={handleKeyDown}/>
         <p className="text-red-700">{error?.email}</p>
       </div>
       <div className="space-y-2">
@@ -82,6 +83,10 @@ function Login({redirect = "/"}) {
       <button type="button" onClick={handleSubmit} className="bg-primary w-full py-4 mt-12 text-white">Se connecter</button>
     </form>
   )
+}
+
+Login.propTypes = {
+  redirect: PropTypes.string
 }
 
 export default Login;

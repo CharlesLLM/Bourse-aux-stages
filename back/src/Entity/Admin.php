@@ -39,7 +39,7 @@ class Admin
     #[Groups(['company'])]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'admins')]
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'admins', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 

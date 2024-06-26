@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Repository\CompanyRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,15 +34,18 @@ class CompanyController extends AbstractController
     }
 
     #[Route(path: '/company/check-siret/{siret}', name: 'check-siret', methods: ['GET'])]
-    public function checkSiret( CompanyRepository $companyRepository, string $siret = ''): JsonResponse {
+    public function checkSiret(CompanyRepository $companyRepository, string $siret = ''): JsonResponse
+    {
         if ($siret) {
-            $emailExists = $companyRepository->findOneBy(['siret' => $siret]) !== null;
+            $emailExists = null !== $companyRepository->findOneBy(['siret' => $siret]);
             if ($emailExists) {
                 return $this->json(['error' => 'Le siret est déjà utilisé'], JsonResponse::HTTP_CONFLICT);
             }
         }
+
         return $this->json($siret);
     }
+
     #[Route('/companies/top', name: 'app_company_top', methods: ['GET'])]
     public function getCompaniesWithMostOffers(CompanyRepository $companyRepository, SerializerInterface $serializer): JsonResponse
     {
