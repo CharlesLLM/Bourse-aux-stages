@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
-import RangeSlider from "./rangeSlider.jsx";
+import RangeSlider from "../utils/rangeSlider.jsx";
 import CheckboxFilter from "./checkboxFilter.jsx";
 import PropTypes from "prop-types";
 

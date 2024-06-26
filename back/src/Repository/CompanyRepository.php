@@ -27,7 +27,7 @@ class CompanyRepository extends ServiceEntityRepository
         return $qb->getQuery()->execute();
     }
 
-    public function findByFilters(array $tagIds = [], array $categoryIds = [], array $sizes = []): array
+    public function findByFilters(array $tagIds = [], array $categoryIds = [], array $sizes = [], ?int $distance = null): array
     {
         $tagIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $tagIds);
         $categoryIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $categoryIds);
@@ -87,6 +87,13 @@ class CompanyRepository extends ServiceEntityRepository
             if ($orCondition->count() > 0) {
                 $qb->andWhere($orCondition);
             }
+        }
+
+        if (null !== $distance && $distance > 0) {
+            $qb
+                ->andWhere('c.distance <= :distance')
+                ->setParameter('distance', $distance)
+            ;
         }
 
         return $qb->getQuery()->execute();

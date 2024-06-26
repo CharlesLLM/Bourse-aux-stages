@@ -119,7 +119,7 @@ function CompanyOffers() {
                     <div>
                         <p>
                             <span className="text-darkGrey"> Trier par: </span> 
-                            <select className="bg-inherit"onChange={(e) => setSortOption(e.target.value)} value={sortOption}>
+                            <select className="bg-inherit" onChange={(e) => setSortOption(e.target.value)} value={sortOption}>
                                 <option value="MOST_RECENT"> Date de publication (plus récent) </option>
                                 <option value="LEAST_RECENT"> Date de publication (plus ancien) </option>
                             </select>

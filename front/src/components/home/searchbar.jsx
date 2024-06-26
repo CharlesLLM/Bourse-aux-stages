@@ -17,7 +17,7 @@ function Searchbar() {
                     setLoading(false);
             }));
         } catch(error) {
-            console.log("Erreur: " + error);
+            console.error("Erreur: " + error);
             setLoading(false);
         }
     }, []);

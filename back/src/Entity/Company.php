@@ -48,6 +48,10 @@ class Company
     #[Groups(['offer'])]
     private ?string $siret = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['companies', 'company'])]
+    private ?\DateTimeInterface $creationDate = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['companies', 'company', 'offer'])]
     private ?string $summary = null;
@@ -59,6 +63,10 @@ class Company
     #[ORM\Column]
     #[Groups(['companies', 'company'])]
     private ?int $size = null;
+
+    #[ORM\Column]
+    #[Groups(['company'])]
+    private ?int $revenue = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['company'])]
@@ -87,6 +95,10 @@ class Company
     #[ORM\Column(nullable: true)]
     #[Groups(['companies', 'company'])]
     private ?float $longitude = null;
+
+    #[ORM\Column]
+    #[Groups(['companies'])]
+    private ?int $distance = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['companies', 'company', 'offer'])]
@@ -174,6 +186,18 @@ class Company
         return $this;
     }
 
+    public function getCreationDate(): ?\DateTimeInterface
+    {
+        return $this->creationDate;
+    }
+
+    public function setCreationDate(\DateTimeInterface $creationDate): static
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
     public function getSummary(): ?string
     {
         return $this->summary;
@@ -206,6 +230,18 @@ class Company
     public function setSize(int $size): static
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    public function getRevenue(): ?int
+    {
+        return $this->revenue;
+    }
+
+    public function setRevenue(int $revenue): static
+    {
+        $this->revenue = $revenue;
 
         return $this;
     }
@@ -290,6 +326,18 @@ class Company
     public function setLongitude(?float $longitude): static
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getDistance(): ?int
+    {
+        return $this->distance;
+    }
+
+    public function setDistance(?int $distance): static
+    {
+        $this->distance = $distance;
 
         return $this;
     }
