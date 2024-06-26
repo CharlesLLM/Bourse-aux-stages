@@ -76,10 +76,11 @@ function Register() {
             throw new Error('L\'email est déjà utilisé');
           }
           return response.json();
+        }).then(() => {
+          setError({email: undefined})
         })
-        .catch(error => {
-          console.log(error)
-          setError({email: 'l\’adresse email est déjà utilisé'});
+        .catch(() => {
+          setError({email: 'l\'adresse email est déjà utilisé'});
         });
     }
   }
@@ -93,8 +94,10 @@ function Register() {
           }
           return response.json();
         })
-        .catch(error => {
-          console.error(error);
+        .then(() => {
+          setError({companySiret: undefined})
+        })
+        .catch(() => {
           setError({companySiret: 'Le siret est déjà utilisée'});
         });
     }
