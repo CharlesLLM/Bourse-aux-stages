@@ -16,7 +16,7 @@ final class Version20240624203905 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE company ADD creation_date DATETIME NOT NULL, ADD revenue INT NOT NULL, ADD distance INT NOT NULL');
+        $this->addSql('ALTER TABLE company ADD creation_date DATETIME DEFAULT NULL, ADD revenue INT DEFAULT NULL, ADD distance INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
