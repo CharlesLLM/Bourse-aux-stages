@@ -220,7 +220,6 @@ function Register() {
     }
     checkEmail();
     setError(errors);
-    console.log(errors)
     if (Object.keys(errors).length === 0 && criteria.passwordsMatch) {
       const userData = {
         firstname: firstnameRef.current?.value,
