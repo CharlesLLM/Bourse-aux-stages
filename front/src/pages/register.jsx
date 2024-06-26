@@ -78,6 +78,7 @@ function Register() {
           return response.json();
         }).then(() => {
           setError({email: undefined})
+          delete errors.email;
         })
         .catch(() => {
           setError({email: 'l\'adresse email est déjà utilisé'});
@@ -95,7 +96,8 @@ function Register() {
           return response.json();
         })
         .then(() => {
-          setError({companySiret: undefined})
+          setError({companySiret: undefined});
+          delete errors.companySiret;
         })
         .catch(() => {
           setError({companySiret: 'Le siret est déjà utilisée'});
