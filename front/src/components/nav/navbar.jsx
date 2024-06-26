@@ -1,6 +1,5 @@
-import { Link } from "react-router-dom";
-
 import {useEffect, useState} from "react";
+import { Link } from "react-router-dom";
 import {IoIosLogOut} from "react-icons/io";
 
 function Navbar() {
@@ -51,7 +50,7 @@ function Navbar() {
           <Link to="/">Étudiants</Link>
         </li>
       </ul>
-      { localStorage.getItem('token') && localStorage.getItem('user') && (
+      {localStorage.getItem('token') && localStorage.getItem('user') && (
         <div className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32">
           <p className="text-primary flex">{user?.firstName} {user?.lastName}</p>
           <IoIosLogOut onClick={handleLogout} className="text-primary text-2xl cursor-pointer"/>
@@ -60,7 +59,7 @@ function Navbar() {
       {!localStorage.getItem('token') && !localStorage.getItem('user') && (
         <div className="flex items-center gap-4">
           <Link to="/connexion" className="flex justify-center items-center px-6 py-3 w-40 h-[50px] leading-none text-primary">Se connecter</Link>
-          <div className="h-10 w-[1px] bg-slate-200"></div>
+          <div className="h-10 w-px bg-slate-200"></div>
           <Link to="/inscription" className="flex justify-center items-center px-6 py-3 w-48 h-[50px] leading-none text-white bg-primary">Créer un compte</Link>
         </div>
       )}
