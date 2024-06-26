@@ -54,7 +54,7 @@ function Login({redirect = "/"}) {
 
         const userData = await userResponse.json();
         localStorage.setItem('user', JSON.stringify(userData));
-        navigate(redirect);
+        window.location.replace(redirect);
       } catch (error) {
         console.error('Login error:', error.message);
         setError({global: error.message})
@@ -62,19 +62,25 @@ function Login({redirect = "/"}) {
     }
   }
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+
   return (
-    <div className="h-[calc(100vh-100px)] px-64 flex flex-col item justify-center w-full space-y-8">
+    <form className="h-[calc(100vh-100px)] px-64 flex flex-col item justify-center w-full space-y-8">
       <div className="space-y-2">
-        <Input name="email" label="identifiants" type="email" required={true} inputRef={emailRef} />
+        <Input name="email" label="identifiants" type="email" required={true} inputRef={emailRef} onKeyDown={handleKeyDown}/>
         <p className="text-red-700">{error?.email}</p>
       </div>
       <div className="space-y-2">
-        <Input name="password" label="Mot de passe" type="password" required={true} inputRef={passwordRef} />
+        <Input name="password" label="Mot de passe" type="password" required={true} inputRef={passwordRef} onKeyDown={handleKeyDown}/>
         <p className="text-red-700">{error?.password}</p>
       </div>
       <p className="text-red-700">{error?.global}</p>
       <button type="button" onClick={handleSubmit} className="bg-primary w-full py-4 mt-12 text-white">Se connecter</button>
-    </div>
+    </form>
   )
 }
 

@@ -1,6 +1,25 @@
 import { Link } from "react-router-dom";
 
+import {useEffect, useState} from "react";
+import {IoIosLogOut} from "react-icons/io";
+
 function Navbar() {
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }
+  }, [])
+
+  async function handleLogout() {
+    try {
+      localStorage.clear();
+      location.reload();
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
   return (
     <div className="h-20 flex items-center justify-between px-8 md:px-16 xl:px-32">
       <Link to="/" className="flex items-center gap-2.5">
@@ -32,11 +51,19 @@ function Navbar() {
           <Link to="/">Étudiants</Link>
         </li>
       </ul>
-      <div className="flex items-center gap-4">
-        <Link to="/connexion" className="flex justify-center items-center px-6 py-3 w-40 h-[50px] leading-none text-primary">Se connecter</Link>
-        <div className="h-10 w-[1px] bg-slate-200"></div>
-        <Link to="/inscription" className="flex justify-center items-center px-6 py-3 w-48 h-[50px] leading-none text-white bg-primary">Créer un compte</Link>
-      </div>
+      { localStorage.getItem('token') && localStorage.getItem('user') && (
+        <div className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32">
+          <p className="text-primary flex">{user?.firstName} {user?.lastName}</p>
+          <IoIosLogOut onClick={handleLogout} className="text-primary text-2xl cursor-pointer"/>
+        </div>
+      )}
+      {!localStorage.getItem('token') && !localStorage.getItem('user') && (
+        <div className="flex items-center gap-4">
+          <Link to="/connexion" className="flex justify-center items-center px-6 py-3 w-40 h-[50px] leading-none text-primary">Se connecter</Link>
+          <div className="h-10 w-[1px] bg-slate-200"></div>
+          <Link to="/inscription" className="flex justify-center items-center px-6 py-3 w-48 h-[50px] leading-none text-white bg-primary">Créer un compte</Link>
+        </div>
+      )}
     </div>
   )
 }
