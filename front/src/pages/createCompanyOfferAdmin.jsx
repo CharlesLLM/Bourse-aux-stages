@@ -1,7 +1,7 @@
 function CreateCompanyOfferAdmin() {
     return (
         <div>
-            
+
         </div>
     )
   }
