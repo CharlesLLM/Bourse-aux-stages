@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-const OfferCellHeaderAdmin = () => {
+const OfferCellHeaderAdmin = ({ onOrderBy }) => {
   const headers = useMemo(() => [
     { key: "name", label: "Nom de l'offre", css: "w-56"},
     { key: "promoteStatus", label: "Statut", css: "w-38"},
@@ -15,7 +15,7 @@ const OfferCellHeaderAdmin = () => {
     <thead className="text-textGrey text-md bg-white border border-borderGrey">
         <tr>
             {headers.map(header => (
-                <th scope="col" key={header.key} className={`px-6 py-3 ${header.css}`}>
+                <th scope="col" key={header.key} className={`px-6 py-3 hover:cursor-pointer hover:text-black ${header.css}`} onClick={() => onOrderBy(header.key)}>
                     {header.label}
                 </th>
             ))}
