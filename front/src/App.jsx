@@ -4,7 +4,9 @@ import CompanyIndex from "./pages/companyIndex";
 import CompanyView from "./pages/companyView";
 import Home from "../../front/src/pages/home";
 import CompanyOffers from "../../front/src/pages/companyOffers";
+import AdminCompanyEdit from "../../front/src/pages/admin/adminCompanyEdit";
 import Layout from "./layout/layout.jsx";
+import AdminLayout from "./layout/adminLayout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
 import Register from "./pages/register.jsx";
@@ -14,6 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<Layout />}>
           <Route
             path="/"
@@ -47,6 +50,11 @@ function App() {
             path="/connexion"
             element={<Login />}
           />
+        </Route>
+
+        {/* Admin routes */}
+        <Route path="/admin" element={<AdminLayout />} >
+          <Route path="entreprise/:slug" element={<AdminCompanyEdit />} />
         </Route>
       </Routes>
     </BrowserRouter>

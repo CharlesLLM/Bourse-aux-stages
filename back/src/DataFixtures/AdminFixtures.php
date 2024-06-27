@@ -14,10 +14,15 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
     public const FIXTURE_RANGE = 1;
     public const DATA = [
         [
+            'user' => 'user_superadmin',
+            'company' => 'company_1',
+            'position' => 'PDG',
+            'enabled' => true,
+        ],
+        [
             'user' => 'user_2',
             'company' => 'company_1',
-            'email' => 'test@test.fr',
-            'position' => 'PDG',
+            'position' => 'Développeur',
             'enabled' => true,
         ],
     ];
@@ -46,7 +51,6 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         $admin->setPosition($data['position'])
             ->setUser($this->getReference($data['user']))
             ->setCompany($this->getReference($data['company']))
-            ->setEmail($data['email'])
             ->setEnabled($data['enabled'])
         ;
         $admin->getUser()->addRole('ROLE_ADMIN');
