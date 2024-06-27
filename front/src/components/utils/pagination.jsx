@@ -28,7 +28,7 @@ function Pagination ({ onPageChange, totalCount, siblingCount = 1, currentPage, 
 
   return (
     <ul
-      className="flex flex-row flex-wrap justify-center items-center gap-2 my-10"
+      className="flex flex-row flex-wrap justify-center items-center gap-2"
     >
       {/* Flèche de navigation gauche */}
       <li

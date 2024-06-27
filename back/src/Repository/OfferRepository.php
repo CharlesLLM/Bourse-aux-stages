@@ -32,7 +32,10 @@ class OfferRepository extends ServiceEntityRepository
         array $tagIds = [],
         array $levels = [],
         array $durations = [],
-        ?int $distance = null
+        ?int $distance = null,
+        array $companies = [],
+        bool $displayActiveOffers = true,
+        bool $displayClosedOffers = false
     ): array {
         $tagIds = array_map(fn ($id) => Uuid::fromString($id)->toBinary(), $tagIds);
 
@@ -53,9 +56,17 @@ class OfferRepository extends ServiceEntityRepository
             ->leftJoin('o.tags', 't')
             ->where('o.startDate IS NOT NULL')
             ->andWhere('o.endDate IS NOT NULL')
-            ->andWhere('o.endPublicationDate > :now')
-            ->setParameter('now', new \DateTime())
         ;
+
+        if (!$displayClosedOffers){
+            $qb->andWhere('o.endPublicationDate > :now')
+            ->setParameter('now', new \DateTime());
+        }
+
+        if (!$displayActiveOffers){
+            $qb->andWhere('o.endPublicationDate < :now')
+            ->setParameter('now', new \DateTime());
+        }
 
         if ($type) {
             $qb->andWhere('o.type = :type')
@@ -76,6 +87,13 @@ class OfferRepository extends ServiceEntityRepository
             $qb->andWhere('o.requiredLevel IN (:levels)')
                 ->setParameter('levels', $levels);
         }
+
+        if (!empty($companies)) {
+            $qb->innerJoin('o.company', 'c')  
+                ->andWhere('c.slug IN (:companies)') 
+                ->setParameter('companies', $companies);
+        }
+
 
         if (!empty($durationsFilter)) {
             $qb->andWhere('o.startDate IS NOT NULL')
