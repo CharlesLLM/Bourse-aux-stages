@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Pagination from "../components/utils/pagination.jsx";
 import OfferCellAdmin from "../components/companyOffersAdmin/offerCellAdmin.jsx";
+import CompanyOfferAdminHeader from "../components/companyOffersAdmin/companyOfferAdminHeader.jsx";
 import OfferCellHeaderAdmin from "../components/companyOffersAdmin/offerCellHeaderAdmin.jsx";
 import '../../assets/styles/underline.scss';
 
@@ -11,6 +12,18 @@ function CompanyOffersAdmin() {
     const [filterOption, setFilterOption] = useState("ALL");
     const [pageSize, setPageSize] = useState(7);
     const [nbOffers, setNbOffers] = useState(0);
+    const [orderBy, setOrderBy] = useState("endPublicationDate");
+    const [orderDirection, setOrderDirection] = useState("asc");
+
+    //si meme orderby est sélectionner de fois on change l'ordre d'affichage
+    const handleOrderByChange = (value) => {
+        if (value === orderBy) {
+            setOrderDirection((prevDirection) => (prevDirection === "asc" ? "desc" : "asc"));
+        } else {
+            setOrderBy(value);
+            setOrderDirection("asc");
+        }
+    };
 
     useEffect(() => {
         const getOffers = async () => {
@@ -42,16 +55,43 @@ function CompanyOffersAdmin() {
         getOffers();
     }, [company, filterOption]);
 
+    //change l'ordre d'affichage des lignes 
+    const sortedData = useMemo(() => {
+        const sortedOffers = offers.slice().sort((a, b) => {
+            let comparison = 0;
+            if (orderBy === "name") {
+                comparison = a.name.localeCompare(b.name);
+            } else if (orderBy === "promoteStatus") {
+                comparison = a.promoteStatus.localeCompare(b.promoteStatus);
+            } else if (orderBy === "publishDate") {
+                comparison = new Date(a.publishDate) - new Date(b.publishDate);
+            } else if (orderBy === "endDate") {
+                comparison = new Date(a.endDate) - new Date(b.endDate);
+            } else if (orderBy === "type") {
+                comparison = a.type.localeCompare(b.type);
+            } else if (orderBy === "applications") {
+                comparison = a.applications - b.applications;
+            }
+            return orderDirection === "asc" ? comparison : -comparison;
+        });
+        return sortedOffers;
+    }, [offers, orderBy, orderDirection]);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [orderBy, filterOption]);
+
     //page affiché à l'écran
     const currentData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
-        return offers.slice(firstPageIndex, lastPageIndex);
-    }, [offers, currentPage, pageSize]);
+        return sortedData.slice(firstPageIndex, lastPageIndex);
+    }, [sortedData, currentPage, pageSize]);
 
     return (
         <div className="bg-white md:px-32 py-16">
             <div className="w-full">
+                < CompanyOfferAdminHeader />
                 <div className="sm:flex sm:flex-row justify-between p-4 border border-borderGrey items-center">
                     <h3 className="text-2xl text-black font-bold"> {nbOffers} offres trouvées </h3>
                     <div>
@@ -67,7 +107,7 @@ function CompanyOffersAdmin() {
                     {/* offres */}
                     <div>
                         <table className="table-fixed w-full text-sm text-left text-textGrey border border-borderGrey">
-                            <OfferCellHeaderAdmin />
+                            <OfferCellHeaderAdmin onOrderBy={handleOrderByChange} />
                             <tbody>
                                 {currentData.map((offer) => (
                                     <OfferCellAdmin key={offer.id} offer={offer} />
