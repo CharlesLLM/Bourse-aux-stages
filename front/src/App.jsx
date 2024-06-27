@@ -47,7 +47,7 @@ const router = createBrowserRouter([
     element: <CompanyOffersAdmin />
   },
   {
-    path: '/espace-entreprise/offres/creation-offre',
+    path: '/espace-entreprise/creer-offre',
     element: <CreateCompanyOfferAdmin />
   }
 ]);

@@ -64,7 +64,7 @@ function CompanyOffersAdmin() {
             } else if (orderBy === "promoteStatus") {
                 comparison = a.promoteStatus.localeCompare(b.promoteStatus);
             } else if (orderBy === "publishDate") {
-                comparison = new Date(a.publishDate) - new Date(b.publishDate);
+                comparison = new Date(a.endPublicationDate) - new Date(b.endPublicationDate);
             } else if (orderBy === "endDate") {
                 comparison = new Date(a.endDate) - new Date(b.endDate);
             } else if (orderBy === "type") {
@@ -89,9 +89,9 @@ function CompanyOffersAdmin() {
     }, [sortedData, currentPage, pageSize]);
 
     return (
-        <div className="bg-white md:px-32 py-16">
-            <div className="w-full">
-                < CompanyOfferAdminHeader />
+        <div className="bg-white mt-12">
+            < CompanyOfferAdminHeader companyName={company}/>
+            <div className="w-full md:px-32 pb-16 pt-8">
                 <div className="sm:flex sm:flex-row justify-between p-4 border border-borderGrey items-center">
                     <h3 className="text-2xl text-black font-bold"> {nbOffers} offres trouvées </h3>
                     <div>
