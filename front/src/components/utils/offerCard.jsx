@@ -3,16 +3,19 @@ import Badge from './badge';
 import PropTypes from "prop-types";
 import PrimaryTag from './primaryTag';
 
-function OfferCard({ offer, displayHeader = true }) {
+function OfferCard({ offer, displayOfferType = true, displayPicture = true }) {
   return (
     <Link to={`/offre/${offer.id}`} className="p-6 border border-borderGrey bg-white w-72 min-h-56 space-y-4 cursor-pointer">
-      {displayHeader && (
+      {displayOfferType && (
         <div className="flex justify-between items-center">
-          <img
-            src={offer.company.logo ? `${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${offer.company.logo}` : "/placeholder.webp"}
-            className="size-12 rounded-full object-contain"
-            alt="companyLogo"
-          />
+          {displayPicture ?
+            <img
+              src={offer.company.logo ? `${import.meta.env.VITE_BACK_ENDPOINT}/uploads/company/${offer.company.logo}` : "/placeholder.webp"}
+              className="size-12 rounded-full object-contain"
+              alt="companyLogo"
+            />
+            : <div></div>
+          }
           <PrimaryTag text={offer.type} />
         </div>
       )}
@@ -44,13 +47,14 @@ OfferCard.propTypes = {
       name: PropTypes.string.isRequired,
       slug: PropTypes.string.isRequired,
       logo: PropTypes.string,
-    }).isRequired,
+    }),
     tags: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     })),
   }).isRequired,
-  displayHeader: PropTypes.bool,
+  displayOfferType: PropTypes.bool,
+  displayPicture: PropTypes.bool,
 };
 
 export default OfferCard;

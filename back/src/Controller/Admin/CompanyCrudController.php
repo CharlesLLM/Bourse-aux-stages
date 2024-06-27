@@ -12,7 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -42,6 +44,7 @@ class CompanyCrudController extends AbstractCrudController
             TextField::new('postalCode', 'common.postal_code'),
             TextField::new('city', 'common.city'),
             CountryField::new('country', 'common.country')->hideOnIndex(),
+            TelephoneField::new('phone', 'common.phone')->hideOnIndex(),
             TextField::new('websiteLink', 'company.website')->hideOnIndex(),
             TextField::new('websiteLinkLabel', 'company.website_label')->hideOnIndex(),
             TextField::new('xLink', 'company.x_link')->hideOnIndex(),

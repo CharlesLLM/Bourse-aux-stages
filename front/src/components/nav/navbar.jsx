@@ -1,15 +1,7 @@
-import {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import {IoIosLogOut} from "react-icons/io";
 
 function Navbar() {
-  const [user, setUser] = useState(null);
-  useEffect(() => {
-    if (localStorage.getItem("user")) {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    }
-  }, [])
-
   async function handleLogout() {
     try {
       localStorage.clear();
@@ -19,6 +11,7 @@ function Navbar() {
       console.error(e);
     }
   }
+
   return (
     <div className="h-20 flex items-center justify-between px-8 md:px-16 xl:px-32">
       <Link to="/" className="flex items-center gap-2.5">
@@ -32,12 +25,12 @@ function Navbar() {
         <li className="flex items-center relative group">
           <p className="cursor-pointer">Offres</p>
           <ul className="absolute -left-4 top-full w-32 z-20 bg-white rounded shadow-lg opacity-0 transition-all duration-500 transform -translate-y-6 group-hover:opacity-100 group-hover:translate-y-0">
-            <li className="flex items-center px-4 py-2 border-l-2 border-white hover:bg-lightGrey hover:border-primary">
-              <Link to="/offres/stage" className="whitespace-nowrap">Stage</Link>
-            </li>
-            <li className="flex items-center px-4 py-2 border-l-2 border-white hover:bg-lightGrey hover:border-primary">
-              <Link to="/offres/alternance" className="whitespace-nowrap">Alternance</Link>
-            </li>
+            <Link to="/offres/stage" className="flex items-center px-4 py-2 border-l-2 border-white hover:bg-lightGrey hover:border-primary">
+              <li className="whitespace-nowrap">Stage</li>
+            </Link>
+            <Link to="/offres/alternance" className="flex items-center px-4 py-2 border-l-2 border-white hover:bg-lightGrey hover:border-primary">
+              <li className="whitespace-nowrap">Alternance</li>
+            </Link>
           </ul>
         </li>
         <li className="flex items-center">
@@ -51,9 +44,9 @@ function Navbar() {
         </li>
       </ul>
       {localStorage.getItem('token') && localStorage.getItem('user') && (
-        <div className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32">
-          <p className="text-primary flex">{user?.firstName} {user?.lastName}</p>
-          <IoIosLogOut onClick={handleLogout} className="text-primary text-2xl cursor-pointer"/>
+        <div onClick={handleLogout} className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32 cursor-pointer">
+          <p className="text-primary flex">Déconnexion</p>
+          <IoIosLogOut className="text-primary text-2xl cursor-pointer"/>
         </div>
       )}
       {!localStorage.getItem('token') && !localStorage.getItem('user') && (

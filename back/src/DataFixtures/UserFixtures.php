@@ -69,8 +69,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
     public function processSuperadmin(): User
     {
-        $user = new User();
-        $user->setLastName('superadmin')
+        $superadmin = new User();
+        $superadmin->setLastName('superadmin')
             ->setFirstName('superadmin')
             ->setGender(GenderEnum::OTHER)
             ->setPhone('0600000000')
@@ -81,9 +81,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setEnabled(true)
         ;
         $password = $_ENV['SUPERADMIN_PASSWORD'] ?? 'superadmin';
-        $user->setPassword(password_hash($password, \PASSWORD_BCRYPT));
+        $superadmin->setPassword(password_hash($password, \PASSWORD_BCRYPT));
+        $this->addReference(self::REFERENCE_IDENTIFIER.'superadmin', $superadmin);
 
-        return $user;
+        return $superadmin;
     }
 
     public function getDependencies(): array

@@ -45,7 +45,7 @@ class Company
     #[ORM\Column(length: 20)]
     #[Assert\NotBlank]
     #[Assert\Regex(pattern: '/^\d{3}\s\d{3}\s\d{3}\s\d{5}$/')]
-    #[Groups(['offer'])]
+    #[Groups(['company', 'offer'])]
     private ?string $siret = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
