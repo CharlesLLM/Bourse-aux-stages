@@ -7,8 +7,45 @@ import CompanyOffers from "../../front/src/pages/companyOffers";
 import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
+import CompanyOffersAdmin from "./pages/companyOffersAdmin.jsx";
+import CreateCompanyOfferAdmin from "./pages/createCompanyOfferAdmin.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/entreprises",
+    element: <CompanyIndex />,
+  },
+  {
+    path: "/entreprise/:slug",
+    element: <CompanyView />,
+  },
+  {
+    path: "/offres/:type",
+    element: <CompanyOffers />,
+  },
+  {
+    path: '/offre/:id',
+    element: <OfferView />,
+  },
+  {
+    path: '/offre/:id/postuler',
+    element: <Application />
+  },
+  {
+    path: '/espace-entreprise/offres',
+    element: <CompanyOffersAdmin />
+  },
+  {
+    path: '/espace-entreprise/offres/creation-offre',
+    element: <CreateCompanyOfferAdmin />
+  }
+]);
 
 function App() {
   return (

@@ -9,6 +9,7 @@ function Landing() {
     const fetchCounts = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offers/count`);
+        console.log(import.meta.env.VITE_BACK_ENDPOINT);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Polyfill\Intl\Idn\Info;
 
 class OfferController extends AbstractController
 {
@@ -27,9 +28,11 @@ class OfferController extends AbstractController
         $levels = $request->query->get('levels') ? explode(',', $request->query->get('levels')) : [];
         $distance = $request->query->get('distance') ?? null;
         $durations = $request->query->get('durations') ? json_decode($request->query->get('durations'), true) : [];
-
-        $offers = $this->offerRepository->findByFilters($type, $tags, $levels, $durations, $distance);
-        $jsonContent = $this->serializer->serialize($offers, 'json', ['groups' => ['offer']]);
+        $companies = $request->query->get('companies') ? explode(',', $request->query->get('companies')) : [];
+        $activeOffers = !$request->query->has('noActiveOffers');
+        $closedOffers = $request->query->has('closedOffers');
+        $offers = $this->offerRepository->findByFilters($type, $tags, $levels, $durations, $distance, $companies, $activeOffers, $closedOffers);
+        $jsonContent = $serializer->serialize($offers, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
@@ -53,20 +56,24 @@ class OfferController extends AbstractController
     }
 
     #[Route('/offer/{id}', name: 'app_offer_detail')]
-    public function getOfferDetail(Offer $offer): JsonResponse
+    public function getOfferDetail(Offer $offer, SerializerInterface $serializer): JsonResponse
     {
-        $offerArray = $this->serializer->normalize($offer, null, ['groups' => ['offer']]);
-        $offerArray['applicationsCount'] = \count($offer->getApplications());
-        $jsonContent = json_encode($offerArray);
+        $jsonContent = $serializer->serialize($offer, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/offer/{id}/similar', name: 'app_offer_similar', methods: ['GET'])]
-    public function getSimilarOffers(Offer $offer): JsonResponse
+    #[Route('/offers/{company}', name: 'app_offer_company')]
+    public function getOffersCompany(Request $request, SerializerInterface $serializer): JsonResponse
     {
-        $offers = $this->offerRepository->findSimilar($offer);
-        $jsonContent = $this->serializer->serialize($offers, 'json', ['groups' => ['offer']]);
+        $type = $request->query->get('type');
+        $tags = $request->query->get('tags') ? explode(',', $request->query->get('tags')) : [];
+        $levels = $request->query->get('levels') ? explode(',', $request->query->get('levels')) : [];
+        $distance = $request->query->get('distance') ?? null;
+        $durations = $request->query->get('durations') ? json_decode($request->query->get('durations'), true) : [];
+
+        $offers = $this->offerRepository->findByFilters($type, $tags, $levels, $durations, $distance);
+        $jsonContent = $serializer->serialize($offers, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);
     }

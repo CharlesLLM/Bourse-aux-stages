@@ -22,6 +22,23 @@ function CompanyOffers() {
     let pageSize = 7;
 
     useEffect(() => {
+        const getTest = async () => {
+            let url = `${import.meta.env.VITE_BACK_ENDPOINT}companies`;
+            try {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                console.log(response);
+          } catch (err) {
+            console.error('Error fetching data: ', err);
+          }
+        };
+        getTest();
+    }, [type, selectedFilters]);
+
+
+    useEffect(() => {
         const getOffers = async () => {
             let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
             url += `?type=${type}`;
@@ -134,7 +151,7 @@ function CompanyOffers() {
                                 <OfferCell key={offer.id} offer={offer} />
                             ))}
                         </div>
-                        <div>
+                        <div className="my-10">
                             <Pagination
                                 className="pagination-bar"
                                 currentPage={currentPage}
