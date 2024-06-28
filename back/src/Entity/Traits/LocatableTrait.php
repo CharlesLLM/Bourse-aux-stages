@@ -9,25 +9,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 trait LocatableTrait
 {
     #[ORM\Column(length: 255)]
-    #[Groups(['company', 'offer', 'student'])]
+    #[Groups(['company', 'offer', 'student', 'user'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['company'])]
+    #[Groups(['company', 'user_student'])]
     private ?string $additionalAddress = null;
 
     #[ORM\Column(length: 15)]
     #[Assert\Regex(pattern: '/^\d{5}$/')]
-    #[Groups(['company', 'offer', 'student', 'request'])]
+    #[Groups(['company', 'offer', 'student', 'request', 'user_student'])]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(['company', 'offer', 'student', 'request'])]
+    #[Groups(['company', 'offer', 'student', 'request', 'user_student'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\Country]
-    #[Groups(['company', 'offer', 'student', 'request'])]
+    #[Groups(['company', 'offer', 'student', 'request', 'user_student'])]
     private ?string $country = null;
 
     public function getAddress(): ?string

@@ -31,46 +31,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['student', 'request', 'admin', 'user'])]
+    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 50)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request', 'company', 'admin', 'user'])]
+    #[Groups(['student', 'request', 'company', 'admin', 'user_student', 'user_admin'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request', 'company', 'admin', 'user'])]
+    #[Groups(['student', 'request', 'company', 'admin', 'user_student', 'user_admin'])]
     private ?string $lastName = null;
 
     #[ORM\Column(enumType: GenderEnum::class, length: 10)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request', 'admin', 'user'])]
+    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?GenderEnum $gender = null;
 
     #[ORM\Column(length: 180)]
     #[Assert\NotNull]
     #[Assert\Email]
-    #[Groups(['student', 'request', 'admin', 'user'])]
+    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 20)]
     #[Assert\NotNull]
-    #[Groups(['student', 'request', 'admin', 'user'])]
+    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?string $phone = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(type: 'json')]
-    #[Groups(['student', 'admin', 'user'])]
+    #[Groups(['student', 'admin', 'user_student', 'user_admin'])]
     private array $roles = [];
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Groups(['user_student'])]
     private ?Student $student = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Groups(['user_admin'])]
     private ?Admin $companyAdmin = null;
 
     #[ORM\ManyToMany(targetEntity: Notification::class, mappedBy: 'user')]
@@ -81,10 +83,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Language $language = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['student', 'request', 'admin'])]
+    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?\DateTimeInterface $birthDate = null;
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(length: 500, nullable: true)]
+    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?string $pic = null;
+
+    public function getPic(): ?string
+    {
+        return $this->pic;
+    }
+
+    public function setPic(?string $pic): void
+    {
+        $this->pic = $pic;
+    }
 
     public function __construct()
     {

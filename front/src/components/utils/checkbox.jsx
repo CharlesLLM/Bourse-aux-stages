@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 function Checkbox({name, label, inputRef}) {
   return (
     <div className="flex items-center space-x-2">
-      <input type="checkbox" ref={inputRef} className="checked:bg-primary w-5 h-5 rounded" name={name}/>
+      <input type="checkbox" checked={inputRef} onChange={() => inputRef = !inputRef} ref={inputRef} className="checked:bg-primary w-5 h-5 rounded" name={name}/>
       <label htmlFor={name}>{label}</label>
     </div>
   )

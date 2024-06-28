@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import Checkbox from "../components/utils/checkbox.jsx";
 import OfferHeader from "../components/utils/offerHeader.jsx";
 import SelectInput from "../components/utils/selectInput.jsx";
@@ -10,21 +10,35 @@ import {FaPlus} from "react-icons/fa";
 import SkillModal from "../components/utils/modals/skillModal.jsx";
 import {v4 as uuidv4} from "uuid";
 import {IoIosLink, IoMdArrowBack} from "react-icons/io";
+import Loader from "../components/utils/loader.jsx";
+import {Combobox} from "react-widgets/cjs";
 
 function Application() {
-  const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const {id} = useParams();
   const navigate = useNavigate();
-  const [offer, setOffer] = useState([]);
+  const [offer, setOffer] = useState({});
   const [skills, setSkills] = useState([]);
   const [languages, setLanguages] = useState([]);
+  const [languagesList, setLanguagesList] = useState([]);
   const [experiences, setExperiences] = useState([]);
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLanguageModalOpen, setIsLanguageModalOpen] = useState(false);
   const [isExperienceModalOpen, setIsExperienceModalOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [picture, setPicture] = useState(null);
+  const [CV, setCV] = useState(null);
+  const [letter, setLetter] = useState(null);
+  const [otherFile, setOtherFile] = useState(null);
+  const [base64CV, setBase64CV] = useState(null);
+  const [base64Picture, setBase64Picture] = useState(null);
+  const [base64Letter, setBase64Letter] = useState(null);
+  const [base64Other, setBase64Other] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [error, setError] = useState(null);
-  const [errorModal, setErrorModal] = useState(null)
+  const [error, setError] = useState({});
+  const [errorModal, setErrorModal] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [language, setLanguage] = useState(null);
+  const [motivation, setMotivation] = useState(null);
 
   const genderRef = useRef(null);
   const firstnameRef = useRef(null);
@@ -39,14 +53,12 @@ function Application() {
   const cityRef = useRef(null);
   const personalWebsiteRef = useRef(null);
   const linkedinRef = useRef(null);
-  const drivingLicenceRef = useRef(false);
-  const disabilityRef = useRef(false);
+  const drivingLicenceRef = useRef(null);
+  const disabilityRef = useRef(null);
   const studyLevelRef = useRef(null);
-  const preparedDiplomaRef = useRef(null);
   const schoolNameRef = useRef(null);
   const studiesName = useRef(null);
   const skillRef = useRef(null);
-  const languageRef = useRef(null);
   const languageLevelRef = useRef(null);
   const experienceCompanyRef = useRef(null);
   const experiencePositionRef = useRef(null);
@@ -54,27 +66,116 @@ function Application() {
   const experienceStartDateRef = useRef(null);
   const experienceEndDateRef = useRef(null);
 
-  const genders = ['Homme', 'Femme', 'Autre']
-  const studyLevels = [
-    'Bac -2',
-    'Bac -1',
-    'Baccalauréat',
-    'Bac +1',
-    'Bac +2',
-    'Bac +3',
-    'Bac +4',
-    'Bac +5',
-    'Bac +6',
-    'Bac +7',
+  useEffect(() => {
+    if (!localStorage.getItem('token') || !localStorage.getItem('user')) {
+      navigate(`/offre/${id}`);
+    }
+    const getOffer = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offer/${id}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setOffer(data);
+      } catch (err) {
+        console.error('Error fetching data: ', err);
+      }
+    };
+    const getUser = () => {
+      console.log(JSON.parse(localStorage.getItem('user')))
+      setUser(JSON.parse(localStorage.getItem('user')))
+    }
+    const getLanguage = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}languages`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setLanguagesList(data);
+        setLoading(false);
+      } catch (e) {
+        setLoading(false);
+        console.error('Error fetching data: ', e);
+      }
+    }
+
+    getOffer();
+    getUser();
+    getLanguage();
+  }, [id]);
+
+  useEffect(() => {
+    setLoading(true)
+    if (user) {
+      const formattedBirthDate = user.birthDate.substring(0, 10);
+      if (genderRef.current) genderRef.current.value = user.gender;
+      if (firstnameRef.current) firstnameRef.current.value = user.firstName;
+      if (nameRef.current) nameRef.current.value = user.lastName;
+      if (birthDayRef.current) birthDayRef.current.value = formattedBirthDate;
+      if (phoneNumberRef.current) phoneNumberRef.current.value = user.phone;
+      if (emailRef.current) emailRef.current.value = user.email;
+      if (confirmEmailRef.current) confirmEmailRef.current.value = user.email;
+      if (addressRef.current) addressRef.current.value = user.address;
+      if (additionalAddressRef.current) additionalAddressRef.current.value = user.secondAddress ? user.secondAddress : '';
+      if (postalCodeRef.current) postalCodeRef.current.value = user.student.postalCode;
+      if (cityRef.current) cityRef.current.value = user.student.city;
+      if (personalWebsiteRef.current) personalWebsiteRef.current.value = user.student.personalWebsite ? user.student.personalWebsite : '';
+      if (linkedinRef.current) linkedinRef.current.value = user.student.linkedinLink ? user.student.linkedinLink : '';
+      if (disabilityRef.current) disabilityRef.current.value = user.student.disability ? user.student.disability : false;
+      if (drivingLicenceRef.current) drivingLicenceRef.current.value = user.student.drivingLicence ? user.student.drivingLicence : false;
+      if(user.pic) {
+        setPicture(`${import.meta.env.VITE_BACK_ENDPOINT}${user.pic}`)
+        setPreview(`${import.meta.env.VITE_BACK_ENDPOINT}${user.pic}`)
+      }
+      if (user.student.skills) {
+
+      }
+    }
+    setLoading(false);
+  }, [user]);
+
+  const genders = [
+    {
+      code: 'male',
+      value: 'Homme',
+    },
+    {
+      code: 'female',
+      value: 'Femme',
+    },
+    {
+      code: 'other',
+      value: 'Autre'
+    },
   ]
-  const diplomaLevels = [
-    "Bac",
-    "BTS",
-    "Licence",
-    "Master",
-    "Doctorat",
-    "Autre"
-  ];
+  const studyLevels = [
+    {
+      code: 'CAP',
+      value: 'CAP, BEP',
+    },
+    {
+      code: 'BAC',
+      value: 'Baccalauréat',
+    },
+    {
+      code: 'BAC_2',
+      value: 'BTS, DUT, BUT',
+    },
+    {
+      code: 'BAC_3',
+      value: 'Licence'
+    },
+    {
+      code: 'BAC_5',
+      value: 'Master, DEA, DESS',
+    },
+    {
+      code: 'BAC_8',
+      value: 'Doctorat'
+    }
+  ]
   const languageLevels = [
     {
       level: "A1",
@@ -115,15 +216,21 @@ function Application() {
     }
   };
 
+  const handleLanguageChange = (event) => {
+    setLanguage({code: event.code, name: event.name})
+  };
+
   const handleAddLanguage = () => {
     setErrorModal("");
-    const newLangName = languageRef.current.value;
+    console.log(language);
+    const newLangCode = language.code;
+    const newLangName = language.name
     const newLangLevel = languageLevelRef.current.value;
     if (newLangName.length > 0) {
-      const newLang = {id: uuidv4(), name: newLangName, level: newLangLevel};
+      const newLang = {code: newLangCode, name: newLangName, level: newLangLevel};
       setLanguages([...languages, newLang]);
       setIsLanguageModalOpen(false);
-      languageRef.current.value = "";
+      setLanguage(null);
     } else {
       setErrorModal("Veuillez remplir tous les champs");
     }
@@ -162,29 +269,12 @@ function Application() {
     }
   };
 
-  useEffect(() => {
-    const getOffer = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offer/${id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setOffer(data);
-      } catch (err) {
-        console.error('Error fetching data: ', err);
-      }
-    };
-
-    getOffer();
-  }, [id]);
-
   const handleRemoveSkill = (id) => {
     setSkills(skills.filter(skill => skill.id !== id));
   };
 
-  const handleRemoveLanguage = (id) => {
-    setLanguages(languages.filter(language => language.id !== id));
+  const handleRemoveLanguage = (code) => {
+    setLanguages(languages.filter(language => language.code !== code));
   };
 
   const handleRemoveExperience = (id) => {
@@ -198,109 +288,175 @@ function Application() {
   };
 
   const handleFileChange = (event) => {
-    // const file = event.target.files[0];
-    //
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setSelectedFile(file);
-    //     setPreview(reader.result);
-    //   };
-    //   reader.readAsDataURL(file);
-    // } else {
-    //   setSelectedFile(null);
-    //   setPreview(null);
-    // }
-    console.log('upload')
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setBase64Picture(btoa(reader.result))
+      reader.onloadend = () => {
+        setPicture(file);
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setPicture(null);
+      setPreview(null);
+    }
   };
 
   const handleCVUpload = (event) => {
-    console.log('upload', event)
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setBase64CV(btoa(reader.result))
+      reader.onloadend = () => {
+        setCV(file);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setCV(null);
+    }
   }
 
   const handleLetterUpload = (event) => {
-    console.log('upload', event)
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setBase64Letter(btoa(reader.result))
+      reader.onloadend = () => {
+        setLetter(file);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setLetter(null);
+    }
   }
 
   const handleOtherUpload = (event) => {
-    console.log('upload', event)
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setBase64Other(btoa(reader.result))
+      reader.onloadend = () => {
+        setOtherFile(file);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setOtherFile(null);
+    }
   }
 
   const handleRemoveFile = () => {
-    setSelectedFile(null);
+    setPicture(null);
     setPreview(null);
-    document.getElementById('file-input').value = '';
   };
 
   const handleSubmit = () => {
-    const application = {
-      personalInfo: {
-        gender: genderRef.current.value,
-        firstname: firstnameRef.current.value,
-        lastname: nameRef.current.value,
-        birthDay: birthDayRef.current.value,
-        phoneNumber: phoneNumberRef.current.value,
-        email: emailRef.current.value,
-        confirmEmail: confirmEmailRef.current.value,
-        address: addressRef.current.value,
-        additionalAddress: additionalAddressRef.current.value,
-        postalCode: postalCodeRef.current.value,
-        city: cityRef.current.value,
-        personalWebsite: personalWebsiteRef.current.value,
-        linkedin: linkedinRef.current.value,
-        drivingLicence: drivingLicenceRef.current.checked,
-        disability: disabilityRef.current.checked,
-      },
-      currentSituation: {
-        studyLevel: studyLevelRef.current.value,
-        preparedDiploma: preparedDiplomaRef.current.value,
-        schoolName: schoolNameRef.current.value,
-        studiesName: studiesName.current.value,
-        motivations: '', // You need to add the reference for the rich text editor
-      },
-      skills: skills.map(skill => skill.name),
-      languages: languages.map(language => ({name: language.name, level: language.level})),
-      experiences: experiences.map(experience => ({
-        company: experience.company,
-        position: experience.position,
-        description: experience.description,
-        startDate: experience.startDate,
-        endDate: experience.endDate
-      })),
-      // cv: selectedFile, // You need to store the uploaded file here
-      // letter: selectedFile, // You need to store the uploaded file here
-      // otherDocument: selectedFile, // You need to store the uploaded file here
-    };
-
-    console.log(application);
-
-    navigate(`/offre/${offer.id}`);
+    const errors = {};
+    if (!CV) {
+      errors.cv = 'Veuillez ajouter un CV';
+    }
+    if (!letter) {
+      errors.letter = 'Veuillez ajouter une lettre de motivation';
+    }
+    if (languages.length <= 0) {
+      errors.language = 'Veuillez ajouter au moins une langue'
+    }
+    if (skills.length <= 0) {
+      errors.skills = 'Veuillez ajouter au moins une compétence'
+    }
+    setError(errors);
+    if (Object.keys(errors).length === 0) {
+      const application = {
+        student: {
+          personal_website: personalWebsiteRef.current.value,
+          linkedin: linkedinRef.current.value,
+          driving_licence: drivingLicenceRef.current.checked,
+          disability: disabilityRef.current.checked,
+          letter: base64Letter,
+          letter_name: letter.name,
+          cv: base64CV,
+          cv_name: CV.name,
+          pic: base64Picture,
+          pic_name: picture.name
+        },
+        application: {
+          ...(otherFile && {
+            other_document: base64Other,
+            other_document_name: otherFile.name,
+          }),
+          study_level: studyLevelRef.current.value,
+          school_name: schoolNameRef.current.value,
+          studies_name: studiesName.current.value,
+          motivation_letter: motivation,
+        },
+        skills: skills.map(skill => skill.name),
+        offer_id: id,
+        languages: languages,
+        experiences: experiences.map(experience => ({
+          company: experience.company,
+          position: experience.position,
+          description: experience.description,
+          start_date: experience.startDate,
+          end_date: experience.endDate,
+        })),
+      };
+      fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/application/add`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(application),
+      })
+        .then(response => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.error('Error:', error);
+        });
+      // navigate(`/offre/${offer.id}`);
+    }
   };
 
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex justify-center items-center">
+        <Loader />
+      </div>
+    )
+  }
 
   return (
     <div>
-      <OfferHeader offer={offer} />
-      <form className="w-full flex flex-col md:flex-row md:space-x-12 px-8 space-y-6 md:space-y-0">
+      {offer.id && (
+        <OfferHeader offer={offer} />
+      )}
+      <form className="w-full flex flex-col md:flex-row md:space-x-16 px-12 pt-12 space-y-6 md:space-y-0">
         <div className="space-y-6 w-full md:w-2/3">
           <h2 className="text-4xl">Postulez à cette offre de stage</h2>
           <span className="block w-full h-0.5 bg-grey/50"></span>
           <div className="space-y-6 ">
             <h3 className="text-2xl">Vous êtes</h3>
             <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between space-y-6 sm:space-y-0">
-              <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} />
-              <Input type="text" name="firstname" label="Prénom" required={true} inputRef={firstnameRef} />
-              <Input type="text" name="lastname" label="Nom" required={true} inputRef={nameRef} />
+              <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} value={genderRef?.current?.value} disabled={true}/>
+              <Input type="text" name="firstname" label="Prénom" required={true} inputRef={firstnameRef} disabled={true} />
+              <Input type="text" name="lastname" label="Nom" required={true} inputRef={nameRef} disabled={true} />
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
-              <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} />
-              <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} />
-              <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} />
-              <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} />
-              <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} />
-              <Input type="text" name="additionalAddress" label="Complement d'adresse" required={false} inputRef={additionalAddressRef} />
-              <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} />
-              <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} />
+              <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} disabled={true} />
+              <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} disabled={true} />
+              <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} disabled={true} />
+              <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} disabled={true} />
+              <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} disabled={true} />
+              <Input type="text" name="additionalAddress" label="Complement d'adresse" required={false} inputRef={additionalAddressRef} disabled={true} />
+              <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} disabled={true} />
+              <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} disabled={true} />
             </div>
             <Input type="url" name="personalWebsite" required={false} label="Adresse de votre site web personnel" inputRef={personalWebsiteRef} />
             <Input type="url" name="linkedin" required={false} label="Lien vers votre page Linkedin" inputRef={linkedinRef} />
@@ -312,13 +468,12 @@ function Application() {
           <span className="block w-full h-0.5 bg-grey/50"></span>
           <div className="space-y-6">
             <h3 className="text-2xl">Votre situation actuelle</h3>
-            <div className="flex flex-col sm:flex-row sm:justify-between space-y-6 sm:space-y-0">
+            <div className="grid grid-cols-2 gap-8 space-y-6 sm:space-y-0">
               <SelectInput inputRef={studyLevelRef} name="studyLevel" required={true} label="Niveau d'études" options={studyLevels} />
-              <SelectInput inputRef={preparedDiplomaRef} name="preparedDiploma" required={true} label="Diplôme préparé" options={diplomaLevels} />
               <Input inputRef={schoolNameRef} name="schoolName" label="Nom de l'établissement" type="text" required={true} />
             </div>
             <Input name="studiesName" label="Nom de la formation préparée" type="text" required={true} inputRef={studiesName} />
-            <RichText label="Vos atouts & motivations pour postuler à cette offre de stage" />
+            <RichText label="Vos atouts & motivations pour postuler à cette offre de stage" setMotivation={setMotivation} />
           </div>
           <span className="block w-full h-0.5 bg-grey/50"></span>
           <button type="button" className="bg-primary w-full py-4 text-white" onClick={handleSubmit}>Postuler à cette offre de stage</button>
@@ -331,20 +486,23 @@ function Application() {
           <p>Ajouter votre photo à votre votre profil est apprécié par les entreprises et augmente vos chances</p>
           <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-2">
             <img src={preview !== null ? `${preview}` : '/placeholder.webp'} alt="Preview" className="w-20 h-20 rounded-full object-cover" />
-            <input
-              className="hidden"
-              id="file-input"
-              type="file"
-              accept="image/png, image/jpeg"
-              name="profilePic"
-              onChange={handleFileChange}
+            {!preview && (
+              <div>
+                <input
+                  className="hidden"
+                  id="file-input"
+                  type="file"
+                  accept="image/png, image/jpeg"
+                  name="profilePic"
+                  onChange={handleFileChange}
 
-            />
-            <label htmlFor="file-input" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
-              <p>Importer</p>
-              <p className="text-grey">JPG ou PNG (5 Mo max)</p>
-            </label>
-
+                />
+                <label htmlFor="file-input" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
+                  <p>Importer</p>
+                  <p className="text-grey">JPG ou PNG (5 Mo max)</p>
+                </label>
+              </div>
+            )}
             {preview && (
               <button onClick={handleRemoveFile} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
                 <FaXmark className="w-7 h-7" />
@@ -384,7 +542,7 @@ function Application() {
                 <input
                   type="text"
                   placeholder="Nom de la compétence"
-                  className="border border-gray-400 p-2 rounded mt-2"
+                  className="border border-gray-400 p-2 my-4 rounded mt-2"
                   ref={skillRef}
                   onKeyDown={handleKeyDown}
                 />
@@ -398,6 +556,7 @@ function Application() {
                 </button>
               </SkillModal>
             )}
+            <p className="text-red-700">{error?.skill}</p>
           </div>
           <span className="block w-full h-0.5 bg-grey/50"></span>
           <div>
@@ -406,10 +565,10 @@ function Application() {
             <p>Ajoutez les langues que vous pratiquez :</p>
             <div className="w-full flex flex-wrap gap-3">
               {languages.map((language) => (
-                <div key={language.id} className="flex items-center p-1 w-fit bg-primary text-white">
+                <div key={language.code} className="flex items-center p-1 w-fit bg-primary text-white">
                   <p>{language.name} : {language.level}</p>
                   <button
-                    onClick={() => handleRemoveLanguage(language.id)}
+                    onClick={() => handleRemoveLanguage(language.code)}
                     className="ml-2"
                   >
                     <FaXmark />
@@ -426,30 +585,27 @@ function Application() {
             </button>
             {isLanguageModalOpen && (
               <SkillModal closeModal={() => setIsLanguageModalOpen(false)}>
-                <h2>Ajouter une Langue</h2>
-                <input
-                  type="text"
-                  placeholder="Nom de la compétence"
-                  className="border border-gray-400 p-2 rounded mt-2"
-                  ref={languageRef}
-                  onKeyDown={handleKeyDown}
-                />
-                <select ref={languageLevelRef}>
-                  <option value="" disabled>Veuillez choisir</option>
-                  {languageLevels.map((level) => (
-                    <option key={level.level} value={level.level}>{level.level} : {level.description}</option>
-                  ))}
-                </select>
+                <h2 className="mb-4">Ajouter une Langue</h2>
+                <div className="flex space-x-6">
+                  <Combobox data={languagesList} dataKey='code' textField='name' onChange={handleLanguageChange} />
+                  <select ref={languageLevelRef}>
+                    <option value="" disabled>Veuillez choisir</option>
+                    {languageLevels.map((level) => (
+                      <option key={level.level} value={level.level}>{level.level} : {level.description}</option>
+                    ))}
+                  </select>
+                </div>
                 <p className="text-red-700">{errorModal ? errorModal : ''}</p>
                 <button
                   type="button"
                   onClick={handleAddLanguage}
-                  className="ml-2 bg-primary text-white font-bold py-2 px-4 mt-2"
+                  className="ml-2 mt-4 bg-primary text-white font-bold py-2 px-4"
                 >
                   Ajouter
                 </button>
               </SkillModal>
             )}
+            <p className="text-red-700">{error?.language}</p>
           </div>
           <span className="block w-full h-0.5 bg-grey/50"></span>
           <div>
@@ -477,7 +633,7 @@ function Application() {
               Ajouter <FaPlus className="text-xs" />
             </button>
             {isExperienceModalOpen && (
-              <SkillModal closeModal={() => setIsLanguageModalOpen(false)}>
+              <SkillModal closeModal={() => setIsExperienceModalOpen(false)}>
                 <h2>Ajouter une compétence</h2>
                 <div className="mt-4 space-y-4">
                   <input
@@ -534,56 +690,94 @@ function Application() {
             <p>Importez votre CV et votre lettre de motivation ou ajoutez tout document utile à votre candidature (présentation détaillée de vos projets, portfolio, etc.)</p>
             <div className="space-y-6">
               <p><span className="text-dark font-semibold">Votre CV</span> (format PDF, 20Mo max)</p>
-              <input
-                className="hidden"
-                id="file-input"
-                type="file"
-                accept="image/png, image/jpeg"
-                name="profilePic"
-                onChange={handleCVUpload}
+              {!CV && (
+                <div>
+                  <input
+                    className="hidden"
+                    id="CV-input"
+                    type="file"
+                    accept="application/pdf"
+                    name="profilePic"
+                    onChange={handleCVUpload}
 
-              />
-              <label htmlFor="file-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
-                <IoIosLink className="text-primary text-xl" />
-                <p className="text-grey">Importer votre CV</p>
-              </label>
+                  />
+                  <label htmlFor="CV-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
+                    <IoIosLink className="text-primary text-xl" />
+                    <p className="text-grey">Importer votre CV</p>
+                  </label>
+                </div>
+              )}
+              {CV && (
+                <div className="flex space-x-4">
+                  <p className="text-primary">{CV?.name}</p>
+                  <button onClick={() => setCV(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                    <FaXmark className="w-7 h-7" />
+                  </button>
+                </div>
+              )}
+              <p className="text-red-700">{error?.cv}</p>
             </div>
             <div className="space-y-6">
               <p><span className="text-dark font-semibold">Lettre de motivation</span> (format PDF, 20Mo max)</p>
-              <input
-                className="hidden"
-                id="file-input"
-                type="file"
-                accept="application/pdf"
-                name="profilePic"
-                onChange={handleLetterUpload}
+              {!letter && (
+                <div>
+                  <input
+                    className="hidden"
+                    id="letter-input"
+                    type="file"
+                    accept="application/pdf"
+                    name="profilePic"
+                    onChange={handleLetterUpload}
 
-              />
-              <label htmlFor="file-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
-                <IoIosLink className="text-primary text-xl" />
-                <p className="text-grey">Importer votre lettre de motivation</p>
-              </label>
+                  />
+                  <label htmlFor="letter-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
+                    <IoIosLink className="text-primary text-xl" />
+                    <p className="text-grey">Importer votre lettre de motivation</p>
+                  </label>
+                </div>
+              )}
+              {letter && (
+                <div className="flex space-x-4">
+                  <p className="text-primary">{letter?.name}</p>
+                  <button onClick={() => setLetter(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                    <FaXmark className="w-7 h-7" />
+                  </button>
+                </div>
+              )}
+              <p className="text-red-700">{error?.letter}</p>
             </div>
             <div className="space-y-6">
               <p><span>Autre document</span> (format PDF ou ZIP, 50Mo max)</p>
-              <input
-                className="hidden"
-                id="file-input"
-                type="file"
-                accept="application/zip, application.zip"
-                name="profilePic"
-                onChange={handleOtherUpload}
-              />
-              <label htmlFor="file-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
-                <IoIosLink className="text-primary text-xl" />
-                <p className="text-grey">Importez un autre document</p>
-              </label>
+              {!otherFile && (
+                <div>
+                  <input
+                    className="hidden"
+                    id="other-input"
+                    type="file"
+                    accept="application/pdf, application/zip"
+                    name="profilePic"
+                    onChange={handleOtherUpload}
+                  />
+                  <label htmlFor="other-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
+                    <IoIosLink className="text-primary text-xl" />
+                    <p className="text-grey">Importez un autre document</p>
+                  </label>
+                </div>
+              )}
+              {otherFile && (
+                <div className="flex space-x-4">
+                  <p className="text-primary">{otherFile?.name}</p>
+                  <button onClick={() => setOtherFile(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                    <FaXmark className="w-7 h-7" />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </form>
       <div className="pb-20">
-        <button type="button" className="mt-6 ml-8 border border-dark text-dark px-6 py-3 flex items-center"><IoMdArrowBack className="text-xl" /> Retour</button>
+        <Link to={`/offre/${offer.id}`} type="button" className="mt-6 ml-8 w-fit border border-dark text-dark px-6 py-3 flex items-center"><IoMdArrowBack className="text-xl" /> Retour</Link>
       </div>
     </div>
   )

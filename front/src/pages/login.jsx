@@ -1,6 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import Input from "../components/utils/input.jsx";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import PropTypes from 'prop-types';
 
 function Login({redirect = "/"}) {
@@ -8,6 +8,8 @@ function Login({redirect = "/"}) {
   const passwordRef = useRef();
   const [error, setError] = useState({});
   const navigate = useNavigate();
+  let { state } = useLocation();
+  redirect = state ? state.redirect : "/"
 
   useEffect(() => {
     if (localStorage.getItem('token')) navigate(redirect);

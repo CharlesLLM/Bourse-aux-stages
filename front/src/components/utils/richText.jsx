@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 
-function RichText({ label }) {
+function RichText({ label, setMotivation }) {
   const [value, setValue] = useState('');
   const [charCount, setCharCount] = useState(0);
   const maxLength = 500;
@@ -15,6 +15,7 @@ function RichText({ label }) {
 
   const handleChange = (content) => {
     setValue(content);
+    setMotivation(content)
   };
 
   return (
@@ -37,6 +38,7 @@ function RichText({ label }) {
 
 RichText.propTypes = {
   label: PropTypes.string,
+  setMotivation: PropTypes.any,
 };
 
 export default RichText;

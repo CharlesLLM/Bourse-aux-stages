@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -23,18 +24,22 @@ class Experience
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[Groups(['application', 'user_student'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
+    #[Groups(['application', 'user_student'])]
     private ?string $companyName = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotNull]
+    #[Groups(['application', 'user_student'])]
     private ?string $position = null;
 
     #[ORM\Column(type: Types::TEXT)]
     #[Assert\NotNull]
+    #[Groups(['application', 'user_student'])]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'experiences')]

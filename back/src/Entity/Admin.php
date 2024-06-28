@@ -22,21 +22,21 @@ class Admin
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['company', 'admin'])]
+    #[Groups(['company', 'admin', 'user_admin'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank()]
-    #[Groups(['company', 'admin'])]
+    #[Groups(['company', 'admin', 'user_admin'])]
     private ?string $position = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['company', 'admin'])]
+    #[Groups(['company', 'admin', 'user_admin'])]
     private ?string $linkedinLink = null;
 
     #[ORM\OneToOne(inversedBy: 'companyAdmin', targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['company'])]
+    #[Groups(['company', 'user_admin'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'admins', cascade: ['persist'])]
