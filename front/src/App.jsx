@@ -8,9 +8,7 @@ import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
 import CompanyOffersAdmin from "./pages/companyOffersAdmin.jsx";
-import CreateCompanyOfferAdmin from "./pages/createCompanyOfferAdmin.jsx";
-import Register from "./pages/register.jsx";
-import Login from "./pages/login.jsx";
+import CompanyCreateOfferAdmin from "./pages/companyCreateOfferAdmin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -43,7 +41,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/espace-entreprise/creer-offre',
-    element: <CreateCompanyOfferAdmin />
+    element: <CompanyCreateOfferAdmin />
   }
 ]);
 

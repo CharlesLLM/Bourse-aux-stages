@@ -22,23 +22,6 @@ function CompanyOffers() {
     let pageSize = 7;
 
     useEffect(() => {
-        const getTest = async () => {
-            let url = `${import.meta.env.VITE_BACK_ENDPOINT}companies`;
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                console.log(response);
-          } catch (err) {
-            console.error('Error fetching data: ', err);
-          }
-        };
-        getTest();
-    }, [type, selectedFilters]);
-
-
-    useEffect(() => {
         const getOffers = async () => {
             let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
             url += `?type=${type}`;
@@ -84,6 +67,8 @@ function CompanyOffers() {
         }
         return sorted;
     }, [offers, sortOption]);
+
+    console.log(offers);
 
     useEffect(() => {
         setCurrentPage(1);
