@@ -10,47 +10,14 @@ import Layout from "./layout/layout.jsx";
 import AdminLayout from "./layout/adminLayout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
+import Register from "./pages/register.jsx";
+import Login from "./pages/login.jsx";
 import CompanyOffersAdmin from "./pages/companyOffersAdmin.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
 import AdminProfileEdit from './pages/admin/adminProfileEdit.jsx';
 import StudentProfile from './pages/studentProfile.jsx';
 import CompanyCreateOfferAdmin from "./pages/companyCreateOfferAdmin.jsx";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/entreprises",
-    element: <CompanyIndex />,
-  },
-  {
-    path: "/entreprise/:slug",
-    element: <CompanyView />,
-  },
-  {
-    path: "/offres/:type",
-    element: <CompanyOffers />,
-  },
-  {
-    path: '/offre/:id',
-    element: <OfferView />,
-  },
-  {
-    path: '/offre/:id/postuler',
-    element: <Application />
-  },
-  {
-    path: '/espace-entreprise/offres',
-    element: <CompanyOffersAdmin />
-  },
-  {
-    path: '/espace-entreprise/creer-offre',
-    element: <CompanyCreateOfferAdmin />
-  }
-]);
 
 function App() {
   return (
@@ -101,6 +68,8 @@ function App() {
           <Route path="" element={<AdminDashboard />} />
           <Route path="entreprise/:slug" element={<AdminCompanyEdit />} />
           <Route path="profil" element={<AdminProfileEdit />} />
+          <Route path="offres" element={<CompanyOffersAdmin />} />
+          <Route path="creer-offre" element={<CompanyCreateOfferAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

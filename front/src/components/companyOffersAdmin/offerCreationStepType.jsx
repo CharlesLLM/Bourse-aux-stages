@@ -1,5 +1,4 @@
 import React, {useState, useMemo} from 'react';
-import OfferTypeTag from "../utils/offerTypeTag";
 import Select from 'react-select';
 
 const OfferCreationStepType = ({ formData, setFormData }) => {
