@@ -25,12 +25,12 @@ class Skill
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['offer'])]
+    #[Groups(['offer', 'user_student'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Groups(['offer'])]
+    #[Groups(['offer', 'user_student'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'skills')]

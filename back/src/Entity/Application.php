@@ -5,10 +5,13 @@ namespace App\Entity;
 use App\Entity\Traits\TimestampableTrait;
 use App\Enum\ApplicationStatusEnum;
 use App\Repository\ApplicationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,22 +25,42 @@ class Application
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
+    #[Groups(['student', 'application'])]
     private ?Uuid $id = null;
 
     #[ORM\Column(enumType: ApplicationStatusEnum::class, length: 10)]
     #[Assert\NotNull]
     private ?ApplicationStatusEnum $status = null;
 
+    #[ORM\Column(length: 500, nullable: true)]
+    #[Groups(['student', 'application'])]
+    private ?string $otherFile = null;
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['student', 'application'])]
     private ?string $motivationLetter = null;
 
-    #[ORM\ManyToOne(inversedBy: 'applications')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(cascade: ['persist'], inversedBy: 'applications')]
+    #[ORM\JoinColumn(nullable: false, )]
+    #[Groups(['student', 'application'])]
     private ?Student $student = null;
 
     #[ORM\ManyToOne(inversedBy: 'applications')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['student', 'application'])]
     private ?Offer $offer = null;
+
+    /**
+     * @var Collection<int, ApplicationLanguage>
+     */
+    #[ORM\OneToMany(mappedBy: 'Application', targetEntity: ApplicationLanguage::class, orphanRemoval: true)]
+    #[Groups(['student', 'application'])]
+    private Collection $languages;
+
+    public function __construct()
+    {
+        $this->languages = new ArrayCollection();
+    }
 
     public function getId(): ?Uuid
     {
@@ -88,6 +111,55 @@ class Application
     public function setOffer(?Offer $offer): static
     {
         $this->offer = $offer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ApplicationLanguage>
+     */
+    public function getLanguages(): Collection
+    {
+        return $this->languages;
+    }
+
+    public function addLanguage(ApplicationLanguage $language): static
+    {
+        if (!$this->languages->contains($language)) {
+            $this->languages->add($language);
+            $language->setApplication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLanguage(ApplicationLanguage $language): static
+    {
+        if ($this->languages->removeElement($language)) {
+            // set the owning side to null (unless already changed)
+            if ($language->getApplication() === $this) {
+                $language->setApplication(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setLanguages(Collection $languages): static
+    {
+        $this->languages = $languages;
+
+        return $this;
+    }
+
+    public function getOtherFile(): ?string
+    {
+        return $this->otherFile;
+    }
+
+    public function setOtherFile(?string $otherFile): static
+    {
+        $this->otherFile = $otherFile;
 
         return $this;
     }

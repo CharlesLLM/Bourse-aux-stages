@@ -63,9 +63,9 @@ class UserController extends AbstractController
             $language = $languageRepository->findOneBy(['code' => $data['language']]);
 
             $gender = match ($data['gender']) {
-                'Homme' => GenderEnum::MALE,
-                'Femme' => GenderEnum::FEMALE,
-                'Autre' => GenderEnum::OTHER,
+                'male' => GenderEnum::MALE,
+                'female' => GenderEnum::FEMALE,
+                'other' => GenderEnum::OTHER,
                 default => throw new \InvalidArgumentException('Invalid gender value'),
             };
 
@@ -172,8 +172,21 @@ class UserController extends AbstractController
     {
         try {
             $user = $this->getUser();
+            $group = '';
 
-            return new JsonResponse($serializer->serialize($user, 'json', ['groups' => ['admin']]), JsonResponse::HTTP_OK, [], true);
+            if ($this->isGranted('ROLE_STUDENT')) {
+                // $student = $studentRepository->findOneBy(['user' => $user]);
+                // $user->setStudent($student);
+                $group = 'user_student';
+            } elseif ($this->isGranted('ROLE_ADMIN')) {
+                // $admin = $adminRepository->findOneBy(['user' => $user]);
+                // $user->setCompanyAdmin($admin);
+                $group = 'user_admin';
+            } else {
+                $group = 'user';
+            }
+
+            return new JsonResponse($serializer->serialize($user, 'json', ['groups' => [$group]]), JsonResponse::HTTP_OK, [], true);
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_UNAUTHORIZED);
         }

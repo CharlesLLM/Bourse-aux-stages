@@ -22,27 +22,54 @@ class Student
     #[ORM\Column(type: UuidType::NAME, unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
-    #[Groups(['request'])]
+    #[Groups(['request', 'application', 'user_student'])]
     private ?Uuid $id = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    #[Groups(['student', 'application', 'user_student'])]
+    private ?string $cv = null;
+
+    #[ORM\Column(length: 500, nullable: true)]
+    #[Groups(['student', 'application', 'user_student'])]
+    private ?string $letter = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['student', 'application', 'user_student'])]
+    private ?string $linkedinLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['student', 'application', 'user_student'])]
+    private ?string $personalWebsite = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['student', 'application', 'user_student'])]
+    private ?bool $drivingLicence = false;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['student', 'application', 'user_student'])]
+    private ?bool $disability = false;
 
     #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['request', 'student'])]
+    #[Groups(['request', 'student', 'application'])]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Experience::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Experience::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['student', 'application', 'user_student'])]
     private Collection $experiences;
 
-    #[ORM\ManyToMany(targetEntity: Skill::class, mappedBy: 'students')]
+    #[ORM\ManyToMany(targetEntity: Skill::class, mappedBy: 'students', cascade: ['persist', 'remove'])]
+    #[Groups(['student', 'application', 'user_student'])]
     private Collection $skills;
 
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Hobby::class, orphanRemoval: true)]
     private Collection $hobbies;
 
-    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Formation::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Formation::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[Groups(['student', 'application', 'user_student'])]
     private Collection $formations;
 
-    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Application::class)]
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Application::class, cascade: ['persist', 'remove'])]
     private Collection $applications;
 
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: SpontaneousApplication::class)]
@@ -259,6 +286,78 @@ class Student
                 $request->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCv(): ?string
+    {
+        return $this->cv;
+    }
+
+    public function setCv(?string $cv): static
+    {
+        $this->cv = $cv;
+
+        return $this;
+    }
+
+    public function getLetter(): ?string
+    {
+        return $this->letter;
+    }
+
+    public function setLetter(?string $letter): static
+    {
+        $this->letter = $letter;
+
+        return $this;
+    }
+
+    public function getLinkedinLink(): ?string
+    {
+        return $this->linkedinLink;
+    }
+
+    public function setLinkedinLink(?string $linkedinLink): static
+    {
+        $this->linkedinLink = $linkedinLink;
+
+        return $this;
+    }
+
+    public function getPersonalWebsite(): ?string
+    {
+        return $this->personalWebsite;
+    }
+
+    public function setPersonalWebsite(?string $personalWebsite): static
+    {
+        $this->personalWebsite = $personalWebsite;
+
+        return $this;
+    }
+
+    public function getDrivingLicence(): bool
+    {
+        return $this->drivingLicence;
+    }
+
+    public function setDrivingLicence(bool $drivingLicence): static
+    {
+        $this->drivingLicence = $drivingLicence;
+
+        return $this;
+    }
+
+    public function getDisability(): bool
+    {
+        return $this->disability;
+    }
+
+    public function setDisability(bool $disability): static
+    {
+        $this->disability = $disability;
 
         return $this;
     }

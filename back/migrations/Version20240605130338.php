@@ -16,7 +16,7 @@ final class Version20240605130338 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('ALTER TABLE user ADD pic VARCHAR(255) DEFAULT NULL');
+        $this->addSql('ALTER TABLE user ADD pic VARCHAR(500) DEFAULT NULL');
         $this->addSql('ALTER TABLE admin DROP email');
         $this->addSql('ALTER TABLE company CHANGE size size INT DEFAULT NULL, CHANGE category_id category_id BINARY(16) DEFAULT NULL COMMENT \'(DC2Type:uuid)\'');
         $this->addSql('ALTER TABLE language CHANGE name name VARCHAR(255) NOT NULL');

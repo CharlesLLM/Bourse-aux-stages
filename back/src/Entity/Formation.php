@@ -9,6 +9,7 @@ use App\Repository\FormationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,14 +28,17 @@ class Formation
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
+    #[Groups(['application', 'user_student'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotNull]
+    #[Groups(['application', 'user_student'])]
     private ?string $schoolName = null;
 
     #[ORM\Column(enumType: LevelEnum::class, length: 20)]
     #[Assert\NotNull]
+    #[Groups(['application', 'user_student'])]
     private ?LevelEnum $level = null;
 
     #[ORM\ManyToOne(inversedBy: 'formations')]
