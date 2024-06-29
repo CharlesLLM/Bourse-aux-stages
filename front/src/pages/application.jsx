@@ -12,6 +12,7 @@ import {v4 as uuidv4} from "uuid";
 import {IoIosLink, IoMdArrowBack} from "react-icons/io";
 import Loader from "../components/utils/loader.jsx";
 import {Combobox} from "react-widgets/cjs";
+import Success from "../components/Success.jsx";
 
 function Application() {
   const [user, setUser] = useState(null);
@@ -39,6 +40,7 @@ function Application() {
   const [loading, setLoading] = useState(true);
   const [language, setLanguage] = useState(null);
   const [motivation, setMotivation] = useState(null);
+  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
 
   const genderRef = useRef(null);
   const firstnameRef = useRef(null);
@@ -67,6 +69,7 @@ function Application() {
   const experienceEndDateRef = useRef(null);
 
   useEffect(() => {
+    setUser(JSON.parse(localStorage.getItem('user')))
     if (!localStorage.getItem('token') || !localStorage.getItem('user')) {
       navigate(`/offre/${id}`);
     }
@@ -82,10 +85,6 @@ function Application() {
         console.error('Error fetching data: ', err);
       }
     };
-    const getUser = () => {
-      console.log(JSON.parse(localStorage.getItem('user')))
-      setUser(JSON.parse(localStorage.getItem('user')))
-    }
     const getLanguage = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}languages`);
@@ -102,13 +101,21 @@ function Application() {
     }
 
     getOffer();
-    getUser();
     getLanguage();
   }, [id]);
 
   useEffect(() => {
     setLoading(true)
+
     if (user) {
+      const getApplication = async () => {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}application/get/${user.student.id}/${id}`);
+        if (response.ok) {
+          navigate(`/offre/${id}`);
+        }
+      }
+      getApplication();
+
       const formattedBirthDate = user.birthDate.substring(0, 10);
       if (genderRef.current) genderRef.current.value = user.gender;
       if (firstnameRef.current) firstnameRef.current.value = user.firstName;
@@ -125,12 +132,9 @@ function Application() {
       if (linkedinRef.current) linkedinRef.current.value = user.student.linkedinLink ? user.student.linkedinLink : '';
       if (disabilityRef.current) disabilityRef.current.value = user.student.disability ? user.student.disability : false;
       if (drivingLicenceRef.current) drivingLicenceRef.current.value = user.student.drivingLicence ? user.student.drivingLicence : false;
-      if(user.pic) {
+      if (user.pic) {
         setPicture(`${import.meta.env.VITE_BACK_ENDPOINT}${user.pic}`)
         setPreview(`${import.meta.env.VITE_BACK_ENDPOINT}${user.pic}`)
-      }
-      if (user.student.skills) {
-
       }
     }
     setLoading(false);
@@ -413,14 +417,13 @@ function Application() {
         body: JSON.stringify(application),
       })
         .then(response => response.json())
-        .then((data) => {
-          console.log(data);
+        .then(() => {
+          setApplicationSubmitted(true);
         })
         .catch(error => {
           setLoading(false);
           console.error('Error:', error);
         });
-      // navigate(`/offre/${offer.id}`);
     }
   };
 
@@ -434,351 +437,358 @@ function Application() {
 
   return (
     <div>
-      {offer.id && (
-        <OfferHeader offer={offer} />
+      {applicationSubmitted && (
+        <Success desc="La candidature a été envoyé avec succès" path={`/offre/${id}`} text="Retour à l'offre"/>
       )}
-      <form className="w-full flex flex-col md:flex-row md:space-x-16 px-12 pt-12 space-y-6 md:space-y-0">
-        <div className="space-y-6 w-full md:w-2/3">
-          <h2 className="text-4xl">Postulez à cette offre de stage</h2>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div className="space-y-6 ">
-            <h3 className="text-2xl">Vous êtes</h3>
-            <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between space-y-6 sm:space-y-0">
-              <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} value={genderRef?.current?.value} disabled={true}/>
-              <Input type="text" name="firstname" label="Prénom" required={true} inputRef={firstnameRef} disabled={true} />
-              <Input type="text" name="lastname" label="Nom" required={true} inputRef={nameRef} disabled={true} />
-            </div>
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} disabled={true} />
-              <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} disabled={true} />
-              <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} disabled={true} />
-              <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} disabled={true} />
-              <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} disabled={true} />
-              <Input type="text" name="additionalAddress" label="Complement d'adresse" required={false} inputRef={additionalAddressRef} disabled={true} />
-              <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} disabled={true} />
-              <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} disabled={true} />
-            </div>
-            <Input type="url" name="personalWebsite" required={false} label="Adresse de votre site web personnel" inputRef={personalWebsiteRef} />
-            <Input type="url" name="linkedin" required={false} label="Lien vers votre page Linkedin" inputRef={linkedinRef} />
-            <div className="flex space-x-8">
-              <Checkbox name="drivingLicence" label="J'ai le permis de conduire" inputRef={drivingLicenceRef} />
-              <Checkbox name="disability" label="J'ai une forme d'handicap" inputRef={disabilityRef} />
-            </div>
-          </div>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div className="space-y-6">
-            <h3 className="text-2xl">Votre situation actuelle</h3>
-            <div className="grid grid-cols-2 gap-8 space-y-6 sm:space-y-0">
-              <SelectInput inputRef={studyLevelRef} name="studyLevel" required={true} label="Niveau d'études" options={studyLevels} />
-              <Input inputRef={schoolNameRef} name="schoolName" label="Nom de l'établissement" type="text" required={true} />
-            </div>
-            <Input name="studiesName" label="Nom de la formation préparée" type="text" required={true} inputRef={studiesName} />
-            <RichText label="Vos atouts & motivations pour postuler à cette offre de stage" setMotivation={setMotivation} />
-          </div>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <button type="button" className="bg-primary w-full py-4 text-white" onClick={handleSubmit}>Postuler à cette offre de stage</button>
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <p className="text-sm text-dark">En validant ce formulaire, vous confirmez que vous acceptez nos <a href="#" className="text-primary underline">Conditions Générales d'utilisation</a> et notre <a href="#" className="text-primary underline">politique de confidentialité</a></p>
-        </div>
-        <span className="block w-full h-0.5 bg-grey/50 md:hidden"></span>
-        <div className="space-y-6 w-full md:w-1/3">
-          <h4 className="text-primary text-2xl ">Votre photo</h4>
-          <p>Ajouter votre photo à votre votre profil est apprécié par les entreprises et augmente vos chances</p>
-          <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-2">
-            <img src={preview !== null ? `${preview}` : '/placeholder.webp'} alt="Preview" className="w-20 h-20 rounded-full object-cover" />
-            {!preview && (
-              <div>
-                <input
-                  className="hidden"
-                  id="file-input"
-                  type="file"
-                  accept="image/png, image/jpeg"
-                  name="profilePic"
-                  onChange={handleFileChange}
-
-                />
-                <label htmlFor="file-input" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
-                  <p>Importer</p>
-                  <p className="text-grey">JPG ou PNG (5 Mo max)</p>
-                </label>
+      {!applicationSubmitted && (
+        <div>
+          {offer.id && (
+            <OfferHeader offer={offer} />
+          )}
+          <form className="w-full flex flex-col md:flex-row md:space-x-16 px-12 pt-12 space-y-6 md:space-y-0">
+            <div className="space-y-6 w-full md:w-2/3">
+              <h2 className="text-4xl">Postulez à cette offre de stage</h2>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <div className="space-y-6 ">
+                <h3 className="text-2xl">Vous êtes</h3>
+                <div className="flex flex-col sm:flex-row flex-wrap sm:justify-between space-y-6 sm:space-y-0">
+                  <SelectInput options={genders} name="gender" label="Genre" required={true} inputRef={genderRef} value={genderRef?.current?.value} disabled={true} />
+                  <Input type="text" name="firstname" label="Prénom" required={true} inputRef={firstnameRef} disabled={true} />
+                  <Input type="text" name="lastname" label="Nom" required={true} inputRef={nameRef} disabled={true} />
+                </div>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Input type="date" name="birthDay" label="Date de naissance" required={true} inputRef={birthDayRef} disabled={true} />
+                  <Input type="tel" name="phone" label="Numéro de téléphone" max={10} required={true} inputRef={phoneNumberRef} disabled={true} />
+                  <Input type="email" name="email" label="Email" required={true} inputRef={emailRef} disabled={true} />
+                  <Input type="email" name="emailConfirm" label="Confirmer votre email" required={true} inputRef={confirmEmailRef} disabled={true} />
+                  <Input type="text" name="address" label="Adresse" required={false} inputRef={addressRef} disabled={true} />
+                  <Input type="text" name="additionalAddress" label="Complement d'adresse" required={false} inputRef={additionalAddressRef} disabled={true} />
+                  <Input type="number" name="postalCode" label="Code postal" max={5} required={false} inputRef={postalCodeRef} disabled={true} />
+                  <Input type="text" name="city" label="Ville" required={false} inputRef={cityRef} disabled={true} />
+                </div>
+                <Input type="url" name="personalWebsite" required={false} label="Adresse de votre site web personnel" inputRef={personalWebsiteRef} />
+                <Input type="url" name="linkedin" required={false} label="Lien vers votre page Linkedin" inputRef={linkedinRef} />
+                <div className="flex space-x-8">
+                  <Checkbox name="drivingLicence" label="J'ai le permis de conduire" inputRef={drivingLicenceRef} initialValue={drivingLicenceRef ? drivingLicenceRef : false}/>
+                  <Checkbox name="disability" label="J'ai une forme d'handicap" inputRef={disabilityRef} initialValue={disabilityRef ? disabilityRef : false}/>
+                </div>
               </div>
-            )}
-            {preview && (
-              <button onClick={handleRemoveFile} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
-                <FaXmark className="w-7 h-7" />
-              </button>
-            )}
-          </div>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div>
-            <h4 className="text-primary text-2xl ">Vos compétences</h4>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            <p>Ajoutez jusqu'à 10 compétences :</p>
-            <div className="w-full flex flex-wrap gap-3">
-              {skills.map((skill) => (
-                <div key={skill.id} className="flex items-center p-1 w-fit bg-primary text-white">
-                  <p>{skill.name}</p>
-                  <button
-                    onClick={() => handleRemoveSkill(skill.id)}
-                    className="ml-2"
-                  >
-                    <FaXmark />
-                  </button>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <div className="space-y-6">
+                <h3 className="text-2xl">Votre situation actuelle</h3>
+                <div className="grid grid-cols-2 gap-8 space-y-6 sm:space-y-0">
+                  <SelectInput inputRef={studyLevelRef} name="studyLevel" required={true} label="Niveau d'études" options={studyLevels} />
+                  <Input inputRef={schoolNameRef} name="schoolName" label="Nom de l'établissement" type="text" required={true} />
                 </div>
-              ))}
+                <Input name="studiesName" label="Nom de la formation préparée" type="text" required={true} inputRef={studiesName} />
+                <RichText label="Vos atouts & motivations pour postuler à cette offre de stage" setMotivation={setMotivation} />
+              </div>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <button type="button" className="bg-primary w-full py-4 text-white" onClick={handleSubmit}>Postuler à cette offre de stage</button>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
+              <p className="text-sm text-dark">En validant ce formulaire, vous confirmez que vous acceptez nos <a href="#" className="text-primary underline">Conditions Générales d'utilisation</a> et notre <a href="#" className="text-primary underline">politique de confidentialité</a></p>
             </div>
-            {skills.length < 10 && (
-              <button
-                type="button"
-                onClick={() => setIsSkillModalOpen(true)}
-                className="text-primary bg-fourth/50 flex items-center px-2 py-1 mt-2"
-              >
-                Ajouter <FaPlus className="text-xs" />
-              </button>
-            )}
-            {isSkillModalOpen && (
-              <SkillModal closeModal={() => setIsSkillModalOpen(false)}>
-                <h2>Ajouter une compétence</h2>
-                <input
-                  type="text"
-                  placeholder="Nom de la compétence"
-                  className="border border-gray-400 p-2 my-4 rounded mt-2"
-                  ref={skillRef}
-                  onKeyDown={handleKeyDown}
-                />
-                <p className="text-red-700">{errorModal ? errorModal : ''}</p>
-                <button
-                  type="button"
-                  onClick={handleAddSkill}
-                  className="ml-2 bg-primary text-white font-bold py-2 px-4 mt-2"
-                >
-                  Ajouter
-                </button>
-              </SkillModal>
-            )}
-            <p className="text-red-700">{error?.skill}</p>
-          </div>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div>
-            <h4 className="text-primary text-2xl ">Vos pratiques des langues</h4>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            <p>Ajoutez les langues que vous pratiquez :</p>
-            <div className="w-full flex flex-wrap gap-3">
-              {languages.map((language) => (
-                <div key={language.code} className="flex items-center p-1 w-fit bg-primary text-white">
-                  <p>{language.name} : {language.level}</p>
-                  <button
-                    onClick={() => handleRemoveLanguage(language.code)}
-                    className="ml-2"
-                  >
-                    <FaXmark />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsLanguageModalOpen(true)}
-              className="text-primary bg-fourth/50 flex items-center px-2 py-1 mt-2"
-            >
-              Ajouter <FaPlus className="text-xs" />
-            </button>
-            {isLanguageModalOpen && (
-              <SkillModal closeModal={() => setIsLanguageModalOpen(false)}>
-                <h2 className="mb-4">Ajouter une Langue</h2>
-                <div className="flex space-x-6">
-                  <Combobox data={languagesList} dataKey='code' textField='name' onChange={handleLanguageChange} />
-                  <select ref={languageLevelRef}>
-                    <option value="" disabled>Veuillez choisir</option>
-                    {languageLevels.map((level) => (
-                      <option key={level.level} value={level.level}>{level.level} : {level.description}</option>
-                    ))}
-                  </select>
-                </div>
-                <p className="text-red-700">{errorModal ? errorModal : ''}</p>
-                <button
-                  type="button"
-                  onClick={handleAddLanguage}
-                  className="ml-2 mt-4 bg-primary text-white font-bold py-2 px-4"
-                >
-                  Ajouter
-                </button>
-              </SkillModal>
-            )}
-            <p className="text-red-700">{error?.language}</p>
-          </div>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div>
-            <h4 className="text-primary text-2xl ">Vos Expériences pro</h4>
-            {/* eslint-disable-next-line react/no-unescaped-entities */}
-            <p>Stages, emplois d'été, projets personnels :</p>
-            <div className="w-full flex flex-wrap gap-3">
-              {experiences.map((experience) => (
-                <div key={experience.id} className="flex items-center p-1 w-fit bg-primary text-white">
-                  <p>{experience.position} : {experience.company} ({new Date(experience.startDate).getFullYear()})</p>
-                  <button
-                    onClick={() => handleRemoveExperience(experience.id)}
-                    className="ml-2"
-                  >
-                    <FaXmark />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsExperienceModalOpen(true)}
-              className="text-primary bg-fourth/50 flex items-center px-2 py-1 mt-2"
-            >
-              Ajouter <FaPlus className="text-xs" />
-            </button>
-            {isExperienceModalOpen && (
-              <SkillModal closeModal={() => setIsExperienceModalOpen(false)}>
-                <h2>Ajouter une compétence</h2>
-                <div className="mt-4 space-y-4">
-                  <input
-                    type="text"
-                    placeholder="Nom de l'entreprise"
-                    ref={experienceCompanyRef}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    required
-                  />
-                  <input
-                    type="text"
-                    placeholder="Poste occupé"
-                    ref={experiencePositionRef}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    required
-                  />
-                  <textarea
-                    placeholder="Description"
-                    ref={experienceDescriptionRef}
-                    className="w-full p-2 border border-gray-300 rounded"
-                    required
-                  />
-                  <div className="flex space-x-4">
+            <span className="block w-full h-0.5 bg-grey/50 md:hidden"></span>
+            <div className="space-y-6 w-full md:w-1/3">
+              <h4 className="text-primary text-2xl ">Votre photo</h4>
+              <p>Ajouter votre photo à votre votre profil est apprécié par les entreprises et augmente vos chances</p>
+              <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-2">
+                <img src={preview !== null ? `${preview}` : '/placeholder.webp'} alt="Preview" className="w-20 h-20 rounded-full object-cover" />
+                {!preview && (
+                  <div>
                     <input
-                      type="date"
-                      placeholder="Date de début"
-                      ref={experienceStartDateRef}
-                      className="w-full p-2 border border-gray-300 rounded"
-                      required
+                      className="hidden"
+                      id="file-input"
+                      type="file"
+                      accept="image/png, image/jpeg"
+                      name="profilePic"
+                      onChange={handleFileChange}
+
                     />
-                    <input
-                      type="date"
-                      placeholder="Date de fin"
-                      ref={experienceEndDateRef}
-                      className="w-full p-2 border border-gray-300 rounded"
-                      required
-                    />
+                    <label htmlFor="file-input" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
+                      <p>Importer</p>
+                      <p className="text-grey">JPG ou PNG (5 Mo max)</p>
+                    </label>
                   </div>
-                  <p className="text-red-700">{errorModal ? errorModal : ''}</p>
+                )}
+                {preview && (
+                  <button onClick={handleRemoveFile} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                    <FaXmark className="w-7 h-7" />
+                  </button>
+                )}
+              </div>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <div>
+                <h4 className="text-primary text-2xl ">Vos compétences</h4>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <p>Ajoutez jusqu'à 10 compétences :</p>
+                <div className="w-full flex flex-wrap gap-3">
+                  {skills.map((skill) => (
+                    <div key={skill.id} className="flex items-center p-1 w-fit bg-primary text-white">
+                      <p>{skill.name}</p>
+                      <button
+                        onClick={() => handleRemoveSkill(skill.id)}
+                        className="ml-2"
+                      >
+                        <FaXmark />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                {skills.length < 10 && (
                   <button
                     type="button"
-                    onClick={handleAddExperience}
-                    className="w-full p-2 bg-primary text-white "
+                    onClick={() => setIsSkillModalOpen(true)}
+                    className="text-primary bg-fourth/50 flex items-center px-2 py-1 mt-2"
                   >
-                    Ajouter
+                    Ajouter <FaPlus className="text-xs" />
                   </button>
+                )}
+                {isSkillModalOpen && (
+                  <SkillModal closeModal={() => setIsSkillModalOpen(false)}>
+                    <h2>Ajouter une compétence</h2>
+                    <input
+                      type="text"
+                      placeholder="Nom de la compétence"
+                      className="border border-gray-400 p-2 my-4 rounded mt-2"
+                      ref={skillRef}
+                      onKeyDown={handleKeyDown}
+                    />
+                    <p className="text-red-700">{errorModal ? errorModal : ''}</p>
+                    <button
+                      type="button"
+                      onClick={handleAddSkill}
+                      className="ml-2 bg-primary text-white font-bold py-2 px-4 mt-2"
+                    >
+                      Ajouter
+                    </button>
+                  </SkillModal>
+                )}
+                <p className="text-red-700">{error?.skills}</p>
+              </div>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <div>
+                <h4 className="text-primary text-2xl ">Vos pratiques des langues</h4>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <p>Ajoutez les langues que vous pratiquez :</p>
+                <div className="w-full flex flex-wrap gap-3">
+                  {languages.map((language) => (
+                    <div key={language.code} className="flex items-center p-1 w-fit bg-primary text-white">
+                      <p>{language.name} : {language.level}</p>
+                      <button
+                        onClick={() => handleRemoveLanguage(language.code)}
+                        className="ml-2"
+                      >
+                        <FaXmark />
+                      </button>
+                    </div>
+                  ))}
                 </div>
-              </SkillModal>
-            )}
-          </div>
-          <span className="block w-full h-0.5 bg-grey/50"></span>
-          <div className="space-y-6">
-            <h4 className="text-primary text-2xl ">CV et autres documents</h4>
-            <p>Importez votre CV et votre lettre de motivation ou ajoutez tout document utile à votre candidature (présentation détaillée de vos projets, portfolio, etc.)</p>
-            <div className="space-y-6">
-              <p><span className="text-dark font-semibold">Votre CV</span> (format PDF, 20Mo max)</p>
-              {!CV && (
-                <div>
-                  <input
-                    className="hidden"
-                    id="CV-input"
-                    type="file"
-                    accept="application/pdf"
-                    name="profilePic"
-                    onChange={handleCVUpload}
+                <button
+                  type="button"
+                  onClick={() => setIsLanguageModalOpen(true)}
+                  className="text-primary bg-fourth/50 flex items-center px-2 py-1 mt-2"
+                >
+                  Ajouter <FaPlus className="text-xs" />
+                </button>
+                {isLanguageModalOpen && (
+                  <SkillModal closeModal={() => setIsLanguageModalOpen(false)}>
+                    <h2 className="mb-4">Ajouter une Langue</h2>
+                    <div className="flex space-x-6">
+                      <Combobox data={languagesList} dataKey='code' textField='name' onChange={handleLanguageChange} />
+                      <select ref={languageLevelRef}>
+                        <option value="" disabled>Veuillez choisir</option>
+                        {languageLevels.map((level) => (
+                          <option key={level.level} value={level.level}>{level.level} : {level.description}</option>
+                        ))}
+                      </select>
+                    </div>
+                    <p className="text-red-700">{errorModal ? errorModal : ''}</p>
+                    <button
+                      type="button"
+                      onClick={handleAddLanguage}
+                      className="ml-2 mt-4 bg-primary text-white font-bold py-2 px-4"
+                    >
+                      Ajouter
+                    </button>
+                  </SkillModal>
+                )}
+                <p className="text-red-700">{error?.language}</p>
+              </div>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <div>
+                <h4 className="text-primary text-2xl ">Vos Expériences pro</h4>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <p>Stages, emplois d'été, projets personnels :</p>
+                <div className="w-full flex flex-wrap gap-3">
+                  {experiences.map((experience) => (
+                    <div key={experience.id} className="flex items-center p-1 w-fit bg-primary text-white">
+                      <p>{experience.position} : {experience.company} ({new Date(experience.startDate).getFullYear()})</p>
+                      <button
+                        onClick={() => handleRemoveExperience(experience.id)}
+                        className="ml-2"
+                      >
+                        <FaXmark />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsExperienceModalOpen(true)}
+                  className="text-primary bg-fourth/50 flex items-center px-2 py-1 mt-2"
+                >
+                  Ajouter <FaPlus className="text-xs" />
+                </button>
+                {isExperienceModalOpen && (
+                  <SkillModal closeModal={() => setIsExperienceModalOpen(false)}>
+                    <h2>Ajouter une compétence</h2>
+                    <div className="mt-4 space-y-4">
+                      <input
+                        type="text"
+                        placeholder="Nom de l'entreprise"
+                        ref={experienceCompanyRef}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Poste occupé"
+                        ref={experiencePositionRef}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                      />
+                      <textarea
+                        placeholder="Description"
+                        ref={experienceDescriptionRef}
+                        className="w-full p-2 border border-gray-300 rounded"
+                        required
+                      />
+                      <div className="flex space-x-4">
+                        <input
+                          type="date"
+                          placeholder="Date de début"
+                          ref={experienceStartDateRef}
+                          className="w-full p-2 border border-gray-300 rounded"
+                          required
+                        />
+                        <input
+                          type="date"
+                          placeholder="Date de fin"
+                          ref={experienceEndDateRef}
+                          className="w-full p-2 border border-gray-300 rounded"
+                          required
+                        />
+                      </div>
+                      <p className="text-red-700">{errorModal ? errorModal : ''}</p>
+                      <button
+                        type="button"
+                        onClick={handleAddExperience}
+                        className="w-full p-2 bg-primary text-white "
+                      >
+                        Ajouter
+                      </button>
+                    </div>
+                  </SkillModal>
+                )}
+              </div>
+              <span className="block w-full h-0.5 bg-grey/50"></span>
+              <div className="space-y-6">
+                <h4 className="text-primary text-2xl ">CV et autres documents</h4>
+                <p>Importez votre CV et votre lettre de motivation ou ajoutez tout document utile à votre candidature (présentation détaillée de vos projets, portfolio, etc.)</p>
+                <div className="space-y-6">
+                  <p><span className="text-dark font-semibold">Votre CV</span> (format PDF, 20Mo max)</p>
+                  {!CV && (
+                    <div>
+                      <input
+                        className="hidden"
+                        id="CV-input"
+                        type="file"
+                        accept="application/pdf"
+                        name="profilePic"
+                        onChange={handleCVUpload}
 
-                  />
-                  <label htmlFor="CV-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
-                    <IoIosLink className="text-primary text-xl" />
-                    <p className="text-grey">Importer votre CV</p>
-                  </label>
+                      />
+                      <label htmlFor="CV-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
+                        <IoIosLink className="text-primary text-xl" />
+                        <p className="text-grey">Importer votre CV</p>
+                      </label>
+                    </div>
+                  )}
+                  {CV && (
+                    <div className="flex space-x-4">
+                      <p className="text-primary">{CV?.name}</p>
+                      <button onClick={() => setCV(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                        <FaXmark className="w-7 h-7" />
+                      </button>
+                    </div>
+                  )}
+                  <p className="text-red-700">{error?.cv}</p>
                 </div>
-              )}
-              {CV && (
-                <div className="flex space-x-4">
-                  <p className="text-primary">{CV?.name}</p>
-                  <button onClick={() => setCV(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
-                    <FaXmark className="w-7 h-7" />
-                  </button>
-                </div>
-              )}
-              <p className="text-red-700">{error?.cv}</p>
-            </div>
-            <div className="space-y-6">
-              <p><span className="text-dark font-semibold">Lettre de motivation</span> (format PDF, 20Mo max)</p>
-              {!letter && (
-                <div>
-                  <input
-                    className="hidden"
-                    id="letter-input"
-                    type="file"
-                    accept="application/pdf"
-                    name="profilePic"
-                    onChange={handleLetterUpload}
+                <div className="space-y-6">
+                  <p><span className="text-dark font-semibold">Lettre de motivation</span> (format PDF, 20Mo max)</p>
+                  {!letter && (
+                    <div>
+                      <input
+                        className="hidden"
+                        id="letter-input"
+                        type="file"
+                        accept="application/pdf"
+                        name="profilePic"
+                        onChange={handleLetterUpload}
 
-                  />
-                  <label htmlFor="letter-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
-                    <IoIosLink className="text-primary text-xl" />
-                    <p className="text-grey">Importer votre lettre de motivation</p>
-                  </label>
+                      />
+                      <label htmlFor="letter-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
+                        <IoIosLink className="text-primary text-xl" />
+                        <p className="text-grey">Importer votre lettre de motivation</p>
+                      </label>
+                    </div>
+                  )}
+                  {letter && (
+                    <div className="flex space-x-4">
+                      <p className="text-primary">{letter?.name}</p>
+                      <button onClick={() => setLetter(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                        <FaXmark className="w-7 h-7" />
+                      </button>
+                    </div>
+                  )}
+                  <p className="text-red-700">{error?.letter}</p>
                 </div>
-              )}
-              {letter && (
-                <div className="flex space-x-4">
-                  <p className="text-primary">{letter?.name}</p>
-                  <button onClick={() => setLetter(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
-                    <FaXmark className="w-7 h-7" />
-                  </button>
+                <div className="space-y-6">
+                  <p><span>Autre document</span> (format PDF ou ZIP, 50Mo max)</p>
+                  {!otherFile && (
+                    <div>
+                      <input
+                        className="hidden"
+                        id="other-input"
+                        type="file"
+                        accept="application/pdf, application/zip"
+                        name="profilePic"
+                        onChange={handleOtherUpload}
+                      />
+                      <label htmlFor="other-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
+                        <IoIosLink className="text-primary text-xl" />
+                        <p className="text-grey">Importez un autre document</p>
+                      </label>
+                    </div>
+                  )}
+                  {otherFile && (
+                    <div className="flex space-x-4">
+                      <p className="text-primary">{otherFile?.name}</p>
+                      <button onClick={() => setOtherFile(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+                        <FaXmark className="w-7 h-7" />
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-              <p className="text-red-700">{error?.letter}</p>
+              </div>
             </div>
-            <div className="space-y-6">
-              <p><span>Autre document</span> (format PDF ou ZIP, 50Mo max)</p>
-              {!otherFile && (
-                <div>
-                  <input
-                    className="hidden"
-                    id="other-input"
-                    type="file"
-                    accept="application/pdf, application/zip"
-                    name="profilePic"
-                    onChange={handleOtherUpload}
-                  />
-                  <label htmlFor="other-input" className="bg-fourth/50 space-x-2 flex flex-row justify-center items-center text-center cursor-pointer w-fit py-3 px-5 border-2 border-primary border-dashed rounded text-primary">
-                    <IoIosLink className="text-primary text-xl" />
-                    <p className="text-grey">Importez un autre document</p>
-                  </label>
-                </div>
-              )}
-              {otherFile && (
-                <div className="flex space-x-4">
-                  <p className="text-primary">{otherFile?.name}</p>
-                  <button onClick={() => setOtherFile(null)} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
-                    <FaXmark className="w-7 h-7" />
-                  </button>
-                </div>
-              )}
-            </div>
+          </form>
+          <div className="pb-20">
+            <Link to={`/offre/${offer.id}`} type="button" className="mt-6 ml-8 w-fit border border-dark text-dark px-6 py-3 flex items-center"><IoMdArrowBack className="text-xl" /> Retour</Link>
           </div>
         </div>
-      </form>
-      <div className="pb-20">
-        <Link to={`/offre/${offer.id}`} type="button" className="mt-6 ml-8 w-fit border border-dark text-dark px-6 py-3 flex items-center"><IoMdArrowBack className="text-xl" /> Retour</Link>
-      </div>
+      )}
     </div>
   )
 }

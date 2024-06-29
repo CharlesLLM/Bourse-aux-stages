@@ -10,6 +10,7 @@ use App\Entity\Skill;
 use App\Enum\ApplicationStatusEnum;
 use App\Enum\LanguageLevelEnum;
 use App\Enum\LevelEnum;
+use App\Repository\ApplicationRepository;
 use App\Repository\LanguageRepository;
 use App\Repository\OfferRepository;
 use DateTime;
@@ -30,6 +31,21 @@ class ApplicationController extends AbstractController
     {
         $this->parameterBag = $parameterBag;
 
+    }
+
+    #[Route('/application/get/{studentId}/{offerId}', name: 'application', methods: ['GET'])]
+    public function getApplications($studentId, $offerId, ApplicationRepository $applicationRepository): JsonResponse
+    {
+        try {
+            $application = $applicationRepository->findOneBy(['student' => $studentId, 'offer' => $offerId]);
+            if (!$application) {
+                throw $this->createNotFoundException();
+            } else {
+                return new JsonResponse('success');
+            }
+        } catch (\Exception $exception) {
+            return new JsonResponse(['error' => $exception->getMessage()], 400);
+        }
     }
 
     #[Route('api/application/add', name: 'add_application')]

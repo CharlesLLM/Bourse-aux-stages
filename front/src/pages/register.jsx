@@ -4,7 +4,7 @@ import SelectInput from "../components/utils/selectInput.jsx";
 import Radio from "../components/utils/radio.jsx";
 import Loader from "../components/utils/loader.jsx";
 import {Combobox} from "react-widgets/cjs";
-import Success from "../components/register/Success.jsx";
+import Success from "../components/Success.jsx";
 
 function Register() {
   const [criteria, setCriteria] = useState({
@@ -23,7 +23,20 @@ function Register() {
   const [role, setRole] = useState('');
   const [userCreated, setUserCreated] = useState(false);
 
-  const genders = ['Homme', 'Femme', 'Autre'];
+  const genders = [
+    {
+      code: 'male',
+      value: 'Homme',
+    },
+    {
+      code: 'female',
+      value: 'Femme',
+    },
+    {
+      code: 'other',
+      value: 'Autre'
+    },
+  ]
   const firstnameRef = useRef();
   const nameRef = useRef();
   const genderRef = useRef();
@@ -291,7 +304,7 @@ function Register() {
     <div>
       {userCreated && (
         <div>
-          <Success />
+          <Success desc="L'utilisateur a été créé avec succès" path="/connexion" text="Se connecter"/>
         </div>
       )}
       {!userCreated && (

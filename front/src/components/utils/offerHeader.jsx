@@ -4,7 +4,7 @@ import Badge from '../utils/badge.jsx';
 import PrimaryTag from '../utils/primaryTag.jsx';
 import PropTypes from "prop-types";
 
-function OfferHeader({ offer, enableApplyButton = false }) {
+function OfferHeader({ offer, enableApplyButton = false , alreadySubmitted = false}) {
   const duration = Math.floor((new Date(offer.endDate) - new Date(offer.startDate)) / (1000 * 60 * 60 * 24));
   let durationString = `${duration} jours`;
   if (duration > 365) {
@@ -60,7 +60,11 @@ function OfferHeader({ offer, enableApplyButton = false }) {
               <div className="flex items-center gap-4">
                 <img src="/share.svg" className="w-8 h-8" alt="Partager" />
                 <span className="h-[50px] w-[1px] bg-borderGrey"></span>
-                <Link to={localStorage.getItem('token') ? `/offre/${offer.id}/postuler` : {pathname: '/connexion'}} state={localStorage.getItem('token') ? '' : {redirect: `/offre/${offer.id}`}} className={`flex justify-center items-center text-center px-3 py-3 leading-none text-white bg-primary ${localStorage.getItem('token') ? '' : 'text-sm'}`}>{!localStorage.getItem('token') ? 'Se connecter' : 'Postuler'} </Link>
+                {
+                  (!alreadySubmitted)
+                    ? <Link to={localStorage.getItem('token') ? `/offre/${offer.id}/postuler` : {pathname: '/connexion'}} state={localStorage.getItem('token') ? '' : {redirect: `/offre/${offer.id}`}} className="flex justify-center w-fit items-center text-center px-5 py-5 leading-none text-white bg-primary">{!localStorage.getItem('token') ? 'Se connecter' : 'Postuler'} </Link>
+                    : <p className="text-primary"> Vous avez déjà postulé</p>
+                }
               </div>
             )}
           </div>
@@ -86,6 +90,7 @@ OfferHeader.propTypes = {
     tags: PropTypes.arrayOf(PropTypes.object).isRequired
   }),
   enableApplyButton: PropTypes.bool,
+  alreadySubmitted: PropTypes.bool,
 };
 
 export default OfferHeader;
