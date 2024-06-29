@@ -7,43 +7,10 @@ import CompanyOffers from "../../front/src/pages/companyOffers";
 import Layout from "./layout/layout.jsx";
 import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
+import Register from "./pages/register.jsx";
+import Login from "./pages/login.jsx";
 import CompanyOffersAdmin from "./pages/companyOffersAdmin.jsx";
 import CompanyCreateOfferAdmin from "./pages/companyCreateOfferAdmin.jsx";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/entreprises",
-    element: <CompanyIndex />,
-  },
-  {
-    path: "/entreprise/:slug",
-    element: <CompanyView />,
-  },
-  {
-    path: "/offres/:type",
-    element: <CompanyOffers />,
-  },
-  {
-    path: '/offre/:id',
-    element: <OfferView />,
-  },
-  {
-    path: '/offre/:id/postuler',
-    element: <Application />
-  },
-  {
-    path: '/espace-entreprise/offres',
-    element: <CompanyOffersAdmin />
-  },
-  {
-    path: '/espace-entreprise/creer-offre',
-    element: <CompanyCreateOfferAdmin />
-  }
-]);
 
 function App() {
   return (
@@ -81,6 +48,14 @@ function App() {
           <Route
             path="/connexion"
             element={<Login />}
+          />
+          <Route
+            path="/espace-entreprise/offres"
+            element={<CompanyOffersAdmin />}
+          />
+          <Route
+            path="/espace-entreprise/creer-offre"
+            element={<CompanyCreateOfferAdmin />}
           />
         </Route>
       </Routes>
