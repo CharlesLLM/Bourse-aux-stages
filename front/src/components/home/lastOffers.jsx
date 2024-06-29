@@ -7,7 +7,7 @@ import PrimaryTag from "../utils/primaryTag.jsx";
 function LastOffers() {
   const [offers, setOffers] = useState([]);
 
-  useEffect( () => {
+  useEffect(() => {
     const latestOffers = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offer/latest`);
@@ -20,6 +20,7 @@ function LastOffers() {
         console.error('Error fetching data: ', err);
       }
     };
+
     latestOffers();
   }, []);
 

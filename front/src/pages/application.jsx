@@ -230,7 +230,6 @@ function Application() {
 
   const handleAddLanguage = () => {
     setErrorModal("");
-    console.log(language);
     const newLangCode = language.code;
     const newLangName = language.name
     const newLangLevel = languageLevelRef.current.value;
