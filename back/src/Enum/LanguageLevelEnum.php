@@ -10,5 +10,4 @@ enum LanguageLevelEnum: string
     case B2 = 'Intermédiaire avancé';
     case C1 = 'Avancé';
     case C2 = 'Maîtrise';
-
 }

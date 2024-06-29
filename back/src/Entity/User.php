@@ -85,19 +85,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?\DateTimeInterface $birthDate = null;
+
     #[ORM\Column(length: 500, nullable: true)]
     #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
     private ?string $pic = null;
-
-    public function getPic(): ?string
-    {
-        return $this->pic;
-    }
-
-    public function setPic(?string $pic): void
-    {
-        $this->pic = $pic;
-    }
 
     public function __construct()
     {
@@ -317,6 +308,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setBirthDate(\DateTimeInterface $birthDate): static
     {
         $this->birthDate = $birthDate;
+
+        return $this;
+    }
+
+    public function getPic(): ?string
+    {
+        return $this->pic;
+    }
+
+    public function setPic(?string $pic): static
+    {
+        $this->pic = $pic;
 
         return $this;
     }

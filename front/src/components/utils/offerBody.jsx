@@ -37,10 +37,9 @@ function OfferBody({ offer, alreadySubmitted = false }) {
             <h2 className="text-3xl my-5">À propos de ce stage</h2>
             <p className="font-normal">{offer.description}</p>
           </div>
-          {
-            (!alreadySubmitted)
-            ? <Link to={localStorage.getItem('token') ? `/offre/${offer.id}/postuler` : {pathname: '/connexion'}} state={localStorage.getItem('token') ? '' : {redirect: `/offre/${offer.id}`}} className="flex justify-center w-fit items-center text-center px-5 py-5 leading-none text-white bg-primary">{!localStorage.getItem('token') ? 'Se connecter' : 'Postuler'} </Link>
-            : <p className="text-primary"> Vous avez déjà postulé</p>
+          {(!alreadySubmitted)
+            ? <Link to={localStorage.getItem('token') ? `/offre/${offer.id}/postuler` : {pathname: '/connexion'}} state={localStorage.getItem('token') ? '' : {redirect: `/offre/${offer.id}`}} className="px-14 py-3 w-48 h-[50px] leading-none text-white bg-primary flex items-center">{!localStorage.getItem('token') ? 'Se connecter' : 'Postuler'} </Link>
+            : <p className="text-primary">Vous avez déjà postulé</p>
           }
         </div>
 

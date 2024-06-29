@@ -55,11 +55,11 @@ class Application
      */
     #[ORM\OneToMany(mappedBy: 'Application', targetEntity: ApplicationLanguage::class, orphanRemoval: true)]
     #[Groups(['student', 'application'])]
-    private Collection $Languages;
+    private Collection $languages;
 
     public function __construct()
     {
-        $this->Languages = new ArrayCollection();
+        $this->languages = new ArrayCollection();
     }
 
     public function getId(): ?Uuid
@@ -118,15 +118,15 @@ class Application
     /**
      * @return Collection<int, ApplicationLanguage>
      */
-    public function getLanguage(): Collection
+    public function getLanguages(): Collection
     {
-        return $this->Languages;
+        return $this->languages;
     }
 
     public function addLanguage(ApplicationLanguage $language): static
     {
-        if (!$this->Languages->contains($language)) {
-            $this->Languages->add($language);
+        if (!$this->languages->contains($language)) {
+            $this->languages->add($language);
             $language->setApplication($this);
         }
 
@@ -135,7 +135,7 @@ class Application
 
     public function removeLanguage(ApplicationLanguage $language): static
     {
-        if ($this->Languages->removeElement($language)) {
+        if ($this->languages->removeElement($language)) {
             // set the owning side to null (unless already changed)
             if ($language->getApplication() === $this) {
                 $language->setApplication(null);
@@ -145,14 +145,11 @@ class Application
         return $this;
     }
 
-    public function getLanguages(): ArrayCollection
+    public function setLanguages(Collection $languages): static
     {
-        return $this->Languages;
-    }
+        $this->languages = $languages;
 
-    public function setLanguages(ArrayCollection $languages): void
-    {
-        $this->Languages = $languages;
+        return $this;
     }
 
     public function getOtherFile(): ?string
@@ -160,9 +157,10 @@ class Application
         return $this->otherFile;
     }
 
-    public function setOtherFile(?string $otherFile): void
+    public function setOtherFile(?string $otherFile): static
     {
         $this->otherFile = $otherFile;
-    }
 
+        return $this;
+    }
 }

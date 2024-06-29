@@ -13,6 +13,7 @@ function Success({desc, path, text}) {
     </div>
   )
 }
+
 Success.propTypes = {
   desc: PropTypes.string,
   path: PropTypes.string,

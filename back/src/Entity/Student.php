@@ -28,6 +28,7 @@ class Student
     #[ORM\Column(length: 500, nullable: true)]
     #[Groups(['student', 'application', 'user_student'])]
     private ?string $cv = null;
+
     #[ORM\Column(length: 500, nullable: true)]
     #[Groups(['student', 'application', 'user_student'])]
     private ?string $letter = null;
@@ -47,7 +48,6 @@ class Student
     #[ORM\Column(nullable: true)]
     #[Groups(['student', 'application', 'user_student'])]
     private ?bool $disability = false;
-
 
     #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -295,9 +295,11 @@ class Student
         return $this->cv;
     }
 
-    public function setCv(?string $cv): void
+    public function setCv(?string $cv): static
     {
         $this->cv = $cv;
+
+        return $this;
     }
 
     public function getLetter(): ?string
@@ -305,9 +307,11 @@ class Student
         return $this->letter;
     }
 
-    public function setLetter(?string $letter): void
+    public function setLetter(?string $letter): static
     {
         $this->letter = $letter;
+
+        return $this;
     }
 
     public function getLinkedinLink(): ?string
@@ -315,9 +319,11 @@ class Student
         return $this->linkedinLink;
     }
 
-    public function setLinkedinLink(?string $linkedinLink): void
+    public function setLinkedinLink(?string $linkedinLink): static
     {
         $this->linkedinLink = $linkedinLink;
+
+        return $this;
     }
 
     public function getPersonalWebsite(): ?string
@@ -325,30 +331,34 @@ class Student
         return $this->personalWebsite;
     }
 
-    public function setPersonalWebsite(?string $personalWebsite): void
+    public function setPersonalWebsite(?string $personalWebsite): static
     {
         $this->personalWebsite = $personalWebsite;
+
+        return $this;
     }
 
-    public function getDrivingLicence(): ?bool
+    public function getDrivingLicence(): bool
     {
         return $this->drivingLicence;
     }
 
-    public function setDrivingLicence(?bool $drivingLicence): void
+    public function setDrivingLicence(bool $drivingLicence): static
     {
         $this->drivingLicence = $drivingLicence;
+
+        return $this;
     }
 
-    public function getDisability(): ?bool
+    public function getDisability(): bool
     {
         return $this->disability;
     }
 
-    public function setDisability(?bool $disability): void
+    public function setDisability(bool $disability): static
     {
         $this->disability = $disability;
+
+        return $this;
     }
-
-
 }

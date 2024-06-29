@@ -16,14 +16,14 @@ function OfferHeader({ offer, enableApplyButton = false , alreadySubmitted = fal
   return (
     <div>
       {/* Header */}
-      <div className="h-[300px] w-full bg-lightGrey px-28 flex flex-col pt-5 pb-10 gap-8">
+      <div className="h-[300px] w-full bg-lightGrey px-32 flex flex-col pt-5 pb-10 gap-8">
         <Breadcrumb links={[
           { name: 'Accueil', href: '/' },
           { name: 'Offres', href: '/offres' },
           { name: offer.name, href: `/offre/${offer.id}` },
         ]} />
         {offer.company && (
-          <div className="flex items-center justify-center space-x-24 bg-white p-6">
+          <div className="flex items-center justify-between bg-white p-6">
             <div className="flex items-center gap-4 xl:gap-8">
               <Link to={`/entreprise/${offer.company.slug}`} className="flex items-center py-1 cursor-pointer">
                 <img
@@ -62,7 +62,7 @@ function OfferHeader({ offer, enableApplyButton = false , alreadySubmitted = fal
                 <span className="h-[50px] w-[1px] bg-borderGrey"></span>
                 {
                   (!alreadySubmitted)
-                    ? <Link to={localStorage.getItem('token') ? `/offre/${offer.id}/postuler` : {pathname: '/connexion'}} state={localStorage.getItem('token') ? '' : {redirect: `/offre/${offer.id}`}} className="flex justify-center w-fit items-center text-center px-5 py-5 leading-none text-white bg-primary">{!localStorage.getItem('token') ? 'Se connecter' : 'Postuler'} </Link>
+                    ? <Link to={localStorage.getItem('token') ? `/offre/${offer.id}/postuler` : {pathname: '/connexion'}} state={localStorage.getItem('token') ? '' : {redirect: `/offre/${offer.id}`}} className="flex justify-center items-center px-14 py-3 w-48 h-[50px] leading-none text-white bg-primary">{!localStorage.getItem('token') ? 'Se connecter' : 'Postuler'} </Link>
                     : <p className="text-primary"> Vous avez déjà postulé</p>
                 }
               </div>

@@ -13,7 +13,6 @@ use App\Enum\LevelEnum;
 use App\Repository\ApplicationRepository;
 use App\Repository\LanguageRepository;
 use App\Repository\OfferRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -21,28 +20,23 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Validator\Constraints\Json;
 
 class ApplicationController extends AbstractController
 {
-    protected $parameterBag;
-
-    public function __construct(ParameterBagInterface $parameterBag)
+    public function __construct(private ParameterBagInterface $parameterBag)
     {
-        $this->parameterBag = $parameterBag;
-
     }
 
     #[Route('/application/get/{studentId}/{offerId}', name: 'application', methods: ['GET'])]
-    public function getApplications($studentId, $offerId, ApplicationRepository $applicationRepository): JsonResponse
+    public function getApplication(string $studentId, string $offerId, ApplicationRepository $applicationRepository): JsonResponse
     {
         try {
             $application = $applicationRepository->findOneBy(['student' => $studentId, 'offer' => $offerId]);
             if (!$application) {
-                throw $this->createNotFoundException();
-            } else {
-                return new JsonResponse('success');
+                return new JsonResponse(['error' => 'Application not found'], 404);
             }
+
+            return new JsonResponse('success');
         } catch (\Exception $exception) {
             return new JsonResponse(['error' => $exception->getMessage()], 400);
         }
@@ -59,17 +53,19 @@ class ApplicationController extends AbstractController
 
             $application = new Application();
             if ($this->isGranted('ROLE_STUDENT')) {
-                $this->getUser()->getStudent()->setPersonalWebsite($data['student']['personal_website']);
-                $this->getUser()->getStudent()->setLinkedinLink($data['student']['linkedin']);
-                $this->getUser()->getStudent()->setDrivingLicence($data['student']['driving_licence']);
-                $this->getUser()->getStudent()->setDisability($data['student']['disability']);
+                $currentStudent = $this->getUser()->getStudent();
+                $currentStudent->setPersonalWebsite($data['student']['personal_website'])
+                    ->setLinkedinLink($data['student']['linkedin'])
+                    ->setDrivingLicence($data['student']['driving_licence'])
+                    ->setDisability($data['student']['disability']);
+
                 if (isset($data['student']['cv'])) {
                     $path = $this->addFile('cv', $data['student']['cv_name'], $data['student']['cv'], $this->getUser()->getId());
-                    $this->getUser()->getStudent()->setCv($path);
+                    $currentStudent->setCv($path);
                 }
                 if (isset($data['student']['letter'])) {
                     $this->addFile('letter', $data['student']['letter_name'], $data['student']['letter'], $this->getUser()->getId());
-                    $this->getUser()->getStudent()->setLetter($path);
+                    $currentStudent->setLetter($path);
                 }
                 if (isset($data['application']['other_document'])) {
                     $this->addFile('other_document', $data['application']['other_document_name'], $data['application']['other_document'], $this->getUser()->getId());
@@ -90,6 +86,7 @@ class ApplicationController extends AbstractController
                         'BAC_8' => LevelEnum::BAC_8,
                         default => throw new \InvalidArgumentException('Invalid level value'),
                     };
+
                     $formation->setLevel($grade);
                     if (isset($data['application']['studies_name'])) {
                         $formation->setName($data['application']['studies_name']);
@@ -97,7 +94,7 @@ class ApplicationController extends AbstractController
                     if (isset($data['application']['school_name'])) {
                         $formation->setSchoolName($data['application']['school_name']);
                     }
-                    $this->getUser()->getStudent()->addFormation($formation);
+                    $currentStudent->addFormation($formation);
                     $em->persist($formation);
                 }
                 if (isset($data['skills'])) {
@@ -105,28 +102,30 @@ class ApplicationController extends AbstractController
                         $skill = new Skill();
                         $skill->setName($skillName);
 
-                        $this->getUser()->getStudent()->addSkill($skill);
+                        $currentStudent->addSkill($skill);
                         $em->persist($skill);
                     }
                 }
                 if (isset($data['experiences'])) {
                     foreach ($data['experiences'] as $experienceJson) {
                         $experience = new Experience();
-                        $experience->setCompanyName($experienceJson['company']);
-                        $experience->setPosition($experienceJson['position']);
-                        $experience->setDescription($experienceJson['description']);
-                        $experience->setStartDate(DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']));
-                        $experience->setEndDate(DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']));
+                        $experience->setCompanyName($experienceJson['company'])
+                            ->setPosition($experienceJson['position'])
+                            ->setDescription($experienceJson['description'])
+                            ->setStartDate(\DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']))
+                            ->setEndDate(\DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']));
 
-                        $this->getUser()->getStudent()->addExperience($experience);
+                        $currentStudent->addExperience($experience);
                         $em->persist($experience);
                     }
                 }
-                $application->setStatus(ApplicationStatusEnum::PENDING);
-                $application->setMotivationLetter($data['application']['motivation_letter']);
-                $application->setStudent($this->getUser()->getStudent());
+
+                $application->setStatus(ApplicationStatusEnum::PENDING)
+                    ->setMotivationLetter($data['application']['motivation_letter'])
+                    ->setStudent($currentStudent);
                 $offer = $offerRepository->findOneBy(['id' => $data['offer_id']]);
                 $application->setOffer($offer);
+
                 if ($data['languages']) {
                     $languages = $data['languages'];
                     foreach ($languages as $languageData) {
@@ -140,10 +139,12 @@ class ApplicationController extends AbstractController
                             'C2' => LanguageLevelEnum::C2,
                             default => throw new \InvalidArgumentException('Invalid level value'),
                         };
+
                         $applicationLanguage = new ApplicationLanguage();
-                        $applicationLanguage->setApplication($application);
-                        $applicationLanguage->setLanguage($language);
-                        $applicationLanguage->setLevel($languageLevel);
+                        $applicationLanguage->setApplication($application)
+                            ->setLanguage($language)
+                            ->setLevel($languageLevel);
+
                         $application->addLanguage($applicationLanguage);
                         $em->persist($applicationLanguage);
                     }
@@ -152,9 +153,9 @@ class ApplicationController extends AbstractController
                 $em->flush();
 
                 return new JsonResponse(['success' => true], 200);
-            } else {
-                return new JsonResponse(['unauthorized' => $this->getUser()->getRoles()], JsonResponse::HTTP_UNAUTHORIZED);
             }
+
+            return new JsonResponse(['unauthorized' => $this->getUser()->getRoles()], JsonResponse::HTTP_UNAUTHORIZED);
         } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), 400);
         }
@@ -164,17 +165,17 @@ class ApplicationController extends AbstractController
     {
         try {
             $date = new \DateTime();
-            $fileName = $date->format('Y-m-d_H-i-s') . '_' . $fileName;
-            $directory = dirname($this->parameterBag->get('kernel.project_dir').'/public/uploads/'.$clientId.'/'.$fileType.'/');
+            $fileName = $date->format('Y-m-d_H-i-s').'_'.$fileName;
+            $directory = \dirname($this->parameterBag->get('kernel.project_dir').'/public/uploads/'.$clientId.'/'.$fileType.'/');
             $filesystem = new Filesystem();
 
             if (!is_dir($directory) || !$filesystem->exists($directory)) {
                 $filesystem->mkdir($directory);
             }
-            $filePath = $directory . '/' . $fileName;
+            $filePath = $directory.'/'.$fileName;
             $data = explode(',', $file);
 
-            file_put_contents($filePath, base64_decode($data[0]));
+            file_put_contents($filePath, base64_decode($data[0], true));
 
             return $filePath;
         } catch (\Exception $e) {

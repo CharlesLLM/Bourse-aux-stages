@@ -3,6 +3,7 @@ import {useState} from "react";
 
 function Checkbox({name, label, inputRef, initialValue = false}) {
   const [isChecked, setIsChecked] = useState(initialValue);
+
   return (
     <div className="flex items-center space-x-2">
       <input
