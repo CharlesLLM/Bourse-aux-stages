@@ -50,7 +50,6 @@ final class AdminFactory extends ModelFactory
         ];
 
         return [
-            'email' => self::faker()->email(),
             'enabled' => self::faker()->boolean(),
             'linkedinLink' => 'https://www.linkedin.com/in/',
             'position' => self::faker()->randomElement($positions),

@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     #[Assert\NotNull]
     #[Assert\Email]
-    #[Groups(['student', 'request', 'admin', 'user_student', 'user_admin'])]
+    #[Groups(['student', 'request', 'company', 'admin', 'user_student', 'user_admin'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 20)]
