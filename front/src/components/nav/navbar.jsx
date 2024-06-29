@@ -1,17 +1,8 @@
 import { Link } from "react-router-dom";
 import {IoIosLogOut} from "react-icons/io";
+import PropTypes from 'prop-types';
 
-function Navbar() {
-  async function handleLogout() {
-    try {
-      localStorage.clear();
-      location.href = '/';
-    }
-    catch (e) {
-      console.error(e);
-    }
-  }
-
+function Navbar({ handleLogout = () => {} }) {
   return (
     <div className="h-20 flex items-center justify-between px-8 md:px-16 xl:px-32">
       <Link to="/" className="flex items-center gap-2.5">
@@ -58,6 +49,10 @@ function Navbar() {
       )}
     </div>
   )
+}
+
+Navbar.propTypes = {
+  handleLogout: PropTypes.func
 }
 
 export default Navbar;

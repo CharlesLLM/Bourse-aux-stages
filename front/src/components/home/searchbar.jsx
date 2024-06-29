@@ -2,6 +2,7 @@ import { Combobox } from "react-widgets";
 import {useEffect, useState} from "react";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { LuMapPin } from "react-icons/lu";
+import Loader from "../utils/loader";
 
 function Searchbar() {
     const [cities, setCities] = useState([]);
@@ -41,6 +42,13 @@ function Searchbar() {
         }
     };
 
+    if (loading) {
+        return (
+            <div className="w-full h-screen flex justify-center items-center">
+                <Loader />
+            </div>
+        )
+    }
 
     return (
         <div className="flex flex-col md:flex-row gap-5 bg-white px-4 py-2 w-full lg:w-max items-center flex-wrap lg:flex-nowrap">

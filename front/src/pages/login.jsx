@@ -55,7 +55,11 @@ function Login() {
 
         const userData = await userResponse.json();
         localStorage.setItem('user', JSON.stringify(userData));
-        window.location.replace('/');
+        if (userData.companyAdmin !== null) {
+          window.location.replace('/admin');
+        } else {
+          window.location.replace('/');
+        }
       } catch (error) {
         console.error('Login error:', error.message);
         setError({global: error.message})

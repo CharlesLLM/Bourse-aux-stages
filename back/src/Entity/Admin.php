@@ -36,7 +36,7 @@ class Admin
 
     #[ORM\OneToOne(inversedBy: 'companyAdmin', targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['company', 'admin', 'user_admin'])]
+    #[Groups(['company', 'admin'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'admins', cascade: ['persist'])]
