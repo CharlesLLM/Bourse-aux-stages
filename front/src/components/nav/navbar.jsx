@@ -5,7 +5,7 @@ function Navbar() {
   async function handleLogout() {
     try {
       localStorage.clear();
-      location.reload();
+      location.href = '/';
     }
     catch (e) {
       console.error(e);
