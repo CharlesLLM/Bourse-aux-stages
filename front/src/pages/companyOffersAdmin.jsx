@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import Pagination from "../components/utils/pagination.jsx";
 import OfferCellAdmin from "../components/companyOffersAdmin/offerCellAdmin.jsx";
-import CompanyOfferAdminHeader from "../components/companyOffersAdmin/companyOfferAdminHeader.jsx";
+import OfferAdminHeader from "../components/companyOffersAdmin/offerAdminHeader.jsx";
 import OfferCellHeaderAdmin from "../components/companyOffersAdmin/offerCellHeaderAdmin.jsx";
 import '../../assets/styles/underline.scss';
 
@@ -90,7 +90,7 @@ function CompanyOffersAdmin() {
 
     return (
         <div className="bg-white mt-12">
-            < CompanyOfferAdminHeader companyName={company}/>
+            <OfferAdminHeader companyName={company}/>
             <div className="w-full md:px-32 pb-16 pt-8">
                 <div className="sm:flex sm:flex-row justify-between p-4 border border-borderGrey items-center">
                     <h3 className="text-2xl text-black font-bold"> {nbOffers} offres trouvées </h3>
