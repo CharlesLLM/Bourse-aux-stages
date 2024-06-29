@@ -35,7 +35,7 @@ class Company
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['companies', 'company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer', 'admin'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, unique: true)]
@@ -83,6 +83,14 @@ class Company
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['company', 'offer'])]
     private ?string $linkedinLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company', 'offer'])]
+    private ?string $facebookLink = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['company', 'offer'])]
+    private ?string $instagramLink = null;
 
     #[ORM\Column(length: 15, nullable: true)]
     #[Groups(['company'])]
@@ -290,6 +298,30 @@ class Company
     public function setLinkedinLink(?string $linkedinLink): static
     {
         $this->linkedinLink = $linkedinLink;
+
+        return $this;
+    }
+
+    public function getFacebookLink(): ?string
+    {
+        return $this->facebookLink;
+    }
+
+    public function setFacebookLink(?string $facebookLink): static
+    {
+        $this->facebookLink = $facebookLink;
+
+        return $this;
+    }
+
+    public function getInstagramLink(): ?string
+    {
+        return $this->instagramLink;
+    }
+
+    public function setInstagramLink(?string $instagramLink): static
+    {
+        $this->instagramLink = $instagramLink;
 
         return $this;
     }

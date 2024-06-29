@@ -3,7 +3,7 @@ import Input from "../components/utils/input.jsx";
 import {useLocation, useNavigate} from "react-router-dom";
 import PropTypes from 'prop-types';
 
-function Login({redirect = "/"}) {
+function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState({});
@@ -12,7 +12,7 @@ function Login({redirect = "/"}) {
   redirect = state ? state.redirect : "/"
 
   useEffect(() => {
-    if (localStorage.getItem('token')) navigate(redirect);
+    if (localStorage.getItem('token')) navigate("/admin");
   }, [])
 
   async function handleSubmit() {
@@ -57,7 +57,7 @@ function Login({redirect = "/"}) {
 
         const userData = await userResponse.json();
         localStorage.setItem('user', JSON.stringify(userData));
-        window.location.replace(redirect);
+        window.location.replace('/admin');
       } catch (error) {
         console.error('Login error:', error.message);
         setError({global: error.message})
@@ -85,10 +85,6 @@ function Login({redirect = "/"}) {
       <button type="button" onClick={handleSubmit} className="bg-primary w-full py-4 mt-12 text-white">Se connecter</button>
     </form>
   )
-}
-
-Login.propTypes = {
-  redirect: PropTypes.string
 }
 
 export default Login;

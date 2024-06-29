@@ -26,7 +26,7 @@ class Admin
     private ?Uuid $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank()]
+    #[Assert\NotBlank]
     #[Groups(['company', 'admin', 'user_admin'])]
     private ?string $position = null;
 
@@ -36,11 +36,12 @@ class Admin
 
     #[ORM\OneToOne(inversedBy: 'companyAdmin', targetEntity: User::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['company', 'user_admin'])]
+    #[Groups(['company', 'admin', 'user_admin'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'admins', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['admin'])]
     private ?Company $company = null;
 
     public function getId(): ?Uuid

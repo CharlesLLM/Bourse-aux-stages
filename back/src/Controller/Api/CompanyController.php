@@ -13,6 +13,7 @@ use Symfony\Component\Messenger\Transport\Serialization\Serializer;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
+#[Route('/company')]
 class CompanyController extends AbstractController
 {
     public function __construct(
@@ -21,7 +22,7 @@ class CompanyController extends AbstractController
     ) {
     }
 
-    #[Route('/company/{slug}', name: 'admin_company', methods: ['GET'])]
+    #[Route('/{slug}', name: 'admin_company', methods: ['GET'])]
     public function getCompanyAdmin(Company $company): JsonResponse
     {
         // Check if user is logged in and is an admin of the company matching the slug
@@ -34,7 +35,7 @@ class CompanyController extends AbstractController
         return new JsonResponse($this->serializer->serialize($company, 'json', ['groups' => ['company']]), Response::HTTP_OK, [], true);
     }
 
-    #[Route('/company/check-siret/{siret}', name: 'check-siret', methods: ['GET'])]
+    #[Route('/check-siret/{siret}', name: 'admin_check_siret', methods: ['GET'])]
     public function checkSiret(string $siret): JsonResponse
     {
         if ($siret) {
@@ -48,7 +49,7 @@ class CompanyController extends AbstractController
         return $this->json($siret);
     }
 
-    #[Route('/company/edit/{slug}', name: 'app_company_edit', methods: ['POST'])]
+    #[Route('/edit/{slug}', name: 'admin_company_edit', methods: ['POST'])]
     public function edit(Company $company, Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $this->getUser();
@@ -93,6 +94,36 @@ class CompanyController extends AbstractController
             }
             if (isset($data['phone'])) {
                 $company->setPhone($data['phone']);
+            }
+            // if (isset($data['logo'])) {
+            //     $company->setLogo($data['logo']);
+            // }
+            // if (isset($data['big_logo'])) {
+            //     $company->setBigLogo($data['big_logo']);
+            // }
+            if (isset($data['creation_date'])) {
+                $company->setCreationDate($data['creation_date']);
+            }
+            if (isset($data['size'])) {
+                $company->setSize($data['size']);
+            }
+            if (isset($data['revenue'])) {
+                $company->setRevenue($data['revenue']);
+            }
+            if (isset($data['description'])) {
+                $company->setDescription($data['description']);
+            }
+            if (isset($data['x_link'])) {
+                $company->setXLink($data['x_link']);
+            }
+            if (isset($data['linkedin_link'])) {
+                $company->setLinkedinLink($data['linkedin_link']);
+            }
+            if (isset($data['facebook_link'])) {
+                $company->setFacebookLink($data['facebook_link']);
+            }
+            if (isset($data['instagram_link'])) {
+                $company->setInstagramLink($data['instagram_link']);
             }
 
             $entityManager->persist($company);
