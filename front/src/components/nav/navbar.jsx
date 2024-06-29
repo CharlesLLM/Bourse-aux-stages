@@ -44,13 +44,9 @@ function Navbar() {
         </li>
       </ul>
       {localStorage.getItem('token') && localStorage.getItem('user') && (
-        <div className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32 cursor-pointer">
-          <div onClick={handleLogout} className="flex items-center space-x-4">
-            <p className="text-primary flex">Déconnexion</p>
-            <IoIosLogOut className="text-primary text-2xl cursor-pointer"/>
-          </div>
-          <div className="h-10 w-px bg-slate-200"></div>
-          <Link to="/admin" className="flex justify-center items-center px-6 py-3 w-48 h-[50px] leading-none text-white bg-primary">Administration</Link>
+        <div onClick={handleLogout} className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32 cursor-pointer">
+          <p className="text-primary flex">Déconnexion</p>
+          <IoIosLogOut className="text-primary text-2xl cursor-pointer"/>
         </div>
       )}
       {!localStorage.getItem('token') && !localStorage.getItem('user') && (

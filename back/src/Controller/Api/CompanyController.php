@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Transport\Serialization\Serializer;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -41,7 +40,7 @@ class CompanyController extends AbstractController
         if ($siret) {
             $foundCompany = $this->companyRepository->findOneBy(['siret' => $siret]);
             // Also check that the siret isn't the one of the company of the admin, not to block the admin from editing the company
-            if ($foundCompany !== null && $foundCompany !== $this->getUser()->getCompanyAdmin()->getCompany()) {
+            if (null !== $foundCompany && $foundCompany !== $this->getUser()->getCompanyAdmin()->getCompany()) {
                 return $this->json(['error' => 'Le siret est déjà utilisé'], JsonResponse::HTTP_CONFLICT);
             }
         }

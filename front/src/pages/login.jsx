@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import Input from "../components/utils/input.jsx";
 import {useLocation, useNavigate} from "react-router-dom";
-import PropTypes from 'prop-types';
 
 function Login() {
   const emailRef = useRef();
@@ -9,7 +8,6 @@ function Login() {
   const [error, setError] = useState({});
   const navigate = useNavigate();
   let { state } = useLocation();
-  redirect = state ? state.redirect : "/"
 
   useEffect(() => {
     if (localStorage.getItem('token')) navigate("/admin");
@@ -57,7 +55,7 @@ function Login() {
 
         const userData = await userResponse.json();
         localStorage.setItem('user', JSON.stringify(userData));
-        window.location.replace('/admin');
+        window.location.replace('/');
       } catch (error) {
         console.error('Login error:', error.message);
         setError({global: error.message})
