@@ -25,6 +25,8 @@ final class OfferFactory extends ModelFactory
             'availablePlaces' => $faker->numberBetween(0, 30),
             'company' => CompanyFactory::new(),
             'description' => $faker->sentences(5, true),
+            'requiredProfile' => $faker->sentences(5, true),
+            'mission' => $faker->sentences(5, true),
             // TODO : Remove
             'distance' => $faker->numberBetween(0, 100),
             'endDate' => $faker->dateTimeBetween('+4 months', '+16 months'),
@@ -32,6 +34,7 @@ final class OfferFactory extends ModelFactory
             'name' => $faker->randomElement(OfferNameEnum::cases())->value,
             'promoteStatus' => $faker->randomElement(PromoteStatusEnum::cases()),
             'remote' => $faker->boolean(),
+            'active' => $faker->boolean(),
             'requiredLevel' => $faker->randomElement(LevelEnum::cases()),
             'revenue' => $faker->randomFloat(2, 0, 5000),
             'skills' => SkillFactory::new()->many(5),

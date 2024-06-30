@@ -59,13 +59,11 @@ class OfferRepository extends ServiceEntityRepository
         ;
 
         if (!$displayClosedOffers){
-            $qb->andWhere('o.endPublicationDate > :now')
-            ->setParameter('now', new \DateTime());
+            $qb->andWhere('o.active = true');
         }
 
         if (!$displayActiveOffers){
-            $qb->andWhere('o.endPublicationDate < :now')
-            ->setParameter('now', new \DateTime());
+            $qb->andWhere('o.active = false');
         }
 
         if ($type) {

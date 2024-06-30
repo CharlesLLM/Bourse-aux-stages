@@ -2,7 +2,7 @@ import { useMemo } from "react";
 
 const OfferCellHeaderAdmin = ({ onOrderBy }) => {
   const headers = useMemo(() => [
-    { key: "name", label: "Nom de l'offre", css: "w-56"},
+    { key: "name", label: "Nom de l'offre", css: "w-64"},
     { key: "promoteStatus", label: "Statut", css: "w-38"},
     { key: "publishDate", label: "Date publication", css: "w-38"},
     { key: "endDate", label: "Date limite", css: "w-38"},

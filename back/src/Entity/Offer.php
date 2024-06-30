@@ -35,6 +35,10 @@ class Offer
     #[Groups(['offer', 'company'])]
     private ?string $name = null;
 
+    #[ORM\Column(type: 'boolean', options: ['default' => true])]
+    #[Groups(['offer'])]
+    private bool $active = true;
+
     #[ORM\Column(length: 20, enumType: OfferTypeEnum::class)]
     #[Assert\NotNull]
     #[Groups(['offer', 'companies', 'company'])]
@@ -44,6 +48,16 @@ class Offer
     #[Assert\NotNull]
     #[Groups(['offer', 'company'])]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull]
+    #[Groups(['offer'])]
+    private ?string $mission = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotNull]
+    #[Groups(['offer'])]
+    private ?string $requiredProfile = null;
 
     #[ORM\Column(enumType: PromoteStatusEnum::class, length: 10, nullable: true)]
     #[Groups(['offer'])]
@@ -122,6 +136,18 @@ class Offer
         return $this;
     }
 
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): static
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
     public function getType(): ?OfferTypeEnum
     {
         return $this->type;
@@ -142,6 +168,30 @@ class Offer
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getMission(): ?string
+    {
+        return $this->mission;
+    }
+
+    public function setMission(?string $mission): static
+    {
+        $this->mission = $mission;
+
+        return $this;
+    }
+
+    public function getRequiredProfile(): ?string
+    {
+        return $this->requiredProfile;
+    }
+
+    public function setRequiredProfile(?string $requiredProfile): static
+    {
+        $this->requiredProfile = $requiredProfile;
 
         return $this;
     }
