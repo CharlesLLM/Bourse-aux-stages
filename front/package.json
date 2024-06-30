@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^42.0.0",
     "@ckeditor/ckeditor5-react": "^8.0.0",
     "@ckeditor/ckeditor5-word-count": "^42.0.0",
+    "ckeditor5": "^42.0.0",
     "date-fns": "^3.6.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
