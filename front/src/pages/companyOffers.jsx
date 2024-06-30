@@ -53,22 +53,12 @@ function CompanyOffers() {
     const sortedData = useMemo(() => {
         const sorted = [...offers];
         if (sortOption === "MOST_RECENT") {
-            sorted.sort((a, b) => {
-                const dateA = a.createdAt;
-                const dateB = b.createdAt;
-                return dateB - dateA;
-            });
+            sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         } else {
-            sorted.sort((a, b) => {
-                const dateA = a.createdAt;
-                const dateB = b.createdAt;
-                return dateA - dateB;
-            });
+            sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         }
         return sorted;
     }, [offers, sortOption]);
-
-    console.log(offers);
 
     useEffect(() => {
         setCurrentPage(1);

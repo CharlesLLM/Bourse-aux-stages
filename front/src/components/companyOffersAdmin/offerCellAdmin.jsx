@@ -4,21 +4,20 @@ import { BsThreeDots } from "react-icons/bs";
 const OfferCellAdmin = ({ offer }) => {
 
   const applications = "20"
-  const statut = "active";
 
   return (
     <tr className="bg-white border-b h-20 odd:bg-lightGrey text-[#25324B]">
       <th scope="row" className="px-6 py-4 font-medium whitespace-nowrap">
-        <h3 className="text-md font-bold">{offer.name}</h3>
+        <h3 className="text-md font-bold">  {offer.name.length > 35 ? `${offer.name.substring(0, 32)}...` : offer.name}</h3>
       </th>
       <td className="px-6 py-4">
-        {statut == "active" && (
+        {offer.active && (
           <p className="rounded-full border-[#56CDAD] border-2 text-center p-2 text-[#56CDAD] max-w-28">
-            {statut}
+            active
           </p>
         ) || (
           <p className="rounded-full border-[#FF6550] border-2 text-center p-2 text-[#FF6550] max-w-28">
-            {statut}
+            clôturé
           </p>
         )}
       </td>
