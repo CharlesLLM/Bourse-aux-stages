@@ -4,7 +4,7 @@ function Input({label, name, required, inputRef, type, max = null, onFocus = nul
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-dark" htmlFor={name}>{label}<span className="text-red-700">{required ? '*' : ''}</span></label>
-      <input name={name} onFocus={onFocus} onChange={onChange} onBlur={onBlur} ref={inputRef} maxLength={max} type={type} className="border border-grey/50 p-3.5 disabled:opacity-50" placeholder={label} onKeyDown={onKeyDown} disabled={disabled} />
+      <input name={name} onFocus={onFocus} onChange={onChange} onBlur={onBlur} ref={inputRef} maxLength={max} type={type} className="border border-grey/50 p-3.5 disabled:opacity-50 rounded-md" placeholder={label} onKeyDown={onKeyDown} disabled={disabled} />
     </div>
   )
 }

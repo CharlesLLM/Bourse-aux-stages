@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 function AdminMenu({ admin }) {
   return (
-    <div className="flex flex-col gap-8 h-full bg-lightGrey font-medium text-[#7C8493] py-8 border-r border-borderGrey w-72">
+    <div className="flex flex-col gap-8 h-full bg-lightGrey font-medium text-[#7C8493] py-8 border-r border-borderGrey">
       <Link to="/admin">
         <h2 className="title text-black text-2xl ml-8">Mon compte</h2>
       </Link>
