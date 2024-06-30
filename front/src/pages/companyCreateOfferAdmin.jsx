@@ -20,6 +20,9 @@ function CompanyCreateOfferAdmin() {
         offerAbout: "",
         offerMission: "",
         offerRequiredProfile: "",
+        charCountAbout: 0,
+        charCountMission: 0,
+        charCountRequiredProfile: 0,
         // Step 3
         offerPublishedDate: "",
         offerDeadline: "",
@@ -57,24 +60,34 @@ function CompanyCreateOfferAdmin() {
         if (formData.offerAbout.length < 300) {
             newErrors.offerAbout = "Le champ A propos doit contenir au moins 300 caractères.";
             valid = false;
-        } else if (formData.offerAbout.length > 2000) {
-            newErrors.offerAbout = "Le champ A propos ne doit pas dépasser 2000 caractères.";
+        } else if (formData.charCountAbout > 500) {
+            newErrors.offerAbout = "Le champ A propos ne doit pas dépasser 500 caractères.";
+            valid = false;
+        //3ème verif au cas ou il y'a bcp de caractères specaiux 
+        } else if (formData.offerAbout.length > 5000) {
+            newErrors.offerAbout = "Le champ A propos est trop long.";
             valid = false;
         }
     
         if (formData.offerMission.length < 300) {
             newErrors.offerMission = "Le champ Mission doit contenir au moins 300 caractères.";
             valid = false;
-        } else if (formData.offerMission.length > 2000) {
-            newErrors.offerMission = "Le champ Mission ne doit pas dépasser 2000 caractères.";
+        } else if (formData.charCountMission > 500) {
+            newErrors.offerMission = "Le champ Mission ne doit pas dépasser 500 caractères.";
+            valid = false;
+        } else if (formData.offerMission.length > 5000) {
+            newErrors.offerMission = "Le champ Mission est trop long.";
             valid = false;
         }
     
         if (formData.offerRequiredProfile.length < 300) {
             newErrors.offerRequiredProfile = "Le champ Profil Recherché doit contenir au moins 300 caractères.";
             valid = false;
-        } else if (formData.offerRequiredProfile.length > 2000) {
-            newErrors.offerRequiredProfile = "Le champ Profil Recherché ne doit pas dépasser 2000 caractères.";
+        } else if (formData.charCountRequiredProfile > 500) {
+            newErrors.offerRequiredProfile = "Le champ Profil recherché ne doit pas dépasser 500 caractères.";
+            valid = false;
+        } else if (formData.offerRequiredProfile.length > 5000) {
+            newErrors.offerRequiredProfile = "Le champ Profil est trop long.";
             valid = false;
         }
 

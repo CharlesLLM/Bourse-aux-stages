@@ -1,32 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+//import { ClassicEditor, Essentials, Bold, Italic, Link } from 'ckeditor5';
+import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, WordCount, List, SpecialCharacters, SpecialCharactersEssentials } from 'ckeditor5';
+import 'ckeditor5/ckeditor5.css';
 import './offerCreationStepDescription.css';
 
 const OfferCreationStepDescription = ({ formData, setFormData }) => {
     const ckeditorCharLimit = 500;
 
-    const [charCountAbout, setCharCountAbout] = useState(formData.offerAbout.length);
-    const [charCountMission, setCharCountMission] = useState(formData.offerMission.length);
-    const [charCountRequiredProfile, setCharCountRequiredProfile] = useState(formData.offerRequiredProfile.length);
-
     const handleChange = (event, editor, field) => {
-        const data = editor.getData();        
+        const wordCountPlugin = editor.plugins.get( 'WordCount' );
+        const data = editor.getData();
         setFormData(prevData => ({
             ...prevData,
             [field]: data
         }));
-    
-        switch (field) {
-            case 'offerAbout':
-                setCharCountAbout(data.length);
+        switch (field){
+            //charcount stocké dans formData pour pouvoir l'utiliser ensuite dans la verif d'étape dans companyCreateOfferAdmin
+            case "offerAbout":
+                setFormData(prevData => ({
+                    ...prevData,
+                    charCountAbout: wordCountPlugin.characters
+                }));
                 break;
-            case 'offerMission':
-                setCharCountMission(data.length);
-                break;
-            case 'offerRequiredProfile':
-                setCharCountRequiredProfile(data.length);
-                break;
+            case "offerMission":
+                setFormData(prevData => ({
+                    ...prevData,
+                    charCountMission: wordCountPlugin.characters
+                }));                break;
+            case "offerRequiredProfile":
+                setFormData(prevData => ({
+                    ...prevData,
+                    charCountRequiredProfile: wordCountPlugin.characters
+                }));                break;
             default:
                 break;
         }
@@ -43,22 +49,21 @@ const OfferCreationStepDescription = ({ formData, setFormData }) => {
                 </div>
                 <div className="w-7/12 flex flex-col gap-3">
                     <CKEditor
-                        editor={ClassicEditor}
+                        editor={ ClassicEditor }
+                        config={ {
+                            toolbar: {
+                                items: [ 'undo', 'redo', 'bold', 'italic', 'link','bulletedList', 'numberedList', 'specialCharacters' ],
+                            },
+                            plugins: [
+                                Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, WordCount, List, SpecialCharacters, SpecialCharactersEssentials
+                            ],
+                        } }
                         data={formData.offerAbout}
                         onChange={(event, editor) => handleChange(event, editor, 'offerAbout')}
-                        config={{
-                            placeholder: 'Saisissez votre texte ici',
-                            toolbar: {
-                                items: [
-                                    'bold', 'italic', 'bulletedList', 'numberedList', 'link'
-                                ]
-                            },
-                        }}
-                        
                     />
                     <div className="flex flex-row justify-between items-center flex-nowrap">
                         <p className="text-[#7C8493] font-light">Maximum {ckeditorCharLimit} caractères</p>
-                        <p className="font-light">{charCountAbout}/{ckeditorCharLimit}</p>
+                        <p className="font-light"><span className={`font-light ${formData.charCountAbout > ckeditorCharLimit ? 'text-red-600' : ''}`}>{formData.charCountAbout}</span>/{ckeditorCharLimit}</p>
                     </div>
                 </div>
             </div>
@@ -71,21 +76,21 @@ const OfferCreationStepDescription = ({ formData, setFormData }) => {
                 </div>
                 <div className="w-7/12 flex flex-col gap-3">
                     <CKEditor
-                        editor={ClassicEditor}
+                        editor={ ClassicEditor }
+                        config={ {
+                            toolbar: {
+                                items: [ 'undo', 'redo', 'bold', 'italic', 'link','bulletedList', 'numberedList', 'specialCharacters' ],
+                            },
+                            plugins: [
+                                Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, WordCount, List, SpecialCharacters, SpecialCharactersEssentials
+                            ],
+                        } }
                         data={formData.offerMission}
                         onChange={(event, editor) => handleChange(event, editor, 'offerMission')}
-                        config={{
-                            placeholder: 'Saisissez votre texte ici',
-                            toolbar: {
-                                items: [
-                                    'bold', 'italic', 'bulletedList', 'numberedList', 'link'
-                                ]
-                            },
-                        }}
                     />
                     <div className="flex flex-row justify-between items-center flex-nowrap">
                         <p className="text-[#7C8493] font-light">Maximum {ckeditorCharLimit} caractères</p>
-                        <p className="font-light">{charCountMission}/{ckeditorCharLimit}</p>
+                        <p className="font-light"><span className={`font-light ${formData.charCountMission > ckeditorCharLimit ? 'text-red-600' : ''}`}>{formData.charCountMission}</span>/{ckeditorCharLimit}</p>
                     </div>
                 </div>
             </div>
@@ -98,21 +103,21 @@ const OfferCreationStepDescription = ({ formData, setFormData }) => {
                 </div>
                 <div className="w-7/12 flex flex-col gap-3">
                     <CKEditor
-                        editor={ClassicEditor}
+                        editor={ ClassicEditor }
+                        config={ {
+                            toolbar: {
+                                items: [ 'undo', 'redo', 'bold', 'italic', 'link','bulletedList', 'numberedList', 'specialCharacters' ],
+                            },
+                            plugins: [
+                                Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, WordCount, List, SpecialCharacters, SpecialCharactersEssentials
+                            ],
+                        } }
                         data={formData.offerRequiredProfile}
                         onChange={(event, editor) => handleChange(event, editor, 'offerRequiredProfile')}
-                        config={{
-                            placeholder: 'Saisissez votre texte ici',
-                            toolbar: {
-                                items: [
-                                    'bold', 'italic', 'bulletedList', 'numberedList', 'link'
-                                ]
-                            },
-                        }}
                     />
                     <div className="flex flex-row justify-between items-center flex-nowrap">
                         <p className="text-[#7C8493] font-light">Maximum {ckeditorCharLimit} caractères</p>
-                        <p className="font-light">{charCountRequiredProfile}/{ckeditorCharLimit}</p>
+                        <p className="font-light"><span className={`font-light ${formData.charCountRequiredProfile > ckeditorCharLimit ? 'text-red-600' : ''}`}>{formData.charCountRequiredProfile}</span>/{ckeditorCharLimit}</p>
                     </div>
                 </div>
             </div>
