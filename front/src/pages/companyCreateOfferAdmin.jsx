@@ -45,7 +45,6 @@ function CompanyCreateOfferAdmin() {
             newErrors.offerPay = "La rémunération doit être un nombre.";
             valid = false;
         }
-        valid = true;
 
         setErrors(newErrors);
         return valid;
@@ -55,7 +54,6 @@ function CompanyCreateOfferAdmin() {
         let valid = true;
         const newErrors = {};
     
-        // Validate offerAbout
         if (formData.offerAbout.length < 300) {
             newErrors.offerAbout = "Le champ A propos doit contenir au moins 300 caractères.";
             valid = false;
@@ -64,7 +62,6 @@ function CompanyCreateOfferAdmin() {
             valid = false;
         }
     
-        // Validate offerMission
         if (formData.offerMission.length < 300) {
             newErrors.offerMission = "Le champ Mission doit contenir au moins 300 caractères.";
             valid = false;
@@ -73,7 +70,6 @@ function CompanyCreateOfferAdmin() {
             valid = false;
         }
     
-        // Validate offerRequiredProfile
         if (formData.offerRequiredProfile.length < 300) {
             newErrors.offerRequiredProfile = "Le champ Profil Recherché doit contenir au moins 300 caractères.";
             valid = false;
@@ -81,7 +77,6 @@ function CompanyCreateOfferAdmin() {
             newErrors.offerRequiredProfile = "Le champ Profil Recherché ne doit pas dépasser 2000 caractères.";
             valid = false;
         }
-        valid = true;
 
         setErrors(newErrors);
         return valid;
@@ -98,7 +93,6 @@ function CompanyCreateOfferAdmin() {
             offerEndDate
         } = formData;
     
-        // Check if offerPublishedDate is valid and before offerStartDate
         if (!offerPublishedDate) {
             newErrors.offerPublishedDate = "Veuillez sélectionner une date de publication.";
             valid = false;
@@ -107,7 +101,6 @@ function CompanyCreateOfferAdmin() {
             valid = false;
         }
     
-        // Check if offerDeadline is valid and before offerStartDate
         if (!offerDeadline) {
             newErrors.offerDeadline = "Veuillez sélectionner une date limite de candidature.";
             valid = false;
@@ -116,7 +109,6 @@ function CompanyCreateOfferAdmin() {
             valid = false;
         }
     
-        // Check if offerStartDate is before offerEndDate
         if (!offerStartDate) {
             newErrors.offerStartDate = "Veuillez sélectionner une date de début de l'offre.";
             valid = false;
@@ -125,7 +117,6 @@ function CompanyCreateOfferAdmin() {
             valid = false;
         }
     
-        // Check if offerEndDate is after offerStartDate
         if (!offerEndDate) {
             newErrors.offerEndDate = "Veuillez sélectionner une date de fin de l'offre.";
             valid = false;
@@ -133,7 +124,6 @@ function CompanyCreateOfferAdmin() {
             newErrors.offerEndDate = "La date de fin de l'offre doit être postérieure à la date de début de l'offre.";
             valid = false;
         }
-        valid = true;
         setErrors(newErrors);
         return valid;
     };
