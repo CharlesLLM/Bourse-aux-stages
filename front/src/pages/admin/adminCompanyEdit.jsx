@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import OfferCard from "../../components/utils/offerCard.jsx";
 import Container from "../../layout/container.jsx";
 import Input from "../../components/utils/input.jsx";
 
@@ -150,40 +149,25 @@ function AdminCompanyEdit() {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      {/* Main content */}
-      <Container className="flex-col gap-6">
-        <h2 className="text-4xl">Fiche entreprise de {company.name}</h2>
-        <span className="block w-full h-0.5 bg-grey/50"></span>
-        <div className="space-y-6">
-          <Input name="companyName" label="Nom" type="text" required={true} inputRef={companyNameRef} />
-          <Input name="companySiret" label="Siret" type="text" onChange={checkSiret} required={true} inputRef={companySiretRef} />
-          <p className="error">{errors?.companySiret}</p>
-          <p className="error">{errors?.companySiretFormat}</p>
-          <Input name="companyTags" label="Secteurs d'activité" type="text" required={false} inputRef={companyTagsRef} />
-          <Input name="companyCategory" label="Catégorie" type="select" required={true} inputRef={companyCategoryRef} />
-          <Input name="companyAddress" label="Adresse" type="text" required={true} inputRef={companyAddressRef} />
-          <Input name="companyAdditionalAddress" label="Complément d'adresse" type="text" required={false} inputRef={companyAdditionalAddressRef} />
-          <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
-          <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />
-          <Input name="companyCountry" label="Pays" type="text" required={true} inputRef={companyCountryRef} />
-          <Input name="companyPhone" label="Téléphone" type="tel" max={10} required={true} inputRef={companyPhoneRef} />
-          <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>Sauvegarder</button>
-        </div>
-      </Container>
-
-      {/* Offers section */}
-      {company.offers && company.offers.length > 0 && (
-        <div className="w-full bg-lightGrey px-32 py-[72px] space-y-7">
-          <h2 className="text-3xl font-semibold">Offres de stages proposées</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {company.offers.map((offer) => (
-              <OfferCard key={offer.id} offer={offer} displayPicture={false} />
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
+    <Container className="flex-col gap-6">
+      <h2 className="text-4xl">Fiche entreprise de {company.name}</h2>
+      <span className="block w-full h-0.5 bg-grey/50"></span>
+      <div className="space-y-6">
+        <Input name="companyName" label="Nom" type="text" required={true} inputRef={companyNameRef} />
+        <Input name="companySiret" label="Siret" type="text" onChange={checkSiret} required={true} inputRef={companySiretRef} />
+        <p className="error">{errors?.companySiret}</p>
+        <p className="error">{errors?.companySiretFormat}</p>
+        <Input name="companyTags" label="Secteurs d'activité" type="text" required={false} inputRef={companyTagsRef} />
+        <Input name="companyCategory" label="Catégorie" type="select" required={true} inputRef={companyCategoryRef} />
+        <Input name="companyAddress" label="Adresse" type="text" required={true} inputRef={companyAddressRef} />
+        <Input name="companyAdditionalAddress" label="Complément d'adresse" type="text" required={false} inputRef={companyAdditionalAddressRef} />
+        <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
+        <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />
+        <Input name="companyCountry" label="Pays" type="text" required={true} inputRef={companyCountryRef} />
+        <Input name="companyPhone" label="Téléphone" type="tel" max={10} required={true} inputRef={companyPhoneRef} />
+        <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>Sauvegarder</button>
+      </div>
+    </Container>
   )
 }
 

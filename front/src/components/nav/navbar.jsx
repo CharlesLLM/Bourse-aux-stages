@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import {IoIosLogOut} from "react-icons/io";
 import PropTypes from 'prop-types';
+import Dropdown from "../utils/dropdown";
 
 function Navbar({ handleLogout = () => {} }) {
   return (
@@ -35,9 +36,15 @@ function Navbar({ handleLogout = () => {} }) {
         </li>
       </ul>
       {localStorage.getItem('token') && localStorage.getItem('user') && (
-        <div onClick={handleLogout} className="flex items-center space-x-4 justify-center px-8 md:px-16 xl:px-32 cursor-pointer">
-          <p className="text-primary flex">Déconnexion</p>
-          <IoIosLogOut className="text-primary text-2xl cursor-pointer"/>
+        <div className="flex items-center gap-4 h-full px-8 md:px-16 xl:px-32">
+          <div onClick={handleLogout} className="flex items-center space-x-4 justify-center cursor-pointer">
+            <p className="text-primary flex">Déconnexion</p>
+            <IoIosLogOut className="text-primary text-2xl cursor-pointer"/>
+          </div>
+          <div className="h-10 w-px bg-slate-200"></div>
+          <Dropdown togglerText="Mon compte" items={[
+            { text: 'Profil', url: 'profil' },
+          ]} />
         </div>
       )}
       {!localStorage.getItem('token') && !localStorage.getItem('user') && (

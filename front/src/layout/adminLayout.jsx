@@ -68,10 +68,10 @@ function AdminLayout() {
     <div className="w-full min-h-screen">
       <Navbar handleLogout={handleLogout} />
       <div className="flex pt-9">
-        <div className="w-1/6 bg-gray-800 text-white">
+        <div className="w-1/5 bg-gray-800 text-white">
           <AdminMenu admin={admin} />
         </div>
-        <div className="w-5/6">
+        <div className="w-4/5">
           <Outlet />
         </div>
       </div>

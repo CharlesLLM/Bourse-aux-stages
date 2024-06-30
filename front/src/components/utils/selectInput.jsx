@@ -4,7 +4,7 @@ function SelectInput({options = [], name, label, required, inputRef, value = nul
   return (
     <div className="flex flex-col space-y-2">
       <label className="text-dark" htmlFor={name}>{label}<span className="text-red-700">{required ? '*' : ''}</span></label>
-      <select name={name} ref={inputRef} className="border border-grey p-4 disabled:opacity-50" disabled={disabled}>
+      <select name={name} ref={inputRef} className="border border-grey p-4 disabled:opacity-50 rounded-md" disabled={disabled}>
         <option value="" disabled defaultValue={value}> Veuillez choisir </option>
         {options.map((option) => (
           <option key={option.code ? option.code : option} value={option.code ? option.code : option}>{option.value ? option.value : option}</option>

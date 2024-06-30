@@ -94,7 +94,7 @@ function Register() {
           delete errors.email;
         })
         .catch(() => {
-          setError({email: 'l\'adresse email est déjà utilisé'});
+          setError({email: 'L\'adresse email est déjà utilisé'});
         });
     }
   }
