@@ -91,66 +91,52 @@ class OfferController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        // $errors = [];
+        $errors = [];
 
-        // // Step 1
-        // if (empty($data['name']) || strlen($data['name']) < 50) {
-        //     $errors['offerName'] = "Le nom de l'offre doit contenir au moins 50 caractères.";
-        // }
+        // Step 1
+        if (empty($data['name']) || strlen($data['name']) < 50) {
+            $errors['offerName'] = "Le nom de l'offre doit contenir au moins 50 caractères.";
+        }
 
-        // if (empty($data['type'])) {
-        //     $errors['offerType'] = "Veuillez sélectionner le type d'offre.";
-        // }
+        if (empty($data['type'])) {
+            $errors['offerType'] = "Veuillez sélectionner le type d'offre.";
+        }
 
-        // if (!empty($data['revenue']) && !is_numeric($data['revenue'])) {
-        //     $errors['offerPay'] = "La rémunération doit être un nombre.";
-        // }
+        if (!empty($data['revenue']) && !is_numeric($data['revenue'])) {
+            $errors['offerPay'] = "La rémunération doit être un nombre.";
+        }
 
-        // // Step 2
-        // if (empty($data['description']) || strlen($data['description']) < 300) {
-        //     $errors['offerAbout'] = "Le champ A propos doit contenir au moins 300 caractères.";
-        // } elseif (strlen($data['description']) > 2000) {
-        //     $errors['offerAbout'] = "Le champ A propos ne doit pas dépasser 2000 caractères.";
-        // }
+        // Step 2
+        if (empty($data['description']) || strlen($data['description']) < 300) {
+            $errors['offerAbout'] = "Le champ A propos doit contenir au moins 300 caractères.";
+        } elseif (strlen($data['description']) > 2000) {
+            $errors['offerAbout'] = "Le champ A propos ne doit pas dépasser 2000 caractères.";
+        }
 
-        // // Step 3
-        // if (empty($data['endPublicationDate'])) {
-        //     $errors['offerPublishedDate'] = "Veuillez sélectionner une date de publication.";
-        // } elseif (new DateTime($data['endPublicationDate']) >= new DateTime($data['startDate'])) {
-        //     $errors['offerPublishedDate'] = "La date de publication doit être antérieure à la date de début de l'offre.";
-        // }
+        // Step 3
+        if (empty($data['endPublicationDate'])) {
+            $errors['offerPublishedDate'] = "Veuillez sélectionner une date de publication.";
+        } elseif (new DateTime($data['endPublicationDate']) >= new DateTime($data['startDate'])) {
+            $errors['offerPublishedDate'] = "La date de publication doit être antérieure à la date de début de l'offre.";
+        }
 
-        // if (empty($data['endDate'])) {
-        //     $errors['offerEndDate'] = "Veuillez sélectionner une date de fin de l'offre.";
-        // } elseif (new DateTime($data['endDate']) <= new DateTime($data['startDate'])) {
-        //     $errors['offerEndDate'] = "La date de fin de l'offre doit être postérieure à la date de début de l'offre.";
-        // }
+        if (empty($data['endDate'])) {
+            $errors['offerEndDate'] = "Veuillez sélectionner une date de fin de l'offre.";
+        } elseif (new DateTime($data['endDate']) <= new DateTime($data['startDate'])) {
+            $errors['offerEndDate'] = "La date de fin de l'offre doit être postérieure à la date de début de l'offre.";
+        }
 
-        // if (empty($data['startDate'])) {
-        //     $errors['offerStartDate'] = "Veuillez sélectionner une date de début de l'offre.";
-        // } elseif (!empty($data['endDate']) && new DateTime($data['startDate']) >= new DateTime($data['endDate'])) {
-        //     $errors['offerStartDate'] = "La date de début de l'offre doit être antérieure à la date de fin de l'offre.";
-        // }
+        if (empty($data['startDate'])) {
+            $errors['offerStartDate'] = "Veuillez sélectionner une date de début de l'offre.";
+        } elseif (!empty($data['endDate']) && new DateTime($data['startDate']) >= new DateTime($data['endDate'])) {
+            $errors['offerStartDate'] = "La date de début de l'offre doit être antérieure à la date de fin de l'offre.";
+        }
 
-        // if (!empty($errors)) {
-        //     return new JsonResponse(['errors' => $errors], Response::HTTP_BAD_REQUEST);
-        // }
+        if (!empty($errors)) {
+            return new JsonResponse(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+        }
 
         $offer = new Offer();
-        
-        // $offer->setName($data['name']);
-        // $offer->setType($data['type']);
-        // $offer->setDescription($data['description']);
-        // $offer->setPromoteStatus($data['promoteStatus']);
-        // $offer->setRequiredLevel($data['requiredLevel']);
-        // $offer->setDistance($data['distance']);
-        // $offer->setRevenue($data['revenue']);
-        // $offer->setRemote($data['remote']);
-        // $offer->setAvailablePlaces($data['availablePlaces']);
-        // $offer->setEndPublicationDate(new \DateTime($data['endPublicationDate']));
-        // $offer->setStartDate(new \DateTime($data['startDate']));
-        // $offer->setEndDate(new \DateTime($data['endDate']));
-        $dateTime = new DateTime();
         $offer->setName($data['name']);
         if ($data['type'] == "INTERNSHIP") $offer->setType(OfferTypeEnum::INTERNSHIP);
         else $offer->setType(OfferTypeEnum::APPRENTICESHIP);
