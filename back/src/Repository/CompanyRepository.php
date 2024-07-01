@@ -106,4 +106,13 @@ class CompanyRepository extends ServiceEntityRepository
             ->setParameter('enabled', true)
         ;
     }
+
+    public function findOneBySlug(string $slug): ?Company
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
