@@ -357,12 +357,10 @@ function Application() {
                     <Input type="text" name="additionalAddress" label="Complément d'adresse" inputRef={additionalAddressRef} />
                     <Input type="number" name="postalCode" label="Code postal" max={5} inputRef={postalCodeRef} />
                     <Input type="text" name="city" label="Ville" inputRef={cityRef} />
-                    {mainLanguage && (
-                      <div className="space-y-2">
-                        <label>Langue</label>
-                        <Combobox data={languagesList} dataKey='code' textField='name' defaultValue={mainLanguage} onChange={setMainLanguage} />
-                      </div>
-                    )}
+                    <div className="space-y-2">
+                      <label>Langue</label>
+                      <Combobox data={languagesList} dataKey='code' textField='name' defaultValue={mainLanguage ? mainLanguage : 'fr'} onChange={setMainLanguage} />
+                    </div>
                     <div className="flex flex-col">
                       <Input
                         type="password"

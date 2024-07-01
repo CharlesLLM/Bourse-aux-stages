@@ -99,7 +99,6 @@ class StudentController extends AbstractController
             }
 
             $student = $user->getStudent();
-            dd($student, $data);
             if (!empty($data['address'])) {
                 $student->setAddress($data['address']);
             }
