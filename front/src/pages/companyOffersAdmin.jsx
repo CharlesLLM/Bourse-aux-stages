@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Pagination from "../components/utils/pagination.jsx";
 import OfferCellAdmin from "../components/companyOffersAdmin/offerCellAdmin.jsx";
 import OfferAdminHeader from "../components/companyOffersAdmin/offerAdminHeader.jsx";
@@ -9,14 +9,15 @@ import '../../assets/styles/underline.scss';
 function CompanyOffersAdmin() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const [company, setCompany] = useState("");
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
-        if (!token) {
+        if (!token || !user || !user.roles.includes('ROLE_ADMIN')) {
             navigate('/');
         }
-    }, [token, navigate]);
+    }, [token, user, navigate]);
 
+    const company = user?.companyAdmin?.company;
     useEffect(() => {
         const getCompanySlug = async () => {
             try {
@@ -38,6 +39,10 @@ function CompanyOffersAdmin() {
 
         getCompanySlug();
     }, []);
+
+    const { state } = useLocation();
+    const successMessage = state?.successMessage || "";
+    console.log(successMessage);
 
     const [offers, setOffers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -121,12 +126,17 @@ function CompanyOffersAdmin() {
 
     return (
         <div className="bg-white mt-12">
-            <OfferAdminHeader companyName={company}/>
-            <div className="w-full md:px-32 pb-16 pt-8">
-                <div className="flex flex-row justify-between p-4 border border-borderGrey items-center">
+            <OfferAdminHeader company={company}/>
+            {successMessage && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-4 mx-6">
+                    {successMessage}
+                </div>
+            )}
+            <div className="w-full md:px-32 py-16">
+                <div className="sm:flex sm:flex-row justify-between p-4 border border-borderGrey items-center">
                     <h3 className="text-2xl text-black font-bold"> {nbOffers} offres trouvées </h3>
                     <div className="space-x-2">
-                        <span className="text-darkGrey">Filtrer par statut:</span> 
+                        <span className="text-darkGrey">Filtrer par statut:</span>
                         <select className="bg-inherit"onChange={(e) => setFilterOption(e.target.value)} value={filterOption}>
                             <option value="ALL">Toutes</option>
                             <option value="ACTIVE">Actives</option>

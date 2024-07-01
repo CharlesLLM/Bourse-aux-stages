@@ -10,35 +10,15 @@ import { FiSend } from "react-icons/fi";
 function CompanyCreateOfferAdmin() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const [company, setCompany] = useState("");
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
-        if (!token) {
+        if (!token || !user || !user.roles.includes('ROLE_ADMIN')) {
             navigate('/');
         }
-    }, [token, navigate]);
+    }, [token, user, navigate]);
 
-    useEffect(() => {
-        const getCompanySlug = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/check-admin`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setCompany(data.company.slug);
-            } catch (err) {
-                console.error('Error fetching data: ', err);
-            }
-        };
-
-        getCompanySlug();
-    }, []);
+    const company = user?.companyAdmin?.company;
 
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -222,6 +202,7 @@ function CompanyCreateOfferAdmin() {
                 } else {
                     const responseData = await response.json();
                     console.log('Offre créée avec succès :', responseData);
+                    navigate('/admin/offres', { state: { successMessage: "L'offre a été créée avec succès." } });
                 }
             } catch (error) {
                 console.error('Erreur lors de la requête HTTP :', error);
@@ -244,7 +225,7 @@ function CompanyCreateOfferAdmin() {
 
     return (
         <div className="mt-12 flex flex-col gap-4 md:px-32">
-            <OfferAdminHeader companyName={company} showCreateButton={false} />
+            <OfferAdminHeader company={company} showCreateButton={false} />
             <OfferCreationHeader currentStep={step} />
             <div className="mt-10">
                 {step === 1 && (
@@ -286,7 +267,7 @@ function CompanyCreateOfferAdmin() {
                             Etape précédente
                         </a>
                     )}
-                    {step == 1 && (
+                    {step === 1 && (
                         <div></div>
                     )}
                     {step < 3 && (
