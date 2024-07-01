@@ -48,15 +48,4 @@ const OfferCellAdmin = ({ offer }) => {
   );
 };
 
-OfferCellAdmin.propTypes = {
-  offer: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    promoteStatus: PropTypes.string.isRequired,
-    endPublicationDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
-  }).isRequired,
-};
-
 export default OfferCellAdmin;

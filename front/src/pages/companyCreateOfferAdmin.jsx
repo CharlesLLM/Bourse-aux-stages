@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import OfferCreationHeader from "../components/companyOffersAdmin/offerCreationHeader.jsx";
 import OfferAdminHeader from "../components/companyOffersAdmin/offerAdminHeader.jsx";
 import OfferCreationStepDescription from "../components/companyOffersAdmin/offerCreationStepDescription.jsx";
@@ -7,6 +8,16 @@ import OfferCreationStepPublishment from "../components/companyOffersAdmin/offer
 import { FiSend } from "react-icons/fi";
 
 function CompanyCreateOfferAdmin() {
+    //redirection si pas de token
+    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/');
+        }
+    }, [token, navigate]);
+
     const company = "coinbase";
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -152,12 +163,18 @@ function CompanyCreateOfferAdmin() {
     
         if (isValid) {
             try {
-                let url = `${import.meta.env.VITE_BACK_ENDPOINT}offer-create`;
+                let url = `${import.meta.env.VITE_BACK_ENDPOINT}api/offer-create`;
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('pas de token JWT trouvé');
+                    return;
+                }
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
+                        'Authorization': `Bearer ${token}`
+                    },                        
                     body: JSON.stringify({
                         name: formData.offerName,
                         type: formData.offerType,
