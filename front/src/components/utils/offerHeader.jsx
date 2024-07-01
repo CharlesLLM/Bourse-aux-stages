@@ -19,7 +19,7 @@ function OfferHeader({ offer, enableApplyButton = false , alreadySubmitted = fal
       <div className="h-[300px] w-full bg-lightGrey px-32 flex flex-col pt-5 pb-10 gap-8">
         <Breadcrumb links={[
           { name: 'Accueil', href: '/' },
-          { name: 'Offres', href: '/offres' },
+          { name: 'Offres', href: `/offres/${offer.type}` },
           { name: offer.name, href: `/offre/${offer.id}` },
         ]} />
         {offer.company && (
