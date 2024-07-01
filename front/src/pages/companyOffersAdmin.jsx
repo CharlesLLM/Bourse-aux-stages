@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Pagination from "../components/utils/pagination.jsx";
 import OfferCellAdmin from "../components/companyOffersAdmin/offerCellAdmin.jsx";
 import OfferAdminHeader from "../components/companyOffersAdmin/offerAdminHeader.jsx";
@@ -6,6 +7,16 @@ import OfferCellHeaderAdmin from "../components/companyOffersAdmin/offerCellHead
 import '../../assets/styles/underline.scss';
 
 function CompanyOffersAdmin() {
+    //redirection si pas de token
+    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+
+    useEffect(() => {
+        if (!token) {
+            navigate('/');
+        }
+    }, [token, navigate]);
+
     const company = "coinbase";
     const [offers, setOffers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
