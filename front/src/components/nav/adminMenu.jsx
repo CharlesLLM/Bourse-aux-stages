@@ -24,7 +24,7 @@ function AdminMenu({ admin }) {
           <IoMdPeople className="size-6" />
           <p>Candidatures</p>
         </Link>
-        <Link to={`/admin`} className="flex items-center gap-4 py-3">
+        <Link to={`/admin/offres`} className="flex items-center gap-4 py-3">
           <LuClipboardList className="size-6" />
           <p>Offres</p>
         </Link>

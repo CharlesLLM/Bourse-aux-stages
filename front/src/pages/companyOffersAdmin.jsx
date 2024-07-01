@@ -99,14 +99,14 @@ function CompanyOffersAdmin() {
         <div className="bg-white mt-12">
             <OfferAdminHeader companyName={company}/>
             <div className="w-full md:px-32 pb-16 pt-8">
-                <div className="sm:flex sm:flex-row justify-between p-4 border border-borderGrey items-center">
+                <div className="flex flex-row justify-between p-4 border border-borderGrey items-center">
                     <h3 className="text-2xl text-black font-bold"> {nbOffers} offres trouvées </h3>
-                    <div>
-                        <span className="text-darkGrey"> Filtrer par statut: </span> 
+                    <div className="space-x-2">
+                        <span className="text-darkGrey">Filtrer par statut:</span> 
                         <select className="bg-inherit"onChange={(e) => setFilterOption(e.target.value)} value={filterOption}>
-                            <option value="ALL"> tous </option>
-                            <option value="ACTIVE"> active </option>
-                            <option value="CLOSED"> clôturé </option>
+                            <option value="ALL">Toutes</option>
+                            <option value="ACTIVE">Actives</option>
+                            <option value="CLOSED">Clôturées</option>
                         </select>
                     </div>
                 </div>
@@ -124,7 +124,7 @@ function CompanyOffersAdmin() {
                     <div className="flex flex-row flex-nowrap justify-between border border-borderGrey max-h-28 px-10 py-6">
                         <div className="text-[#7C8493]">
                             Voir 
-                            <select className="bg-inherit mx-2 border border-[#D6DDEB] p-4 rounded-sm"onChange={(e) => setPageSize(parseInt(e.target.value))} value={pageSize}>
+                            <select className="bg-inherit mx-2 border border-[#D6DDEB] px-2 py-1 rounded-sm"onChange={(e) => setPageSize(parseInt(e.target.value))} value={pageSize}>
                                 <option value="7"> 7 </option>
                                 <option value="10"> 10 </option>
                                 <option value="20"> 20 </option>

@@ -12,11 +12,11 @@ const OfferCellAdmin = ({ offer }) => {
       <td className="px-6 py-4">
         {offer.active && (
           <p className="rounded-full border-[#56CDAD] border-2 text-center p-2 text-[#56CDAD] max-w-28">
-            active
+            Active
           </p>
         ) || (
           <p className="rounded-full border-[#FF6550] border-2 text-center p-2 text-[#FF6550] max-w-28">
-            clôturé
+            Clôturée
           </p>
         )}
       </td>
@@ -28,11 +28,11 @@ const OfferCellAdmin = ({ offer }) => {
       </td>
       <td className="px-6 py-4">
         {offer.type == "stage" && (
-          <p className="rounded-full border-[#4640DE] border-2 text-center p-2 text-[#4640DE] max-w-28">
+          <p className="rounded-full border-[#4640DE] border-2 text-center p-2 text-[#4640DE] max-w-28 capitalize">
             {offer.type }
           </p>
         ) || (
-          <p className="rounded-full border-[#FFB836] border-2 text-center p-2 text-[#FFB836] max-w-28">
+          <p className="rounded-full border-[#FFB836] border-2 text-center p-2 text-[#FFB836] max-w-28 capitalize">
             {offer.type }
           </p>
         )}
