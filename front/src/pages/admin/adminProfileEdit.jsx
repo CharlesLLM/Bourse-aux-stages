@@ -46,7 +46,7 @@ function AdminProfileEdit() {
   const birthDateRef = useRef();
 
   useEffect(() => {
-    const getOffer = async () => {
+    const getAdmin = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/check-admin`, {
           headers: {
@@ -59,18 +59,18 @@ function AdminProfileEdit() {
         }
         const data = await response.json();
 
-        firstNameRef.current.value = data.user.firstName;
-        lastNameRef.current.value = data.user.lastName;
-        genderRef.current.value = data.user.gender;
-        emailRef.current.value = data.user.email;
-        phoneNumberRef.current.value = data.user.phone;
-        birthDateRef.current.value = data.user.birthDate.split('T')[0];
+        if (firstNameRef.current) firstNameRef.current.value = data.user.firstName;
+        if (lastNameRef.current) lastNameRef.current.value = data.user.lastName;
+        if (genderRef.current) genderRef.current.value = data.user.gender;
+        if (emailRef.current) emailRef.current.value = data.user.email;
+        if (phoneNumberRef.current) phoneNumberRef.current.value = data.user.phone;
+        if (birthDateRef.current) birthDateRef.current.value = data.user.birthDate.split('T')[0];
       } catch (err) {
         console.error('Error fetching data: ', err);
       }
     };
 
-    getOffer();
+    getAdmin();
   }, []);
 
   useEffect(() => {

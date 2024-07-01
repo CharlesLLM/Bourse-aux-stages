@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Dropdown from "../utils/dropdown";
 
 function Navbar({ handleLogout = () => {} }) {
+  const isStudent = localStorage.getItem('user') && JSON.parse(localStorage.getItem('user')).roles.includes('ROLE_STUDENT');
+
   return (
     <div className="h-20 flex items-center justify-between px-8 md:px-16 xl:px-32">
       <Link to="/" className="flex items-center gap-2.5">
@@ -41,10 +43,14 @@ function Navbar({ handleLogout = () => {} }) {
             <p className="text-primary flex">Déconnexion</p>
             <IoIosLogOut className="text-primary text-2xl cursor-pointer"/>
           </div>
-          <div className="h-10 w-px bg-slate-200"></div>
-          <Dropdown togglerText="Mon compte" items={[
-            { text: 'Profil', url: 'profil' },
-          ]} />
+          {isStudent && (
+            <div className="flex items-center space-x-4 justify-center">
+              <div className="h-10 w-px bg-slate-200"></div>
+              <Dropdown togglerText="Mon compte" items={[
+                { text: 'Profil', url: 'profil' },
+              ]} />
+            </div>
+          )}
         </div>
       )}
       {!localStorage.getItem('token') && !localStorage.getItem('user') && (

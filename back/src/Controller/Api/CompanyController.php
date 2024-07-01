@@ -21,6 +21,16 @@ class CompanyController extends AbstractController
     ) {
     }
 
+    #[Route('/', name: 'admin_company_current', methods: ['GET'])]
+    public function getCurrentCompany(): JsonResponse
+    {
+        $this->getUser();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $company = $this->getUser()->getCompanyAdmin()->getCompany();
+
+        return new JsonResponse($this->serializer->serialize($company, 'json', ['groups' => ['company']]), Response::HTTP_OK, [], true);
+    }
+
     #[Route('/{slug}', name: 'admin_company', methods: ['GET'])]
     public function getCompanyAdmin(Company $company): JsonResponse
     {
