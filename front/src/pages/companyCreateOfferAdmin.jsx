@@ -8,9 +8,9 @@ import OfferCreationStepPublishment from "../components/companyOffersAdmin/offer
 import { FiSend } from "react-icons/fi";
 
 function CompanyCreateOfferAdmin() {
-    //redirection si pas de token
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [company, setCompany] = useState("");
 
     useEffect(() => {
         if (!token) {
@@ -18,7 +18,28 @@ function CompanyCreateOfferAdmin() {
         }
     }, [token, navigate]);
 
-    const company = "coinbase";
+    useEffect(() => {
+        const getCompanySlug = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/check-admin`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setCompany(data.company.slug);
+            } catch (err) {
+                console.error('Error fetching data: ', err);
+            }
+        };
+
+        getCompanySlug();
+    }, []);
+
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         // Step 1
@@ -47,8 +68,8 @@ function CompanyCreateOfferAdmin() {
         let valid = true;
         const newErrors = {};
 
-        if (formData.offerName.length < 50) {
-            newErrors.offerName = "Le nom de l'offre doit contenir au moins 50 caractères.";
+        if (formData.offerName.length < 10) {
+            newErrors.offerName = "Le nom de l'offre doit contenir au moins 10 caractères.";
             valid = false;
         }
         if (!formData.offerType) {

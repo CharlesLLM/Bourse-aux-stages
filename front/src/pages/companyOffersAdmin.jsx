@@ -9,6 +9,7 @@ import '../../assets/styles/underline.scss';
 function CompanyOffersAdmin() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const [company, setCompany] = useState("");
 
     useEffect(() => {
         if (!token) {
@@ -16,7 +17,28 @@ function CompanyOffersAdmin() {
         }
     }, [token, navigate]);
 
-    const company = "coinbase";
+    useEffect(() => {
+        const getCompanySlug = async () => {
+            try {
+                const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/check-admin`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setCompany(data.company.slug);
+            } catch (err) {
+                console.error('Error fetching data: ', err);
+            }
+        };
+
+        getCompanySlug();
+    }, []);
+
     const [offers, setOffers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [filterOption, setFilterOption] = useState("ALL");
@@ -36,29 +58,31 @@ function CompanyOffersAdmin() {
 
     useEffect(() => {
         const getOffers = async () => {
-            let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
-            url += `?companies=${company}`;
-            switch(filterOption){
-                case "ALL":
-                    url += "&closedOffers";
-                    break;
-                case "CLOSED":
-                    url += "&closedOffers&noActiveOffers";
-                    break;
-                default:
-                    break;
-            }
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+            if (company) {
+                let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
+                url += `?companies=${company}`;
+                switch(filterOption){
+                    case "ALL":
+                        url += "&closedOffers";
+                        break;
+                    case "CLOSED":
+                        url += "&closedOffers&noActiveOffers";
+                        break;
+                    default:
+                        break;
                 }
-                const data = await response.json();
-                setOffers(data);
-                setNbOffers(data.length);
-          } catch (err) {
-            console.error('Error fetching data: ', err);
-          }
+                try {
+                    const response = await fetch(url);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    setOffers(data);
+                    setNbOffers(data.length);
+              } catch (err) {
+                console.error('Error fetching data: ', err);
+              }
+            }
         };
     
         getOffers();

@@ -87,7 +87,7 @@ class OfferRepository extends ServiceEntityRepository
         }
 
         if (!empty($companies)) {
-            $qb->innerJoin('o.company', 'c')  
+            $qb->innerJoin('o.company', 'c')
                 ->andWhere('c.slug IN (:companies)') 
                 ->setParameter('companies', $companies);
         }

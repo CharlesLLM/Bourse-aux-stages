@@ -6,6 +6,9 @@ const OfferAdminHeader = ({ companyName = "" , showCreateButton = true }) => {
     const [company, setCompany] = useState(null);
 
     useEffect(() => {
+        if (!companyName) {
+            return;
+        }
         const getCompany = async () => {
             let url = `${import.meta.env.VITE_BACK_ENDPOINT}company/${companyName}`;
             try {

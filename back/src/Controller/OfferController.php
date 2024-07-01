@@ -35,7 +35,7 @@ class OfferController extends AbstractController
         $levels = $request->query->get('levels') ? explode(',', $request->query->get('levels')) : [];
         $distance = $request->query->get('distance') ?? null;
         $durations = $request->query->get('durations') ? json_decode($request->query->get('durations'), true) : [];
-        $companies = $request->query->get('companies') ? explode(',', $request->query->get('companies')) : [];
+        $companies = $request->query->get('companies') ? [$request->query->get('companies')] : [];
         $activeOffers = !$request->query->has('noActiveOffers');
         $closedOffers = $request->query->has('closedOffers');
 

@@ -85,7 +85,7 @@ const OfferCreationStepType = ({ formData, setFormData }) => {
                         onChange={handleChange}
                         className="border border-borderGrey p-5 w-8/12 font-normal"
                     />
-                    <p className="text-[#7C8493] font-light mt-3">Au moins 50 caractères</p>
+                    <p className="text-[#7C8493] font-light mt-3">Au moins 10 caractères</p>
                 </div>
             </div>
             <div className="border-b border-borderGrey ml-2"></div>
