@@ -28,7 +28,7 @@ function Pagination ({ onPageChange, totalCount, siblingCount = 1, currentPage, 
 
   return (
     <ul
-      className="flex flex-row flex-wrap justify-center items-center gap-2 my-10"
+      className="flex flex-row flex-wrap justify-center items-center gap-2"
     >
       {/* Flèche de navigation gauche */}
       <li
@@ -41,8 +41,6 @@ function Pagination ({ onPageChange, totalCount, siblingCount = 1, currentPage, 
       </li>
 
       {paginationRange.map((pageNumber, index) => {
-         
-        // cas ou l'élément est un dots 
         if (pageNumber === "dots") {
           return <li key={`dots-${index}`} className="w-10 h-10 rounded-lg flex justify-center items-center text-base text-[#7C8493] cursor-default	">...</li>;
         }

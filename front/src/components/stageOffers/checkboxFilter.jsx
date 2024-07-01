@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 import PropTypes from 'prop-types';
 
-const CheckboxFilter = ({ title, options, selectedValues = [], onCheckboxChange }) => {
-  const [isVisible, setIsVisible] = useState(true);
+const CheckboxFilter = ({ title, options, selectedValues = [], onCheckboxChange, defaultVisible = true }) => {
+  const [isVisible, setIsVisible] = useState(defaultVisible);
 
   return (
     <div className="space-y-5">

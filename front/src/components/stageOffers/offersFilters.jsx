@@ -7,7 +7,6 @@ import PropTypes from "prop-types";
 const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
   const [isVisibleDistance, setIsVisibleDistance] = useState(true);
 
-  // maj des filtres quand les checkboxes change
   const handleCheckboxChange = (name, value) => {
     setSelectedFilters(prevState => ({
       ...prevState,
@@ -17,7 +16,6 @@ const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
     }));
   };
 
-  // maj des filtres pour le slider
   const handleSliderChange = value => {
     setSelectedFilters(prevState => ({
       ...prevState,
@@ -49,7 +47,6 @@ const OffersFilters = ({ setSelectedFilters, selectedFilters, tags }) => {
         <CheckboxFilter
           title="Durée"
           options={[
-            // Improve this part by using actual values
             { name: 'durations', value: "[1,59]", label: 'Moins de 2 mois' },
             { name: 'durations', value: "[60,180]", label: 'Entre 2 et 6 mois' },
             { name: 'durations', value: "[181,365]", label: 'Entre 6 et 12 mois' },

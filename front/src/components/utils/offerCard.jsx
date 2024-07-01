@@ -2,8 +2,12 @@ import { Link } from 'react-router-dom';
 import Badge from './badge';
 import PropTypes from "prop-types";
 import PrimaryTag from './primaryTag';
+import DOMPurify from 'dompurify';
 
 function OfferCard({ offer, displayOfferType = true, displayPicture = true }) {
+  //rend le code html safe
+  const sanitizedDescription = DOMPurify.sanitize(offer.description);
+
   return (
     <Link to={`/offre/${offer.id}`} className="p-6 border border-borderGrey bg-white w-72 min-h-56 space-y-4 cursor-pointer">
       {displayOfferType && (
@@ -23,7 +27,7 @@ function OfferCard({ offer, displayOfferType = true, displayPicture = true }) {
         <h3 className="text-lg font-bold">{offer.name}</h3>
         <p className="text-textGrey font-normal">{new Date(offer.startDate).toLocaleDateString()} au {new Date(offer.endDate).toLocaleDateString()}</p>
       </div>
-      <p className="text-textGrey font-normal line-clamp-2">{offer.description}</p>
+      <div className="text-textGrey font-normal line-clamp-2" dangerouslySetInnerHTML={{ __html: sanitizedDescription }} />
       {offer.tags && (
         <div className="flex flex-wrap gap-2">
           {offer.tags.map((tag) => (

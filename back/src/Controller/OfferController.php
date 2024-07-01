@@ -4,6 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Offer;
 use App\Repository\OfferRepository;
+use App\Repository\CompanyRepository;
+use App\Repository\TagRepository;
+use App\Repository\SkillRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +19,11 @@ class OfferController extends AbstractController
 {
     public function __construct(
         private OfferRepository $offerRepository,
+        private CompanyRepository $companyRepository,
+        private TagRepository $tagRepository,
+        private SkillRepository $skillRepository,
         private SerializerInterface $serializer,
+        private EntityManagerInterface $entityManager 
     ) {
     }
 
@@ -27,8 +35,11 @@ class OfferController extends AbstractController
         $levels = $request->query->get('levels') ? explode(',', $request->query->get('levels')) : [];
         $distance = $request->query->get('distance') ?? null;
         $durations = $request->query->get('durations') ? json_decode($request->query->get('durations'), true) : [];
+        $companies = $request->query->get('companies') ? explode(',', $request->query->get('companies')) : [];
+        $activeOffers = !$request->query->has('noActiveOffers');
+        $closedOffers = $request->query->has('closedOffers');
 
-        $offers = $this->offerRepository->findByFilters($type, $tags, $levels, $durations, $distance);
+        $offers = $this->offerRepository->findByFilters($type, $tags, $levels, $durations, $distance, $companies, $activeOffers, $closedOffers);
         $jsonContent = $this->serializer->serialize($offers, 'json', ['groups' => ['offer']]);
 
         return new JsonResponse($jsonContent, Response::HTTP_OK, [], true);

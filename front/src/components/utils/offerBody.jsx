@@ -7,9 +7,11 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import OfferCard from "../utils/offerCard";
 import PrimaryTag from "./primaryTag.jsx";
+import DOMPurify from 'dompurify';
 
 function OfferBody({ offer, alreadySubmitted = false }) {
   const [similarOffers, setSimilarOffers] = useState([]);
+  const sanitizedDescription = DOMPurify.sanitize(offer.description);
 
   useEffect(() => {
     const getSimilarOffers = async () => {
@@ -35,7 +37,10 @@ function OfferBody({ offer, alreadySubmitted = false }) {
         <div className="w-2/3 flex flex-col gap-10">
           <div>
             <h2 className="text-3xl my-5">À propos de ce stage</h2>
-            <p className="font-normal">{offer.description}</p>
+            <div
+                className="font-normal"
+                dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+            />
           </div>
           {(!alreadySubmitted)
             ?

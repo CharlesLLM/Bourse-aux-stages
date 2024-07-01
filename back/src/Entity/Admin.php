@@ -41,7 +41,7 @@ class Admin
 
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'admins', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['admin'])]
+    #[Groups(['admin', 'user_admin'])]
     private ?Company $company = null;
 
     public function getId(): ?Uuid

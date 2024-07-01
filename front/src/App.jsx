@@ -12,8 +12,10 @@ import Application from "./pages/application.jsx";
 import OfferView from "./pages/offerView.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
+import CompanyOffersAdmin from "./pages/companyOffersAdmin.jsx";
 import AdminProfileEdit from './pages/admin/adminProfileEdit.jsx';
 import StudentProfile from './pages/studentProfile.jsx';
+import CompanyCreateOfferAdmin from "./pages/companyCreateOfferAdmin.jsx";
 
 function App() {
   return (
@@ -64,6 +66,8 @@ function App() {
           <Route path="" element={<AdminDashboard />} />
           <Route path="entreprise/:slug" element={<AdminCompanyEdit />} />
           <Route path="profil" element={<AdminProfileEdit />} />
+          <Route path="offres" element={<CompanyOffersAdmin />} />
+          <Route path="creer-offre" element={<CompanyCreateOfferAdmin />} />
         </Route>
       </Routes>
     </BrowserRouter>

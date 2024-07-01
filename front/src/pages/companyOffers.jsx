@@ -20,6 +20,7 @@ function CompanyOffers() {
     });
 
     let pageSize = 7;
+    console.log(offers);
 
     useEffect(() => {
         const getOffers = async () => {
@@ -53,17 +54,9 @@ function CompanyOffers() {
     const sortedData = useMemo(() => {
         const sorted = [...offers];
         if (sortOption === "MOST_RECENT") {
-            sorted.sort((a, b) => {
-                const dateA = a.createdAt;
-                const dateB = b.createdAt;
-                return dateB - dateA;
-            });
+            sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
         } else {
-            sorted.sort((a, b) => {
-                const dateA = a.createdAt;
-                const dateB = b.createdAt;
-                return dateA - dateB;
-            });
+            sorted.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         }
         return sorted;
     }, [offers, sortOption]);
@@ -72,7 +65,6 @@ function CompanyOffers() {
         setCurrentPage(1);
     }, [sortOption, selectedFilters]);
 
-    //page affiché à l'écran
     const currentData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
@@ -134,7 +126,7 @@ function CompanyOffers() {
                                 <OfferCell key={offer.id} offer={offer} />
                             ))}
                         </div>
-                        <div>
+                        <div className="my-10">
                             <Pagination
                                 className="pagination-bar"
                                 currentPage={currentPage}
