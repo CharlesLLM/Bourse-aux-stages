@@ -23,7 +23,7 @@ Checkbox.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   inputRef: PropTypes.object.isRequired,
-  initialValue: PropTypes.object,
+  initialValue: PropTypes.bool,
 };
 
 export default Checkbox;

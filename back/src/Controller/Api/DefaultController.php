@@ -28,18 +28,6 @@ class DefaultController extends AbstractController
         return new JsonResponse($this->serializer->serialize($this->getUser()->getCompanyAdmin(), 'json', ['groups' => ['admin']]), Response::HTTP_OK, [], true);
     }
 
-    #[Route('/student', name: 'admin_student', methods: ['GET'])]
-    public function getStudent(): JsonResponse
-    {
-        $this->getUser();
-        $this->denyAccessUnlessGranted('ROLE_STUDENT');
-        if (!$this->getUser()->getStudent()) {
-            return $this->json(['error' => 'You are not a student'], 403);
-        }
-
-        return new JsonResponse($this->serializer->serialize($this->getUser()->getStudent(), 'json', ['groups' => ['student']]), Response::HTTP_OK, [], true);
-    }
-
     #[Route('/tags', name: 'admin_tags', methods: ['GET'])]
     public function getTags(TagRepository $tagRepository): JsonResponse
     {
