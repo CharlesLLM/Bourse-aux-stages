@@ -28,17 +28,17 @@ class Formation
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Groups(['application', 'user_student'])]
+    #[Groups(['application', 'user_student', 'student'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotNull]
-    #[Groups(['application', 'user_student'])]
+    #[Groups(['application', 'user_student', 'student'])]
     private ?string $schoolName = null;
 
     #[ORM\Column(enumType: LevelEnum::class, length: 20)]
     #[Assert\NotNull]
-    #[Groups(['application', 'user_student'])]
+    #[Groups(['application', 'user_student', 'student'])]
     private ?LevelEnum $level = null;
 
     #[ORM\ManyToOne(inversedBy: 'formations')]

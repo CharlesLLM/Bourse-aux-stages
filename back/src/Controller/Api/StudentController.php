@@ -4,10 +4,12 @@ namespace App\Controller\Api;
 
 use App\Entity\ApplicationLanguage;
 use App\Entity\Experience;
+use App\Entity\Formation;
 use App\Entity\Language;
 use App\Entity\Skill;
 use App\Enum\GenderEnum;
 use App\Enum\LanguageLevelEnum;
+use App\Enum\LevelEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -38,6 +40,19 @@ class StudentController extends AbstractController
         }
 
         return new JsonResponse($this->serializer->serialize($this->getUser()->getStudent(), 'json', ['groups' => ['student']]), Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/formation', name: 'admin_student_formation', methods: ['GET'])]
+    public function getStudentFormation(): JsonResponse
+    {
+        $this->getUser();
+        $this->denyAccessUnlessGranted('ROLE_STUDENT');
+        if (!$this->getUser()->getStudent()) {
+            return $this->json(['error' => 'You are not a student'], 403);
+        }
+        $formation = $this->getUser()->getStudent()->getFormations()->first();
+
+        return new JsonResponse($this->serializer->serialize($formation, 'json', ['groups' => ['student']]), Response::HTTP_OK, [], true);
     }
 
     #[Route(path: '/edit', name: 'api_student_edit', methods: ['POST'])]
@@ -84,6 +99,19 @@ class StudentController extends AbstractController
             }
 
             $student = $user->getStudent();
+            dd($student, $data);
+            if (!empty($data['address'])) {
+                $student->setAddress($data['address']);
+            }
+            if (!empty($data['additional_address'])) {
+                $student->setAdditionalAddress($data['additional_address']);
+            }
+            if (!empty($data['city'])) {
+                $student->setCity($data['city']);
+            }
+            if (!empty($data['postal_code'])) {
+                $student->setPostalCode($data['postal_code']);
+            }
             if (!empty($data['student']['linkedin_link'])) {
                 $student->setLinkedinLink($data['student']['linkedin_link']);
             }
@@ -96,59 +124,33 @@ class StudentController extends AbstractController
             if (!empty($data['student']['driving_licence'])) {
                 $student->setDrivingLicence($data['student']['driving_licence']);
             }
-            if (isset($data['student']['cv'])) {
-                $path = $this->addFile('cv', $data['student']['cv_name'], $data['student']['cv'], $this->getUser()->getId());
-                $student->setCv($path);
+
+            $formation = $student->getFormations()->first() ?? null;
+            if (!$formation) {
+                $formation = new Formation();
+                $formation->setStudent($student);
             }
 
-            if (isset($data['student']['skills'])) {
-                foreach ($data['student']['skills'] as $skillName) {
-                    $skill = new Skill();
-                    $skill->setName($skillName);
-
-                    $currentStudent->addSkill($skill);
-                    $em->persist($skill);
-                }
+            if (!empty($data['student']['formation']['name'])) {
+                $formation->setName($data['student']['formation']['name']);
+            }
+            if (!empty($data['student']['formation']['level'])) {
+                $grade = match ($data['student']['formation']['level']) {
+                    'CAP' => LevelEnum::CAP,
+                    'BAC' => LevelEnum::BAC,
+                    'BAC_2' => LevelEnum::BAC_2,
+                    'BAC_3' => LevelEnum::BAC_3,
+                    'BAC_5' => LevelEnum::BAC_5,
+                    'BAC_8' => LevelEnum::BAC_8,
+                    default => throw new \InvalidArgumentException('Invalid level value'),
+                };
+                $formation->setLevel($grade);
+            }
+            if (!empty($data['student']['formation']['school_name'])) {
+                $formation->setSchoolName($data['student']['formation']['school_name']);
             }
 
-            if (isset($data['student']['experiences'])) {
-                foreach ($data['student']['experiences'] as $experienceJson) {
-                    $experience = new Experience();
-                    $experience->setCompanyName($experienceJson['company'])
-                        ->setPosition($experienceJson['position'])
-                        ->setDescription($experienceJson['description'])
-                        ->setStartDate(\DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']))
-                        ->setEndDate(\DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']));
-
-                    $currentStudent->addExperience($experience);
-                    $em->persist($experience);
-                }
-            }
-
-            if ($data['student']['languages']) {
-                $languages = $data['student']['languages'];
-                foreach ($languages as $languageData) {
-                    $language = $languageRepository->findOneBy(['code' => $languageData['code']]);
-                    $languageLevel = match ($languageData['level']) {
-                        'A1' => LanguageLevelEnum::A1,
-                        'A2' => LanguageLevelEnum::A2,
-                        'B1' => LanguageLevelEnum::B1,
-                        'B2' => LanguageLevelEnum::B2,
-                        'C1' => LanguageLevelEnum::C1,
-                        'C2' => LanguageLevelEnum::C2,
-                        default => throw new \InvalidArgumentException('Invalid level value'),
-                    };
-
-                    $applicationLanguage = new ApplicationLanguage();
-                    $applicationLanguage->setApplication($application)
-                        ->setLanguage($language)
-                        ->setLevel($languageLevel);
-
-                    $application->addLanguage($applicationLanguage);
-                    $em->persist($applicationLanguage);
-                }
-            }
-
+            $entityManager->persist($formation);
             $entityManager->flush();
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
