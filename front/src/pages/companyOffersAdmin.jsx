@@ -7,10 +7,8 @@ import OfferCellHeaderAdmin from "../components/companyOffersAdmin/offerCellHead
 import '../../assets/styles/underline.scss';
 
 function CompanyOffersAdmin() {
-    const company = "coinbase";
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const [company, setCompany] = useState("");
     const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {

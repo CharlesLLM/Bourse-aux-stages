@@ -47,7 +47,7 @@ class OfferController extends AbstractController
         $errors = [];
 
         // Step 1
-        if (empty($data['name']) || strlen($data['name']) < 50) {
+        if (empty($data['name']) || strlen($data['name']) < 10) {
             $errors['offerName'] = "Le nom de l'offre doit contenir au moins 50 caractères.";
         }
 

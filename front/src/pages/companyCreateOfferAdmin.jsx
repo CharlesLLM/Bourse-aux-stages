@@ -202,7 +202,7 @@ function CompanyCreateOfferAdmin() {
                 } else {
                     const responseData = await response.json();
                     console.log('Offre créée avec succès :', responseData);
-                    navigate('/espace-entreprise/offres', { state: { successMessage: "L'offre a été créée avec succès." } });
+                    navigate('/admin/offres', { state: { successMessage: "L'offre a été créée avec succès." } });
                 }
             } catch (error) {
                 console.error('Erreur lors de la requête HTTP :', error);
