@@ -4,39 +4,39 @@ namespace App\Controller\Api;
 
 use App\Entity\Language;
 use App\Enum\GenderEnum;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route(path: '/user')]
-class UserController extends AbstractController
+#[Route(path: '/student')]
+class StudentController extends AbstractController
 {
     public function __construct(
-        private UserRepository $userRepository,
+        private SerializerInterface $serializer,
         private ParameterBagInterface $parameterBag
     ) {
     }
 
-    #[Route(path: '/check-email/{email}', name: 'api_check_email', methods: ['GET'])]
-    public function checkEmail(string $email = ''): JsonResponse
+    #[Route('/', name: 'admin_student', methods: ['GET'])]
+    public function getStudent(): JsonResponse
     {
-        if ($email) {
-            $foundUser = $this->userRepository->findOneBy(['email' => $email]);
-            if (null !== $foundUser && $foundUser->getEmail() !== $this->getUser()->getEmail()) {
-                return $this->json(['error' => 'L\'adresse email est déjà utilisée'], JsonResponse::HTTP_CONFLICT);
-            }
+        $this->getUser();
+        $this->denyAccessUnlessGranted('ROLE_STUDENT');
+        if (!$this->getUser()->getStudent()) {
+            return $this->json(['error' => 'You are not a student'], 403);
         }
 
-        return $this->json('');
+        return new JsonResponse($this->serializer->serialize($this->getUser()->getStudent(), 'json', ['groups' => ['student']]), Response::HTTP_OK, [], true);
     }
 
-    #[Route(path: '/edit', name: 'api_user_edit', methods: ['POST'])]
+    #[Route(path: '/edit', name: 'api_student_edit', methods: ['POST'])]
     public function edit(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -78,6 +78,20 @@ class UserController extends AbstractController
             if (isset($data['pic']) && isset($data['pic_name'])) {
                 $path = $this->addFile('pic', $data['pic_name'], $data['pic'], $user->getId());
                 $user->setPic($path);
+            }
+
+            $student = $user->getStudent();
+            if (!empty($data['linkedin_link'])) {
+                $student->setLinkedinLink($data['linkedin_link']);
+            }
+            if (!empty($data['personal_website'])) {
+                $student->setPersonalWebsite($data['personal_website']);
+            }
+            if (!empty($data['disability'])) {
+                $student->setDisability($data['disability']);
+            }
+            if (!empty($data['driving_licence'])) {
+                $student->setDrivingLicence($data['driving_licence']);
             }
 
             $entityManager->flush();

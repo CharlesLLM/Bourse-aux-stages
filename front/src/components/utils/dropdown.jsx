@@ -11,7 +11,7 @@ function Dropdown({ togglerText, items }) {
   };
 
   return (
-    <div className="flex items-center relative group h-full">
+    <div className="flex items-center relative group h-10">
       <div className="flex items-center gap-1">
         <p className="cursor-pointer pr-5" onClick={toggle}>{togglerText}</p>
         <IoIosArrowDown className={`text-primary size-4 absolute right-0 transform duration-200 ${open && 'transform rotate-180'}`} />
