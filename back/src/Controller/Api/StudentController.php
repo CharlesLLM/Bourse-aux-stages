@@ -2,13 +2,9 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\ApplicationLanguage;
-use App\Entity\Experience;
 use App\Entity\Formation;
 use App\Entity\Language;
-use App\Entity\Skill;
 use App\Enum\GenderEnum;
-use App\Enum\LanguageLevelEnum;
 use App\Enum\LevelEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

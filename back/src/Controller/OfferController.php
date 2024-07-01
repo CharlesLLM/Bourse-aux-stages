@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Offer;
-use App\Repository\OfferRepository;
 use App\Repository\CompanyRepository;
-use App\Repository\TagRepository;
+use App\Repository\OfferRepository;
 use App\Repository\SkillRepository;
+use App\Repository\TagRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,7 +23,7 @@ class OfferController extends AbstractController
         private TagRepository $tagRepository,
         private SkillRepository $skillRepository,
         private SerializerInterface $serializer,
-        private EntityManagerInterface $entityManager 
+        private EntityManagerInterface $entityManager
     ) {
     }
 

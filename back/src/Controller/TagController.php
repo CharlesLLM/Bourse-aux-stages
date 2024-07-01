@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +13,7 @@ class TagController extends AbstractController
     public function __construct(
         private TagRepository $tagRepository,
         private SerializerInterface $serializer
-    ){
+    ) {
     }
 
     #[Route('/tags', name: 'app_tag_index', methods: ['GET'])]
