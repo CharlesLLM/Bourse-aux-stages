@@ -2,29 +2,7 @@ import React, {useEffect, useState} from "react";
 import { FaPlus } from "react-icons/fa";
 
 
-const OfferAdminHeader = ({ companyName = "" , showCreateButton = true }) => {
-    const [company, setCompany] = useState(null);
-
-    useEffect(() => {
-        if (!companyName) {
-            return;
-        }
-        const getCompany = async () => {
-            let url = `${import.meta.env.VITE_BACK_ENDPOINT}company/${companyName}`;
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setCompany(data);
-          } catch (err) {
-            console.error('Error fetching data: ', err);
-          }
-        };
-        getCompany();
-    }, [companyName]);
-
+const OfferAdminHeader = ({ company, showCreateButton = true }) => {
   return (
         <div className="border-b border-borderGrey ml-2">
             <div className="flex flex-row justify-between md:px-32 mb-6">
