@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Repository\CompanyCategoryRepository;
 use App\Repository\TagRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,5 +37,15 @@ class DefaultController extends AbstractController
         $tags = $tagRepository->findAll();
 
         return new JsonResponse($this->serializer->serialize($tags, 'json', ['groups' => ['company']]), Response::HTTP_OK, [], true);
+    }
+
+    #[Route('/categories', name: 'admin_categories', methods: ['GET'])]
+    public function getCategories(CompanyCategoryRepository $companyCategoryRepository): JsonResponse
+    {
+        $this->getUser();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $categories = $companyCategoryRepository->findAll();
+
+        return new JsonResponse($this->serializer->serialize($categories, 'json', ['groups' => ['company']]), Response::HTTP_OK, [], true);
     }
 }
