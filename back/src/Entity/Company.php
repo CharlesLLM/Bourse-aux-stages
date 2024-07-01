@@ -35,11 +35,11 @@ class Company
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Groups(['companies', 'company', 'offer', 'admin'])]
+    #[Groups(['companies', 'company', 'offer', 'admin', 'user_admin'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Groups(['companies', 'company', 'offer', 'admin'])]
+    #[Groups(['companies', 'company', 'offer', 'admin', 'user_admin'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 20)]
@@ -109,7 +109,7 @@ class Company
     private ?int $distance = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['companies', 'company', 'offer'])]
+    #[Groups(['companies', 'company', 'offer', 'user_admin'])]
     private ?string $logo = null;
 
     #[ORM\Column(nullable: true)]
