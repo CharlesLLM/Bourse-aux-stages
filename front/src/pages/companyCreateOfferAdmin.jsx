@@ -10,7 +10,6 @@ import { FiSend } from "react-icons/fi";
 function CompanyCreateOfferAdmin() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const [company, setCompany] = useState("");
     const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
