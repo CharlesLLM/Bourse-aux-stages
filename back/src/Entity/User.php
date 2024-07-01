@@ -80,6 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Language::class)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['student', 'admin', 'user_student', 'user_admin'])]
     private ?Language $language = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
