@@ -13,7 +13,7 @@ trait LocatableTrait
     private ?string $address = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['company', 'user_student'])]
+    #[Groups(['company', 'student', 'user_student'])]
     private ?string $additionalAddress = null;
 
     #[ORM\Column(length: 15)]
