@@ -7,6 +7,7 @@ use App\Repository\LanguageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Types\UuidType;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,10 +25,12 @@ class Language
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
+    #[Groups(['student', 'user_student'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 5)]
     #[Assert\NotNull]
+    #[Groups(['student', 'user_student'])]
     private ?string $code = null;
 
     public function getId(): ?Uuid

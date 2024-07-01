@@ -2,8 +2,12 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\ApplicationLanguage;
+use App\Entity\Experience;
 use App\Entity\Language;
+use App\Entity\Skill;
 use App\Enum\GenderEnum;
+use App\Enum\LanguageLevelEnum;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -44,8 +48,6 @@ class StudentController extends AbstractController
             return new JsonResponse(['error' => 'Invalid JSON'], JsonResponse::HTTP_BAD_REQUEST);
         }
 
-        $language = $entityManager->getRepository(Language::class)->findOneBy(['code' => $data['language']]);
-
         try {
             $user = $this->getUser();
             if (!empty($data['email'])) {
@@ -67,6 +69,7 @@ class StudentController extends AbstractController
                 $user->setBirthdate(new \DateTime($data['birth_date']));
             }
             if (!empty($data['language'])) {
+                $language = $entityManager->getRepository(Language::class)->findOneBy(['code' => $data['language']]);
                 $user->setLanguage($language);
             }
 
@@ -81,17 +84,69 @@ class StudentController extends AbstractController
             }
 
             $student = $user->getStudent();
-            if (!empty($data['linkedin_link'])) {
-                $student->setLinkedinLink($data['linkedin_link']);
+            if (!empty($data['student']['linkedin_link'])) {
+                $student->setLinkedinLink($data['student']['linkedin_link']);
             }
-            if (!empty($data['personal_website'])) {
-                $student->setPersonalWebsite($data['personal_website']);
+            if (!empty($data['student']['personal_website'])) {
+                $student->setPersonalWebsite($data['student']['personal_website']);
             }
-            if (!empty($data['disability'])) {
-                $student->setDisability($data['disability']);
+            if (!empty($data['student']['disability'])) {
+                $student->setDisability($data['student']['disability']);
             }
-            if (!empty($data['driving_licence'])) {
-                $student->setDrivingLicence($data['driving_licence']);
+            if (!empty($data['student']['driving_licence'])) {
+                $student->setDrivingLicence($data['student']['driving_licence']);
+            }
+            if (isset($data['student']['cv'])) {
+                $path = $this->addFile('cv', $data['student']['cv_name'], $data['student']['cv'], $this->getUser()->getId());
+                $student->setCv($path);
+            }
+
+            if (isset($data['student']['skills'])) {
+                foreach ($data['student']['skills'] as $skillName) {
+                    $skill = new Skill();
+                    $skill->setName($skillName);
+
+                    $currentStudent->addSkill($skill);
+                    $em->persist($skill);
+                }
+            }
+
+            if (isset($data['student']['experiences'])) {
+                foreach ($data['student']['experiences'] as $experienceJson) {
+                    $experience = new Experience();
+                    $experience->setCompanyName($experienceJson['company'])
+                        ->setPosition($experienceJson['position'])
+                        ->setDescription($experienceJson['description'])
+                        ->setStartDate(\DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']))
+                        ->setEndDate(\DateTime::createFromFormat('Y-m-d', $experienceJson['start_date']));
+
+                    $currentStudent->addExperience($experience);
+                    $em->persist($experience);
+                }
+            }
+
+            if ($data['student']['languages']) {
+                $languages = $data['student']['languages'];
+                foreach ($languages as $languageData) {
+                    $language = $languageRepository->findOneBy(['code' => $languageData['code']]);
+                    $languageLevel = match ($languageData['level']) {
+                        'A1' => LanguageLevelEnum::A1,
+                        'A2' => LanguageLevelEnum::A2,
+                        'B1' => LanguageLevelEnum::B1,
+                        'B2' => LanguageLevelEnum::B2,
+                        'C1' => LanguageLevelEnum::C1,
+                        'C2' => LanguageLevelEnum::C2,
+                        default => throw new \InvalidArgumentException('Invalid level value'),
+                    };
+
+                    $applicationLanguage = new ApplicationLanguage();
+                    $applicationLanguage->setApplication($application)
+                        ->setLanguage($language)
+                        ->setLevel($languageLevel);
+
+                    $application->addLanguage($applicationLanguage);
+                    $em->persist($applicationLanguage);
+                }
             }
 
             $entityManager->flush();

@@ -31,6 +31,7 @@ function Application() {
   const [errorModal, setErrorModal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [language, setLanguage] = useState(null);
+  const [mainLanguage, setMainLanguage] = useState(null);
   const [profileEdited, setProfileEdited] = useState(false);
   const [showPasswordCriteria, setShowPasswordCriteria] = useState(false);
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false);
@@ -129,9 +130,12 @@ function Application() {
         if (linkedinRef.current) linkedinRef.current.value = data.linkedinLink ? data.linkedinLink : '';
         if (disabilityRef.current) disabilityRef.current.value = data.disability ? data.disability : false;
         if (drivingLicenceRef.current) drivingLicenceRef.current.value = data.drivingLicence ? data.drivingLicence : false;
-        if (user.pic) {
+        if (data.user.pic) {
           setPicture(`${import.meta.env.VITE_BACK_ENDPOINT}${user.pic}`)
           setPreview(`${import.meta.env.VITE_BACK_ENDPOINT}${user.pic}`)
+        }
+        if (data.user.language) {
+          setMainLanguage(data.user.language.code || 'fr');
         }
       }
 
@@ -221,7 +225,7 @@ function Application() {
   };
 
   const handleLanguageChange = (event) => {
-    setLanguage({code: event.code, name: event.name})
+    setMainLanguage({code: event.code, name: event.name})
   };
 
   const handleAddLanguage = () => {
@@ -401,7 +405,7 @@ function Application() {
         password: passwordRef.current?.value,
         confirm_password: confirmPasswordRef.current?.value,
         birthDate: birthDayRef.current?.value,
-        language: selectedLanguage,
+        language: mainLanguage ? mainLanguage.code : '',
         student: {
           personal_website: personalWebsiteRef.current.value,
           linkedin: linkedinRef.current.value,
@@ -411,16 +415,16 @@ function Application() {
           cv_name: CV ? CV.name : '',
           pic: base64Picture,
           pic_name: picture ? picture.name : '',
+          skills: skills.map(skill => skill.name),
+          languages: languages,
+          experiences: experiences.map(experience => ({
+            company: experience.company,
+            position: experience.position,
+            description: experience.description,
+            start_date: experience.startDate,
+            end_date: experience.endDate,
+          })),
         },
-        skills: skills.map(skill => skill.name),
-        languages: languages,
-        experiences: experiences.map(experience => ({
-          company: experience.company,
-          position: experience.position,
-          description: experience.description,
-          start_date: experience.startDate,
-          end_date: experience.endDate,
-        })),
       };
       fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/student/edit`, {
         method: 'POST',
@@ -480,10 +484,12 @@ function Application() {
                     <Input type="text" name="additionalAddress" label="Complement d'adresse" inputRef={additionalAddressRef} />
                     <Input type="number" name="postalCode" label="Code postal" max={5} inputRef={postalCodeRef} />
                     <Input type="text" name="city" label="Ville" inputRef={cityRef} />
-                    <div className="space-y-2">
-                      <label>Langue</label>
-                      <Combobox data={languagesList} dataKey='code' textField='name' defaultValue='fr' onChange={handleLanguageChange} />
-                    </div>
+                    {mainLanguage && (
+                      <div className="space-y-2">
+                        <label>Langue</label>
+                        <Combobox data={languagesList} dataKey='code' textField='name' defaultValue={mainLanguage} onChange={setMainLanguage} />
+                      </div>
+                    )}
                     <div className="flex flex-col">
                       <Input
                         type="password"
