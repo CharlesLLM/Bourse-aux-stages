@@ -17,11 +17,11 @@ function Dropdown({ togglerText, items }) {
         <IoIosArrowDown className={`text-primary size-4 absolute right-0 transform duration-200 ${open && 'transform rotate-180'}`} />
       </div>
       {open && (
-        <ul className="absolute top-full w-32 z-20 bg-white rounded shadow-lg transition-all duration-500 transform opacity-100 translate-y-0">
+        <ul className="absolute top-full w-36 z-30 bg-white rounded shadow-lg transition-all duration-500 transform opacity-100 translate-y-0">
           {items.map((item, index) => (
             <div key={index}>
               {item.url ?
-                <Link to={item.url} className="flex items-center px-4 py-2 border-l-2 border-white hover:bg-lightGrey hover:border-primary">
+                <Link to={item.url} className={`flex items-center px-4 py-2 border-l-2 border-white cursor-pointer hover:bg-lightGrey hover:border-primary ${item.color ? `text-${item.color}` : ''}`}>
                   <li className="whitespace-nowrap">{item.text}</li>
                 </Link>
               :

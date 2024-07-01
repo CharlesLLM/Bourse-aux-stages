@@ -13,6 +13,7 @@ import OfferView from "./pages/offerView.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
 import AdminProfileEdit from './pages/admin/adminProfileEdit.jsx';
+import StudentProfile from './pages/studentProfile.jsx';
 
 function App() {
   return (
@@ -51,6 +52,10 @@ function App() {
           <Route
             path="connexion"
             element={<Login />}
+          />
+          <Route
+            path="profil"
+            element={<StudentProfile />}
           />
         </Route>
 

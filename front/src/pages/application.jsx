@@ -73,6 +73,7 @@ function Application() {
     if (!localStorage.getItem('token') || !localStorage.getItem('user')) {
       navigate(`/offre/${id}`);
     }
+
     const getOffer = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}offer/${id}`);
@@ -85,6 +86,7 @@ function Application() {
         console.error('Error fetching data: ', err);
       }
     };
+
     const getLanguage = async () => {
       try {
         const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}languages`);
@@ -507,7 +509,6 @@ function Application() {
                         accept="image/png, image/jpeg"
                         name="profilePic"
                         onChange={handleFileChange}
-
                       />
                       <label htmlFor="file-input" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
                         <p>Importer</p>

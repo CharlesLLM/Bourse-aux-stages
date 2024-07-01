@@ -57,11 +57,38 @@ class UserController extends AbstractController
                 $user->setPassword($hashedPassword);
             }
 
+            if (isset($data['pic']) && isset($data['pic_name'])) {
+                $this->addFile('pic', $data['pic_name'], $data['pic'], $user()->getId());
+                $user->setPic($path);
+            }
+
             $entityManager->flush();
         } catch (\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()], JsonResponse::HTTP_BAD_REQUEST);
         }
 
         return $this->json('success');
+    }
+
+    public function addFile(string $fileType, string $fileName, $file, $userId): string
+    {
+        try {
+            $date = new \DateTime();
+            $fileName = $date->format('Y-m-d_H-i-s').'_'.$fileName;
+            $directory = \dirname($this->parameterBag->get('kernel.project_dir').'/public/uploads/'.$userId.'/'.$fileType.'/');
+            $filesystem = new Filesystem();
+
+            if (!is_dir($directory) || !$filesystem->exists($directory)) {
+                $filesystem->mkdir($directory);
+            }
+            $filePath = $directory.'/'.$fileName;
+            $data = explode(',', $file);
+
+            file_put_contents($filePath, base64_decode($data[0], true));
+
+            return $filePath;
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage());
+        }
     }
 }
