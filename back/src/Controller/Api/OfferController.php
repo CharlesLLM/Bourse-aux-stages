@@ -35,7 +35,7 @@ class OfferController extends AbstractController
     ) {
     }
 
-    #[Route('/api/offer-create', name: 'app_offer_create', methods: ['POST'])]
+    #[Route('/offer-create', name: 'app_offer_create', methods: ['POST'])]
     public function createOffer(Request $request): JsonResponse
     {
         if (!$this->authorizationChecker->isGranted('ROLE_ADMIN')) {
@@ -124,7 +124,7 @@ class OfferController extends AbstractController
                 }
             }
         }
-    
+
         if (isset($data['profiles']) && is_array($data['profiles'])) {
             foreach ($data['skills'] as $skillName) {
                 $skill = new Skill();
@@ -136,7 +136,7 @@ class OfferController extends AbstractController
 
         $this->entityManager->persist($offer);
         $this->entityManager->flush();
-        
+
         $jsonContent = $this->serializer->serialize($offer, 'json', ['groups' => ['offer']]);
         return new JsonResponse($jsonContent, Response::HTTP_CREATED, [], true);
     }
