@@ -7,25 +7,20 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20240630121030 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Add mission, required_profile and active columns to offer table';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE offer ADD mission LONGTEXT NOT NULL, ADD required_profile LONGTEXT NOT NULL, ADD enabled TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE offer ADD mission LONGTEXT NOT NULL, ADD required_profile LONGTEXT NOT NULL, ADD active TINYINT(1) DEFAULT 1 NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE offer DROP mission, DROP required_profile, DROP enabled');
+        $this->addSql('ALTER TABLE offer DROP mission, DROP required_profile, DROP active');
     }
 }

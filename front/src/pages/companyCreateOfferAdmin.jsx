@@ -74,7 +74,7 @@ function CompanyCreateOfferAdmin() {
         } else if (formData.charCountAbout > 500) {
             newErrors.offerAbout = "Le champ A propos ne doit pas dépasser 500 caractères.";
             valid = false;
-        //3ème verif au cas ou il y'a bcp de caractères specaiux 
+        // If the field is too long, we display an error message
         } else if (formData.offerAbout.length > 5000) {
             newErrors.offerAbout = "Le champ A propos est trop long.";
             valid = false;
@@ -265,10 +265,8 @@ function CompanyCreateOfferAdmin() {
                             Etape précédente
                         </a>
                     )}
-                    { step == 1 && (
-                        //cas première étape pour alligner le bouton à gauche
-                        <div>
-                        </div>
+                    {step == 1 && (
+                        <div></div>
                     )}
                     {step < 3 && (
                         <a

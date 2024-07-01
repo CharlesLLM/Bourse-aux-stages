@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-//import { ClassicEditor, Essentials, Bold, Italic, Link } from 'ckeditor5';
 import { ClassicEditor, Bold, Essentials, Italic, Mention, Paragraph, Undo, Link, WordCount, List, SpecialCharacters, SpecialCharactersEssentials } from 'ckeditor5';
 import 'ckeditor5/ckeditor5.css';
 import './offerCreationStepDescription.css';
@@ -16,7 +15,6 @@ const OfferCreationStepDescription = ({ formData, setFormData }) => {
             [field]: data
         }));
         switch (field){
-            //charcount stocké dans formData pour pouvoir l'utiliser ensuite dans la verif d'étape dans companyCreateOfferAdmin
             case "offerAbout":
                 setFormData(prevData => ({
                     ...prevData,

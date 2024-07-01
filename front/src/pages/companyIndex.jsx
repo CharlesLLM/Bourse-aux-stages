@@ -74,7 +74,6 @@ function CompanyIndex() {
     setCurrentPage(1);
   }, [sortOption, selectedFilters]);
 
-  //page affiché à l'écran
   const currentData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * pageSize;
     const lastPageIndex = firstPageIndex + pageSize;

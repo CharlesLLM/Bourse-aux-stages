@@ -7,7 +7,6 @@ import OfferCellHeaderAdmin from "../components/companyOffersAdmin/offerCellHead
 import '../../assets/styles/underline.scss';
 
 function CompanyOffersAdmin() {
-    //redirection si pas de token
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
@@ -26,7 +25,6 @@ function CompanyOffersAdmin() {
     const [orderBy, setOrderBy] = useState("endPublicationDate");
     const [orderDirection, setOrderDirection] = useState("asc");
 
-    //si meme orderby est sélectionner de fois on change l'ordre d'affichage
     const handleOrderByChange = (value) => {
         if (value === orderBy) {
             setOrderDirection((prevDirection) => (prevDirection === "asc" ? "desc" : "asc"));
@@ -66,7 +64,6 @@ function CompanyOffersAdmin() {
         getOffers();
     }, [company, filterOption]);
 
-    //change l'ordre d'affichage des lignes 
     const sortedData = useMemo(() => {
         const sortedOffers = offers.slice().sort((a, b) => {
             let comparison = 0;
@@ -92,7 +89,6 @@ function CompanyOffersAdmin() {
         setCurrentPage(1);
     }, [orderBy, filterOption]);
 
-    //page affiché à l'écran
     const currentData = useMemo(() => {
         const firstPageIndex = (currentPage - 1) * pageSize;
         const lastPageIndex = firstPageIndex + pageSize;
@@ -115,7 +111,6 @@ function CompanyOffersAdmin() {
                     </div>
                 </div>
                 <div className="flex flex-col md:mx-0">
-                    {/* offres */}
                     <div>
                         <table className="table-fixed w-full text-sm text-left text-textGrey border border-borderGrey">
                             <OfferCellHeaderAdmin onOrderBy={handleOrderByChange} />
@@ -151,4 +146,4 @@ function CompanyOffersAdmin() {
     )
   }
 
-  export default CompanyOffersAdmin;
+export default CompanyOffersAdmin;

@@ -78,6 +78,5 @@ const OfferCreationStepPublishment = ({formData, setFormData }) => {
         </div>
     );
   };
-  
-  export default OfferCreationStepPublishment;
-  
+
+export default OfferCreationStepPublishment;

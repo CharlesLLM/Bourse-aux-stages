@@ -11,7 +11,6 @@ import DOMPurify from 'dompurify';
 
 function OfferBody({ offer, alreadySubmitted = false }) {
   const [similarOffers, setSimilarOffers] = useState([]);
-  //rend le code html safe
   const sanitizedDescription = DOMPurify.sanitize(offer.description);
 
   useEffect(() => {

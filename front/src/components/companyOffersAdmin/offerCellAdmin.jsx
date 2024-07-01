@@ -2,8 +2,7 @@ import PropTypes from "prop-types";
 import { BsThreeDots } from "react-icons/bs";
 
 const OfferCellAdmin = ({ offer }) => {
-
-  const applications = "20"
+  const applications = "20";
 
   return (
     <tr className="bg-white border-b h-20 odd:bg-lightGrey text-[#25324B]">

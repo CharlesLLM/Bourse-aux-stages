@@ -58,11 +58,11 @@ class OfferRepository extends ServiceEntityRepository
             ->andWhere('o.endDate IS NOT NULL')
         ;
 
-        if (!$displayClosedOffers){
+        if (!$displayClosedOffers) {
             $qb->andWhere('o.active = true');
         }
 
-        if (!$displayActiveOffers){
+        if (!$displayActiveOffers) {
             $qb->andWhere('o.active = false');
         }
 
@@ -91,7 +91,6 @@ class OfferRepository extends ServiceEntityRepository
                 ->andWhere('c.slug IN (:companies)') 
                 ->setParameter('companies', $companies);
         }
-
 
         if (!empty($durationsFilter)) {
             $qb->andWhere('o.startDate IS NOT NULL')

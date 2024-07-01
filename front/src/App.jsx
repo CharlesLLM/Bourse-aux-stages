@@ -13,8 +13,6 @@ import OfferView from "./pages/offerView.jsx";
 import Register from "./pages/register.jsx";
 import Login from "./pages/login.jsx";
 import CompanyOffersAdmin from "./pages/companyOffersAdmin.jsx";
-import Register from "./pages/register.jsx";
-import Login from "./pages/login.jsx";
 import AdminProfileEdit from './pages/admin/adminProfileEdit.jsx';
 import StudentProfile from './pages/studentProfile.jsx';
 import CompanyCreateOfferAdmin from "./pages/companyCreateOfferAdmin.jsx";

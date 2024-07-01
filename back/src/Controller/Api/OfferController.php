@@ -91,20 +91,23 @@ class OfferController extends AbstractController
 
         $offer = new Offer();
         $offer->setName($data['name']);
-        if ($data['type'] == "INTERNSHIP") $offer->setType(OfferTypeEnum::INTERNSHIP);
-        else $offer->setType(OfferTypeEnum::APPRENTICESHIP);
-        $offer->setDescription($data['description']);
-        $offer->setMission($data['mission']);
-        $offer->setRequiredProfile($data['requiredProfile']);
-        $offer->setRevenue($data['revenue']);
-        $offer->setRemote(false);
-        $offer->setRequiredLevel(LevelEnum::CAP);
-        $offer->setDistance(50);
-        $offer->setAvailablePlaces(50);
-        $offer->setCreatedAt(new \DateTime());
-        $offer->setEndPublicationDate(new \DateTime($data['endPublicationDate']));
-        $offer->setStartDate(new \DateTime($data['startDate']));
-        $offer->setEndDate(new \DateTime($data['endDate']));
+        if ($data['type'] == "INTERNSHIP") {
+            $offer->setType(OfferTypeEnum::INTERNSHIP);
+        } else {
+            $offer->setType(OfferTypeEnum::APPRENTICESHIP);
+        }
+        $offer->setDescription($data['description'])
+            ->setMission($data['mission'])
+            ->setRequiredProfile($data['requiredProfile'])
+            ->setRevenue($data['revenue'])
+            ->setRemote(false)
+            ->setRequiredLevel(LevelEnum::CAP)
+            ->setDistance(50)
+            ->setAvailablePlaces(50)
+            ->setCreatedAt(new \DateTime())
+            ->setEndPublicationDate(new \DateTime($data['endPublicationDate']))
+            ->setStartDate(new \DateTime($data['startDate']))
+            ->setEndDate(new \DateTime($data['endDate']));
 
         $user = $this->getUser();
         $company = $user->getCompanyAdmin()->getCompany();
