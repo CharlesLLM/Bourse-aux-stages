@@ -10,6 +10,7 @@ function CompanyOffersAdmin() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user'));
+    const [company, setCompany] = useState(user?.companyAdmin?.company);
 
     useEffect(() => {
         if (!token || !user || !user.roles.includes('ROLE_ADMIN')) {
@@ -17,32 +18,8 @@ function CompanyOffersAdmin() {
         }
     }, [token, user, navigate]);
 
-    const company = user?.companyAdmin?.company;
-    useEffect(() => {
-        const getCompanySlug = async () => {
-            try {
-                const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/check-admin`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const data = await response.json();
-                setCompany(data.company.slug);
-            } catch (err) {
-                console.error('Error fetching data: ', err);
-            }
-        };
-
-        getCompanySlug();
-    }, []);
-
     const { state } = useLocation();
     const successMessage = state?.successMessage || "";
-    console.log(successMessage);
 
     const [offers, setOffers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -65,7 +42,7 @@ function CompanyOffersAdmin() {
         const getOffers = async () => {
             if (company) {
                 let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
-                url += `?companies=${company}`;
+                url += `?companies=${company.slug}`;
                 switch(filterOption){
                     case "ALL":
                         url += "&closedOffers";
@@ -91,7 +68,7 @@ function CompanyOffersAdmin() {
         };
     
         getOffers();
-    }, [company, filterOption]);
+    }, [filterOption]);
 
     const sortedData = useMemo(() => {
         const sortedOffers = offers.slice().sort((a, b) => {
