@@ -11,14 +11,16 @@ function CompanyCreateOfferAdmin() {
     //redirection si pas de token
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
-        if (!token) {
+        if (!token || !user || !user.roles.includes('ROLE_ADMIN')) {
             navigate('/');
         }
-    }, [token, navigate]);
+    }, [token, user, navigate]);
 
-    const company = "coinbase";
+    const company = user?.companyAdmin?.company;
+
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         // Step 1
@@ -201,6 +203,7 @@ function CompanyCreateOfferAdmin() {
                 } else {
                     const responseData = await response.json();
                     console.log('Offre créée avec succès :', responseData);
+                    navigate('/espace-entreprise/offres', { state: { successMessage: "L'offre a été créée avec succès." } });
                 }
             } catch (error) {
                 console.error('Erreur lors de la requête HTTP :', error);
@@ -223,7 +226,7 @@ function CompanyCreateOfferAdmin() {
 
     return (
         <div className="mt-12 flex flex-col gap-4 md:px-32">
-            <OfferAdminHeader companyName={company} showCreateButton={false} />
+            <OfferAdminHeader company={company} showCreateButton={false} />
             <OfferCreationHeader currentStep={step} />
             <div className="mt-10">
                 {step === 1 && (

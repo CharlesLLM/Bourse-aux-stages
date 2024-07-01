@@ -1,5 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Pagination from "../components/utils/pagination.jsx";
 import OfferCellAdmin from "../components/companyOffersAdmin/offerCellAdmin.jsx";
 import OfferAdminHeader from "../components/companyOffersAdmin/offerAdminHeader.jsx";
@@ -10,14 +10,20 @@ function CompanyOffersAdmin() {
     //redirection si pas de token
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user'));
 
     useEffect(() => {
-        if (!token) {
+        if (!token || !user || !user.roles.includes('ROLE_ADMIN')) {
             navigate('/');
         }
-    }, [token, navigate]);
+    }, [token, user, navigate]);
 
-    const company = "coinbase";
+    const company = user?.companyAdmin?.company;
+
+    const { state } = useLocation();
+    const successMessage = state?.successMessage || "";
+    console.log(successMessage);
+
     const [offers, setOffers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [filterOption, setFilterOption] = useState("ALL");
@@ -39,7 +45,7 @@ function CompanyOffersAdmin() {
     useEffect(() => {
         const getOffers = async () => {
             let url = `${import.meta.env.VITE_BACK_ENDPOINT}offers`;
-            url += `?companies=${company}`;
+            url += `?companies=${company.slug}`;
             switch(filterOption){
                 case "ALL":
                     url += "&closedOffers";
@@ -64,7 +70,7 @@ function CompanyOffersAdmin() {
         };
     
         getOffers();
-    }, [company, filterOption]);
+    }, [filterOption]);
 
     //change l'ordre d'affichage des lignes 
     const sortedData = useMemo(() => {
@@ -101,7 +107,12 @@ function CompanyOffersAdmin() {
 
     return (
         <div className="bg-white mt-12">
-            <OfferAdminHeader companyName={company}/>
+            <OfferAdminHeader company={company}/>
+            {successMessage && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded my-4 mx-6">
+                    {successMessage}
+                </div>
+            )}
             <div className="w-full md:px-32 pb-16 pt-8">
                 <div className="sm:flex sm:flex-row justify-between p-4 border border-borderGrey items-center">
                     <h3 className="text-2xl text-black font-bold"> {nbOffers} offres trouvées </h3>

@@ -20,7 +20,6 @@ function CompanyOffers() {
     });
 
     let pageSize = 7;
-    console.log(offers);
 
     useEffect(() => {
         const getOffers = async () => {
