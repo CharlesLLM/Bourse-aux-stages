@@ -50,6 +50,10 @@
   }
 }
 
+.rw-state-selected {
+  @apply bg-primary #{!important};
+}
+
 @keyframes checkAnim {
   0% {
     height: 0;

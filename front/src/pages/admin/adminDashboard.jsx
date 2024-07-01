@@ -27,7 +27,7 @@ function AdminDashboard() {
     };
 
     getCompany();
-  });
+  }, []);
 
   return (
     <div>

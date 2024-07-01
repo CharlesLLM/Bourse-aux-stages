@@ -3,7 +3,10 @@
 namespace App\Controller\Api;
 
 use App\Entity\Company;
+use App\Entity\CompanyCategory;
 use App\Repository\CompanyRepository;
+use App\Repository\TagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,7 +62,7 @@ class CompanyController extends AbstractController
     }
 
     #[Route('/edit/{slug}', name: 'admin_company_edit', methods: ['POST'])]
-    public function edit(Company $company, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function edit(Company $company, Request $request, EntityManagerInterface $entityManager, TagRepository $tagRepository): JsonResponse
     {
         $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -74,64 +77,70 @@ class CompanyController extends AbstractController
                 return new JsonResponse(['error' => 'Invalid JSON'], JsonResponse::HTTP_BAD_REQUEST);
             }
 
-            if (isset($data['name'])) {
+            if (!empty($data['name'])) {
                 $company->setName($data['name']);
             }
-            if (isset($data['siret'])) {
+            if (!empty($data['siret'])) {
                 $company->setSiret($data['siret']);
             }
-            if (isset($data['tags'])) {
-                $company->setTags($data['tags']);
+            if (!empty($data['tags'])) {
+                $collection = new ArrayCollection();
+                foreach ($data['tags'] as $tag) {
+                    $tag = $tagRepository->findOneBy(['name' => $tag]);
+                    $collection->add($tag);
+                }
+                $company->setTags($collection);
             }
-            if (isset($data['category'])) {
-                $company->setCategory($data['category']);
+            if (!empty($data['category'])) {
+                $category = $entityManager->getRepository(CompanyCategory::class)->findOneBy(['name' => $data['category']]);
+                $company->setCategory($category);
             }
-            if (isset($data['address'])) {
+            if (!empty($data['address'])) {
                 $company->setAddress($data['address']);
             }
-            if (isset($data['additional_address'])) {
+            if (!empty($data['additional_address'])) {
                 $company->setAdditionalAddress($data['additional_address']);
             }
-            if (isset($data['postal_code'])) {
+            if (!empty($data['postal_code'])) {
                 $company->setPostalCode($data['postal_code']);
             }
-            if (isset($data['city'])) {
+            if (!empty($data['city'])) {
                 $company->setCity($data['city']);
             }
-            if (isset($data['country'])) {
+            if (!empty($data['country'])) {
                 $company->setCountry($data['country']);
             }
-            if (isset($data['phone'])) {
+            if (!empty($data['phone'])) {
                 $company->setPhone($data['phone']);
             }
-            // if (isset($data['logo'])) {
+            // if (!empty($data['logo'])) {
             //     $company->setLogo($data['logo']);
             // }
-            // if (isset($data['big_logo'])) {
+            // if (!empty($data['big_logo'])) {
             //     $company->setBigLogo($data['big_logo']);
             // }
-            if (isset($data['creation_date'])) {
+            if (!empty($data['creation_date'])) {
                 $company->setCreationDate($data['creation_date']);
             }
-            if (isset($data['size'])) {
+            if (!empty($data['size'])) {
                 $company->setSize($data['size']);
             }
-            if (isset($data['revenue'])) {
+            if (!empty($data['revenue'])) {
                 $company->setRevenue($data['revenue']);
             }
-            if (isset($data['description'])) {
+            if (!empty($data['description'])) {
                 $company->setDescription($data['description']);
             }
-            if (isset($data['x_link'])) {
+            if (!empty($data['x_link'])) {
                 $company->setXLink($data['x_link']);
             }
-            if (isset($data['linkedin_link'])) {
+            if (!empty($data['linkedin_link'])) {
                 $company->setLinkedinLink($data['linkedin_link']);
             }
-            if (isset($data['facebook_link'])) {
+            if (!empty($data['facebook_link'])) {
                 $company->setFacebookLink($data['facebook_link']);
             }
-            if (isset($data['instagram_link'])) {
+            if (!empty($data['instagram_link'])) {
                 $company->setInstagramLink($data['instagram_link']);
             }
 

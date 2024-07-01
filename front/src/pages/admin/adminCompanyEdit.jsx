@@ -1,18 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Combobox, Multiselect } from "react-widgets";
 import Container from "../../layout/container.jsx";
 import Input from "../../components/utils/input.jsx";
+import {FaXmark} from "react-icons/fa6";
 
 function AdminCompanyEdit() {
   const navigate = useNavigate();
   const { slug } = useParams();
   const [company, setCompany] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [errors, setErrors] = useState({});
+  const [logo, setLogo] = useState(null);
+  const [logoPreview, setLogoPreview] = useState(null);
+  const [base64Logo, setBase64Logo] = useState(null);
+  const [bigLogo, setBigLogo] = useState(null);
+  const [bigLogoPreview, setBigLogoPreview] = useState(null);
+  const [base64BigLogo, setBase64BigLogo] = useState(null);
 
   const companyNameRef = useRef();
   const companySiretRef = useRef();
-  const companyTagsRef = useRef();
-  const companyCategoryRef = useRef();
   const companyAddressRef = useRef();
   const companyAdditionalAddressRef = useRef();
   const companyPostalCodeRef = useRef();
@@ -44,32 +54,115 @@ function AdminCompanyEdit() {
 
         companyNameRef.current.value = data.name;
         companySiretRef.current.value = data.siret;
-        companyCategoryRef.current.value = data.category.name;
         companyAddressRef.current.value = data.address;
-        companyAdditionalAddressRef.current.value = data.additional_address || '';
-        companyPostalCodeRef.current.value = data.postal_code;
+        companyAdditionalAddressRef.current.value = data.additionalAddress || '';
+        companyPostalCodeRef.current.value = data.postalCode;
         companyCityRef.current.value = data.city;
         companyCountryRef.current.value = data.country;
         companyPhoneRef.current.value = data.phone;
-        if (data.tags) {
-          companyTagsRef.current.value = data.tags.map(tag => tag.name).join(', ');
+        setSelectedTags(data.tags);
+        setSelectedCategory(data.category);
+        if (data.logo) {
+          setLogo(`${import.meta.env.VITE_BACK_ENDPOINT}${data.logo}`)
+          setLogoPreview(`${import.meta.env.VITE_BACK_ENDPOINT}${data.logo}`)
+        }
+        if (data.bigLogo) {
+          setBigLogo(`${import.meta.env.VITE_BACK_ENDPOINT}${data.bigLogo}`)
+          setBigLogoPreview(`${import.meta.env.VITE_BACK_ENDPOINT}${data.bigLogo}`)
         }
       } catch (err) {
         console.error('Error fetching data: ', err);
       }
     };
 
+    const getTags = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/tags`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setTags(data);
+      } catch (err) {
+        console.error('Error fetching data: ', err);
+      }
+    };
+
+    const getCategories = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/categories`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setCategories(data);
+      } catch (err) {
+        console.error('Error fetching data: ', err);
+      }
+    };
+
     getCompany();
+    getTags();
+    getCategories();
   }, [slug]);
 
-  function isEmpty(value) {
-    return (
-      value === undefined ||
-      value === null ||
-      value === "" ||
-      (Array.isArray(value) && value.length === 0)
-    );
-  }
+  const handleLogoChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setBase64Logo(btoa(reader.result))
+      reader.onloadend = () => {
+        setLogo(file);
+        setLogoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setLogo(null);
+      setLogoPreview(null);
+    }
+  };
+
+  const handleRemoveLogo = () => {
+    setLogo(null);
+    setLogoPreview(null);
+  };
+
+  const handleBigLogoChange = (event) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setBase64BigLogo(btoa(reader.result))
+      reader.onloadend = () => {
+        setBigLogo(file);
+        setBigLogoPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setBigLogo(null);
+      setBigLogoPreview(null);
+    }
+  };
+
+  const handleRemoveBigLogo = () => {
+    setBigLogo(null);
+    setBigLogoPreview(null);
+  };
 
   function checkSiret() {
     if (companySiretRef.current?.value) {
@@ -109,23 +202,24 @@ function AdminCompanyEdit() {
     if (companySiretRef.current?.value && !validateSiret(companySiretRef.current?.value)) {
       errors.companySiretFormat = "Le format du siret n'est pas valide";
     }
-    if (companyTagsRef.current?.value && companyTagsRef.current?.value.split(',').length > 5) {
-      errors.companyTags = "Vous ne pouvez pas ajouter plus de 5 tags"
-    }
     checkSiret();
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
       const companyData = {
-        name: !isEmpty(companyNameRef.current?.value) ? companyNameRef.current?.value : null,
-        siret: !isEmpty(companySiretRef.current?.value) ? companySiretRef.current?.value : null,
-        tags: !isEmpty(companyTagsRef.current?.value) ? companyTagsRef.current?.value.split(',') : null,
-        category: !isEmpty(companyCategoryRef.current?.value) ? companyCategoryRef.current?.value : null,
-        address: !isEmpty(companyAddressRef.current?.value) ? companyAddressRef.current?.value : null,
-        additional_address: !isEmpty(companyAdditionalAddressRef.current?.value) ? companyAdditionalAddressRef.current?.value : null,
-        postal_code: !isEmpty(companyPostalCodeRef.current?.value) ? companyPostalCodeRef.current?.value : null,
-        city: !isEmpty(companyCityRef.current?.value) ? companyCityRef.current?.value : null,
-        country: !isEmpty(companyCountryRef.current?.value) ? companyCountryRef.current?.value : null,
-        phone: !isEmpty(companyPhoneRef.current?.value) ? companyPhoneRef.current?.value : null,
+        name: companyNameRef.current?.value,
+        siret: companySiretRef.current?.value,
+        tags: selectedTags,
+        category: selectedCategory,
+        address: companyAddressRef.current?.value,
+        additional_address: companyAdditionalAddressRef.current?.value,
+        postal_code: companyPostalCodeRef.current?.value,
+        city: companyCityRef.current?.value,
+        country: companyCountryRef.current?.value,
+        phone: companyPhoneRef.current?.value,
+        logo: base64Logo,
+        logo_name: logo?.name,
+        bigLogo: base64BigLogo,
+        bigLogo_name: bigLogo?.name,
       };
       fetch(`${import.meta.env.VITE_BACK_ENDPOINT}api/company/edit/${slug}`, {
         method: 'POST',
@@ -157,14 +251,74 @@ function AdminCompanyEdit() {
         <Input name="companySiret" label="Siret" type="text" onChange={checkSiret} required={true} inputRef={companySiretRef} />
         <p className="error">{errors?.companySiret}</p>
         <p className="error">{errors?.companySiretFormat}</p>
-        <Input name="companyTags" label="Secteurs d'activité" type="text" required={false} inputRef={companyTagsRef} />
-        <Input name="companyCategory" label="Catégorie" type="select" required={true} inputRef={companyCategoryRef} />
+        <div className="space-y-2">
+          <p>Secteurs d&apos;activité</p>
+          {company.tags && tags && (
+            <Multiselect name="companyTags" dataKey="id" textField="name" defaultValue={company.tags} data={tags} onChange={value => setSelectedTags(value)} />
+          )}
+        </div>
+        <div className="space-y-2">
+          <p>Catégorie</p>
+          {company.category && categories && (
+            <Combobox name="companyCategory" dataKey="id" textField="name" defaultValue={company.category} data={categories} onChange={value => setSelectedCategory(value)} />
+          )}
+        </div>
         <Input name="companyAddress" label="Adresse" type="text" required={true} inputRef={companyAddressRef} />
         <Input name="companyAdditionalAddress" label="Complément d'adresse" type="text" required={false} inputRef={companyAdditionalAddressRef} />
         <Input name="companyPostalCode" label="Code postal" type="number" max={5} required={true} inputRef={companyPostalCodeRef} />
         <Input name="companyCity" label="Ville" type="text" required={true} inputRef={companyCityRef} />
         <Input name="companyCountry" label="Pays" type="text" required={true} inputRef={companyCountryRef} />
         <Input name="companyPhone" label="Téléphone" type="tel" max={10} required={true} inputRef={companyPhoneRef} />
+        <p className="text-xl">Logo</p>
+        <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-2">
+          <img src={logoPreview !== null ? `${logoPreview}` : '/placeholder.webp'} alt="Preview" className="w-20 h-20 rounded-full object-cover" />
+          {!logoPreview && (
+            <div>
+              <input
+                className="hidden"
+                id="file-input-logo"
+                type="file"
+                accept="image/png, image/jpeg"
+                name="profilePic"
+                onChange={handleLogoChange}
+              />
+              <label htmlFor="file-input-logo" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
+                <p>Importer</p>
+                <p className="text-grey">JPG ou PNG (5 Mo max)</p>
+              </label>
+            </div>
+          )}
+          {logoPreview && (
+            <button onClick={handleRemoveLogo} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+              <FaXmark className="w-7 h-7" />
+            </button>
+          )}
+        </div>
+        <p className="text-xl">Logo grand format</p>
+        <div className="flex flex-col lg:flex-row items-center space-y-6 lg:space-y-0 lg:space-x-2">
+          <img src={bigLogoPreview !== null ? `${bigLogoPreview}` : '/placeholder.webp'} alt="Preview" className="w-20 h-20 rounded-full object-cover" />
+          {!bigLogoPreview && (
+            <div>
+              <input
+                className="hidden"
+                id="file-input-big_logo"
+                type="file"
+                accept="image/png, image/jpeg"
+                name="profilePic"
+                onChange={handleBigLogoChange}
+              />
+              <label htmlFor="file-input-big_logo" className="bg-fourth/50 flex flex-col justify-center items-center text-center cursor-pointer px-10 border-2 border-primary border-dashed rounded text-primary">
+                <p>Importer</p>
+                <p className="text-grey">JPG ou PNG (5 Mo max)</p>
+              </label>
+            </div>
+          )}
+          {bigLogoPreview && (
+            <button onClick={handleRemoveBigLogo} className="flex items-center font-bold text-dark h-fit rounded bg-grey/50 cursor-pointer">
+              <FaXmark className="w-7 h-7" />
+            </button>
+          )}
+        </div>
         <button type="button" className="bg-primary w-full py-4 mt-12 text-white" onClick={handleSubmit}>Sauvegarder</button>
       </div>
     </Container>
